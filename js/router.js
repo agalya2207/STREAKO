@@ -54,6 +54,10 @@ export class Router {
             }
 
             window.scrollTo(0, 0);
+            
+            // Dispatch event for page scripts to hook into
+            const event = new CustomEvent('page-loaded', { detail: { path, pageFile } });
+            window.dispatchEvent(event);
         } catch (error) {
             console.error('[Router] Routing error:', error);
             this.container.innerHTML = `<div style="padding: 32px; color: red;">Error loading page: ${error.message}</div>`;

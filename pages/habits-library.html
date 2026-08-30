@@ -26,7 +26,91 @@
                     <h1 class="header-title">Routine Library</h1>
                     <p class="header-subtitle">Configure and manage your daily habits & routines.</p>
                 </div>
-                <button class="btn btn-primary">+ Create Habit</button>
+<!-- Modal Container -->
+<div id="habit-modal-overlay" style="position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 1000;">
+  <div id="habit-modal" style="background: #1a1e2b; border-radius: 12px; width: 90%; max-width: 500px; padding: 20px; color: #fff; position: relative;">
+    <button onclick="window.closeHabitModal()" style="position: absolute; top: 8px; right: 8px; background: transparent; border: none; color: #fff; font-size: 18px; cursor: pointer;">✖</button>
+    <h2 style="margin-top:0; margin-bottom: 16px; font-size: 20px;">Define New Routine</h2>
+    <div style="margin-bottom:12px;">
+      <label style="display:block; margin-bottom:4px; font-weight:600;">Habit Name</label>
+      <input id="habit-name" type="text" placeholder="e.g. Wake up early, Read 15 mins" style="width:100%; padding:8px; border-radius:6px; border:1px solid #555; background:#111; color:#fff;" />
+    </div>
+    <div style="margin-bottom:12px;">
+      <label style="display:block; margin-bottom:4px; font-weight:600;">Description</label>
+      <textarea id="habit-desc" placeholder="Add a context description..." rows="3" style="width:100%; padding:8px; border-radius:6px; border:1px solid #555; background:#111; color:#fff;"></textarea>
+    </div>
+    <div style="display:flex; gap:12px; margin-bottom:12px;">
+      <div style="flex:1;">
+        <label style="display:block; margin-bottom:4px; font-weight:600;">Category</label>
+        <select id="habit-category" style="width:100%; padding:8px; border-radius:6px; border:1px solid #555; background:#111; color:#fff;">
+          <option>Health</option><option>Fitness</option><option>Learning</option><option>Career</option><option>Personal</option><option>Mindfulness</option>
+        </select>
+      </div>
+      <div style="width:80px;">
+        <label style="display:block; margin-bottom:4px; font-weight:600;">Daily Target</label>
+        <input id="habit-target" type="number" min="1" value="1" style="width:100%; padding:8px; border-radius:6px; border:1px solid #555; background:#111; color:#fff;" />
+      </div>
+      <div style="flex:1;">
+        <label style="display:block; margin-bottom:4px; font-weight:600;">Start Time</label>
+        <input id="habit-start-time" type="time" style="width:100%; padding:4px; border-radius:4px; border:1px solid #555; background:#111; color:#fff;" />
+      </div>
+      <div style="flex:1;">
+        <label style="display:block; margin-bottom:4px; font-weight:600;">End Time</label>
+        <input id="habit-end-time" type="time" style="width:100%; padding:4px; border-radius:4px; border:1px solid #555; background:#111; color:#fff;" />
+      </div>
+    </div>
+    <div style="margin-bottom:12px;">
+      <label style="display:block; margin-bottom:4px; font-weight:600;">Icon</label>
+      <div id="icon-picker" style="display:flex; gap:8px; flex-wrap:wrap;">
+        <button data-icon="☀️" class="icon-btn" style="font-size:18px; background:transparent; border:none; cursor:pointer;">☀️</button>
+        <button data-icon="💪" class="icon-btn" style="font-size:18px; background:transparent; border:none; cursor:pointer;">💪</button>
+        <button data-icon="📚" class="icon-btn" style="font-size:18px; background:transparent; border:none; cursor:pointer;">📚</button>
+        <button data-icon="🧭" class="icon-btn" style="font-size:18px; background:transparent; border:none; cursor:pointer;">🧭</button>
+        <button data-icon="💧" class="icon-btn" style="font-size:18px; background:transparent; border:none; cursor:pointer;">💧</button>
+        <button data-icon="💼" class="icon-btn" style="font-size:18px; background:transparent; border:none; cursor:pointer;">💼</button>
+        <button data-icon="🏷️" class="icon-btn" style="font-size:18px; background:transparent; border:none; cursor:pointer;">🏷️</button>
+        <button data-icon="☕" class="icon-btn" style="font-size:18px; background:transparent; border:none; cursor:pointer;">☕</button>
+        <button data-icon="✅" class="icon-btn" style="font-size:18px; background:transparent; border:none; cursor:pointer;">✅</button>
+      </div>
+    </div>
+    <div style="margin-bottom:12px;">
+      <label style="display:block; margin-bottom:4px; font-weight:600;">Accent Color</label>
+      <div id="color-picker" style="display:flex; gap:8px;">
+        <button data-color="#4F46E5" class="color-swatch" style="width:24px; height:24px; border-radius:50%; background:#4F46E5; border:none; cursor:pointer;"></button>
+        <button data-color="#EF4444" class="color-swatch" style="width:24px; height:24px; border-radius:50%; background:#EF4444; border:none; cursor:pointer;"></button>
+        <button data-color="#00D9FF" class="color-swatch" style="width:24px; height:24px; border-radius:50%; background:#00D9FF; border:none; cursor:pointer;"></button>
+        <button data-color="#FBBF24" class="color-swatch" style="width:24px; height:24px; border-radius:50%; background:#FBBF24; border:none; cursor:pointer;"></button>
+        <button data-color="#A78BFA" class="color-swatch" style="width:24px; height:24px; border-radius:50%; background:#A78BFA; border:none; cursor:pointer;"></button>
+        <button data-color="#EC4899" class="color-swatch" style="width:24px; height:24px; border-radius:50%; background:#EC4899; border:none; cursor:pointer;"></button>
+        <button data-color="#14B8A6" class="color-swatch" style="width:24px; height:24px; border-radius:50%; background:#14B8A6; border:none; cursor:pointer;"></button>
+        <button data-color="#F97316" class="color-swatch" style="width:24px; height:24px; border-radius:50%; background:#F97316; border:none; cursor:pointer;"></button>
+      </div>
+    </div>
+    <div style="margin-bottom:12px;">
+      <label style="display:block; margin-bottom:4px; font-weight:600;">Frequency</label>
+      <div style="display:flex; gap:8px;">
+        <button id="freq-everyday" class="freq-btn" data-value="Daily" style="flex:1; padding:6px; border-radius:6px; border:1px solid #555; background:#111; color:#fff;">Everyday</button>
+        <button id="freq-weekdays" class="freq-btn" data-value="Weekdays" style="flex:1; padding:6px; border-radius:6px; border:1px solid #555; background:#111; color:#fff;">Specific Weekdays</button>
+      </div>
+      <div id="weekday-container" style="display:none; margin-top:8px; gap:4px; flex-wrap:wrap;">
+        <button class="weekday-btn" data-day="Mon" style="padding:4px 8px; border-radius:4px; background:#111; color:#fff; border:1px solid #555;">Mon</button>
+        <button class="weekday-btn" data-day="Tue" style="padding:4px 8px; border-radius:4px; background:#111; color:#fff; border:1px solid #555;">Tue</button>
+        <button class="weekday-btn" data-day="Wed" style="padding:4px 8px; border-radius:4px; background:#111; color:#fff; border:1px solid #555;">Wed</button>
+        <button class="weekday-btn" data-day="Thu" style="padding:4px 8px; border-radius:4px; background:#111; color:#fff; border:1px solid #555;">Thu</button>
+        <button class="weekday-btn" data-day="Fri" style="padding:4px 8px; border-radius:4px; background:#111; color:#fff; border:1px solid #555;">Fri</button>
+        <button class="weekday-btn" data-day="Sat" style="padding:4px 8px; border-radius:4px; background:#111; color:#fff; border:1px solid #555;">Sat</button>
+        <button class="weekday-btn" data-day="Sun" style="padding:4px 8px; border-radius:4px; background:#111; color:#fff; border:1px solid #555;">Sun</button>
+      </div>
+    </div>
+    <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:20px;">
+      <button onclick="window.closeHabitModal()" style="background: transparent; border:1px solid #555; color:#a0aec0; padding:6px 12px; border-radius:6px; cursor:pointer;">Cancel</button>
+      <button id="create-habit-btn" onclick="window.createHabit()" style="background:#4F46E5; border:none; color:#001428; padding:6px 12px; border-radius:6px; cursor:pointer;">Create Routine</button>
+    </div>
+  </div>
+</div>
+
+<button class="btn btn-primary" onclick="window.openCreateHabitModal()">+ Create Habit</button>
+            <div id="habit-modal-container"></div>
             </div>
 
             <div style="display: flex; gap: 12px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 8px;">
@@ -40,116 +124,7 @@
             </div>
 
             <div class="habits-grid">
-                <div class="habit-card">
-                    <div class="habit-header">
-                        <div class="habit-icon">💪</div>
-                        <div class="habit-actions">
-                            <button class="habit-action-btn">⏸️</button>
-                            <button class="habit-action-btn">✏️</button>
-                            <button class="habit-action-btn">🗑️</button>
-                        </div>
-                    </div>
-                    <div class="habit-name">Morning Workout</div>
-                    <div class="habit-desc">30 min strength training every morning</div>
-                    <div class="habit-stats">
-                        <div class="habit-stat"><strong>🔥 12</strong></div>
-                        <div class="habit-stat"><strong>🏆 31d</strong></div>
-                        <div class="habit-stat"><strong>📅 Daily</strong></div>
-                    </div>
-                </div>
-
-                <div class="habit-card">
-                    <div class="habit-header">
-                        <div class="habit-icon">📚</div>
-                        <div class="habit-actions">
-                            <button class="habit-action-btn">⏸️</button>
-                            <button class="habit-action-btn">✏️</button>
-                            <button class="habit-action-btn">🗑️</button>
-                        </div>
-                    </div>
-                    <div class="habit-name">Reading</div>
-                    <div class="habit-desc">Read 20 pages daily</div>
-                    <div class="habit-stats">
-                        <div class="habit-stat"><strong>🔥 8</strong></div>
-                        <div class="habit-stat"><strong>🏆 18d</strong></div>
-                        <div class="habit-stat"><strong>📅 Daily</strong></div>
-                    </div>
-                </div>
-
-                <div class="habit-card">
-                    <div class="habit-header">
-                        <div class="habit-icon">🧘</div>
-                        <div class="habit-actions">
-                            <button class="habit-action-btn">⏸️</button>
-                            <button class="habit-action-btn">✏️</button>
-                            <button class="habit-action-btn">🗑️</button>
-                        </div>
-                    </div>
-                    <div class="habit-name">Meditation</div>
-                    <div class="habit-desc">10 min mindfulness practice</div>
-                    <div style="margin-bottom: 10px;">
-                        <span class="tag tag-recovery">🔄 Recovery Available</span>
-                    </div>
-                    <div class="habit-stats">
-                        <div class="habit-stat"><strong>🔥 5</strong></div>
-                        <div class="habit-stat"><strong>🏆 14d</strong></div>
-                        <div class="habit-stat"><strong>📅 Daily</strong></div>
-                    </div>
-                </div>
-
-                <div class="habit-card">
-                    <div class="habit-header">
-                        <div class="habit-icon">💧</div>
-                        <div class="habit-actions">
-                            <button class="habit-action-btn">⏸️</button>
-                            <button class="habit-action-btn">✏️</button>
-                            <button class="habit-action-btn">🗑️</button>
-                        </div>
-                    </div>
-                    <div class="habit-name">Hydration</div>
-                    <div class="habit-desc">Drink 8 glasses of water</div>
-                    <div class="habit-stats">
-                        <div class="habit-stat"><strong>🔥 21</strong></div>
-                        <div class="habit-stat"><strong>🏆 45d</strong></div>
-                        <div class="habit-stat"><strong>📅 Daily</strong></div>
-                    </div>
-                </div>
-
-                <div class="habit-card">
-                    <div class="habit-header">
-                        <div class="habit-icon">🌙</div>
-                        <div class="habit-actions">
-                            <button class="habit-action-btn">⏸️</button>
-                            <button class="habit-action-btn">✏️</button>
-                            <button class="habit-action-btn">🗑️</button>
-                        </div>
-                    </div>
-                    <div class="habit-name">Sleep 8 Hours</div>
-                    <div class="habit-desc">Get quality sleep every night</div>
-                    <div class="habit-stats">
-                        <div class="habit-stat"><strong>🔥 7</strong></div>
-                        <div class="habit-stat"><strong>🏆 22d</strong></div>
-                        <div class="habit-stat"><strong>📅 Daily</strong></div>
-                    </div>
-                </div>
-
-                <div class="habit-card">
-                    <div class="habit-header">
-                        <div class="habit-icon">✍️</div>
-                        <div class="habit-actions">
-                            <button class="habit-action-btn">⏸️</button>
-                            <button class="habit-action-btn">✏️</button>
-                            <button class="habit-action-btn">🗑️</button>
-                        </div>
-                    </div>
-                    <div class="habit-name">Journaling</div>
-                    <div class="habit-desc">Write daily reflection (5-10 min)</div>
-                    <div class="habit-stats">
-                        <div class="habit-stat"><strong>🔥 4</strong></div>
-                        <div class="habit-stat"><strong>🏆 12d</strong></div>
-                        <div class="habit-stat"><strong>📅 Daily</strong></div>
-                    </div>
-                </div>
+                <!-- Dynamically populated by renderHabits() in main.js -->
             </div>
         </div>
     </div>
