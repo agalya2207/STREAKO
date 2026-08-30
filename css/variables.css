@@ -4,59 +4,61 @@
     /* ========== COLORS ========== */
     
     /* Backgrounds */
-    --bg-dark: #031426;
-    --bg-darker: #020D1C;
-    --bg-card: rgba(5, 25, 45, 0.75);
-    --bg-card-solid: #05192D;
-    --bg-navbar: rgba(4, 26, 48, 0.85);
-    --bg-hover: rgba(20, 155, 255, 0.12);
-    --bg-overlay: rgba(2, 13, 28, 0.85);
+    --bg-dark: #020B18;
+    --bg-darker: #01060E;
+    --bg-secondary: #04152A;
+    --bg-card: #071B32;
+    --bg-card-glass: rgba(7, 27, 50, 0.75);
+    --bg-card-solid: #071B32;
+    --bg-navbar: rgba(2, 11, 24, 0.85);
+    --bg-hover: rgba(22, 140, 255, 0.12);
+    --bg-overlay: rgba(2, 11, 24, 0.85);
     
     /* Primary & Accent Blues */
-    --primary: #149BFF;
-    --primary-bright: #24A8FF;
-    --primary-light: #2ED8FF;
-    --primary-dark: #0F75CC;
-    --cyan: #2ED8FF;
+    --primary: #168CFF;
+    --primary-bright: #1DA1FF;
+    --primary-light: #27DFFF;
+    --primary-dark: #0E65BD;
+    --cyan: #27DFFF;
     
     /* Accent Colors */
     --accent-orange: #FF9F43;
-    --accent-green: #2ED8FF;
+    --accent-green: #27DFFF;
     --accent-red: #EF4444;
-    --accent-purple: #149BFF;
-    --accent-cyan: #2ED8FF;
+    --accent-purple: #168CFF;
+    --accent-cyan: #27DFFF;
     
     /* Text Colors */
-    --text-primary: #F5FAFF;
-    --text-secondary: #8EA8C1;
-    --text-tertiary: #617A94;
-    --text-muted: #475E77;
+    --text-primary: #F5F9FF;
+    --text-secondary: #A5B8CC;
+    --text-tertiary: #6E849C;
+    --text-muted: #4F647B;
     
     /* Borders & Dividers */
-    --border-light: rgba(20, 155, 255, 0.30);
-    --border-medium: rgba(20, 155, 255, 0.40);
-    --border-dark: rgba(20, 155, 255, 0.55);
-    --border-strong: rgba(20, 155, 255, 0.55);
-    --divider: rgba(20, 155, 255, 0.15);
+    --border-light: rgba(30, 145, 255, 0.30);
+    --border-medium: rgba(30, 145, 255, 0.40);
+    --border-dark: rgba(30, 145, 255, 0.55);
+    --border-strong: rgba(30, 145, 255, 0.55);
+    --divider: rgba(30, 145, 255, 0.15);
     
     /* Status Colors */
-    --success: #2ED8FF;
+    --success: #27DFFF;
     --warning: #FFB347;
     --error: #EF4444;
-    --info: #149BFF;
+    --info: #168CFF;
     
     /* Shadows & Glow */
     --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
     --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
     --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.4);
     --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.5);
-    --shadow-glow: 0 0 20px rgba(20, 155, 255, 0.20);
-    --shadow-glow-lg: 0 0 40px rgba(20, 155, 255, 0.35);
+    --shadow-glow: 0 0 20px rgba(30, 145, 255, 0.20);
+    --shadow-glow-lg: 0 0 40px rgba(30, 145, 255, 0.35);
     
     /* ========== TYPOGRAPHY ========== */
     
     /* Font Family */
-    --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    --font-primary: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     --font-mono: 'Fira Code', 'Courier New', monospace;
     
     /* Font Sizes */
@@ -76,6 +78,7 @@
     --fw-medium: 500;
     --fw-semibold: 600;
     --fw-bold: 700;
+    --fw-extrabold: 800;
     
     /* Line Heights */
     --lh-tight: 1.2;
@@ -107,8 +110,8 @@
     
     --sidebar-width: 250px;
     --sidebar-width-collapsed: 80px;
-    --navbar-height: 64px;
-    --container-max: 1440px;
+    --navbar-height: 68px;
+    --container-max: 1240px;
     
     /* ========== BORDER RADIUS ========== */
     
