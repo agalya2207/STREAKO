@@ -193,15 +193,26 @@ class App {
 
         window.openCreateHabitModal = () => {
             window.editingHabitId = null;
-            document.querySelector('#habit-modal h2').textContent = 'Define New Routine';
-            document.getElementById('create-habit-btn').textContent = 'Create Routine';
+            const titleEl = document.getElementById('habit-modal-title') || document.querySelector('#habit-modal h2');
+            if (titleEl) titleEl.textContent = 'Define New Routine';
+            const createBtn = document.getElementById('create-habit-btn');
+            if (createBtn) createBtn.textContent = 'Create Routine';
+            const targetEl = document.getElementById('habit-target');
+            if (targetEl) targetEl.value = 1;
+            // Attach the input listener now that the page is in the DOM (SPA load).
+            window._attachHabitTargetListener();
+            if (window.renderSessionFields) window.renderSessionFields();
             const overlay = document.getElementById('habit-modal-overlay');
             if (overlay) overlay.style.display = 'flex';
+            // Lock background scroll while modal is open
+            document.body.style.overflow = 'hidden';
         };
 
         window.closeHabitModal = () => {
             const overlay = document.getElementById('habit-modal-overlay');
             if (overlay) overlay.style.display = 'none';
+            // Restore background scroll
+            document.body.style.overflow = '';
             // Reset fields
             const nameEl = document.getElementById('habit-name');
             if(nameEl) nameEl.value = '';
@@ -211,6 +222,7 @@ class App {
             if(catEl) catEl.selectedIndex = 0;
             const targetEl = document.getElementById('habit-target');
             if(targetEl) targetEl.value = 1;
+            if (window.renderSessionFields) window.renderSessionFields();
             window.selectedIcon = '';
             window.selectedColor = '';
             window.selectedFrequency = 'Daily';
@@ -274,6 +286,123 @@ class App {
             }
         });
 
+        // ─────────────────────────────────────────────────────────────────────
+        // Session fields rendering
+        // ─────────────────────────────────────────────────────────────────────
+
+        // Helper: convert 24-hour "HH:MM" string to 12-hour "h:MM AM/PM" string.
+        // Returns the placeholder "-- : --" when the value is empty/unset.
+        // Examples:  "00:00" → "12:00 AM"
+        //            "09:30" → "9:30 AM"
+        //            "13:45" → "1:45 PM"
+        //            "23:59" → "11:59 PM"
+        window.to12h = (val) => {
+            if (!val) return '-- : --';
+            const [hStr, mStr] = val.split(':');
+            let h = parseInt(hStr, 10);
+            const m = mStr || '00';
+            const period = h >= 12 ? 'PM' : 'AM';
+            h = h % 12 || 12;   // 0  → 12 (midnight), 12 → 12 (noon), 13 → 1, etc.
+            return `${h}:${m} ${period}`;
+        };
+
+        // Renders exactly `target` session rows.  Always clears the container
+        // first (innerHTML = '') to prevent stale rows from accumulating.
+        // Inclusive loop (i = 1 … target) avoids off-by-one errors.
+        // Does NOT write back to targetInput.value — that would fight mid-type edits.
+        window.renderSessionFields = (forceTarget = null, prefilledSessions = null) => {
+            const container = document.getElementById('habit-sessions-container');
+            const targetInput = document.getElementById('habit-target');
+            if (!container || !targetInput) return;
+
+            // Snapshot existing values so they survive a re-render triggered
+            // when the user changes the target count.
+            const existing = [];
+            container.querySelectorAll('.session-row').forEach(row => {
+                existing.push({
+                    startTime: row.querySelector('.start-time').value,
+                    endTime:   row.querySelector('.end-time').value
+                });
+            });
+
+            // prefilledSessions (edit mode) takes priority over live snapshot.
+            const sourceData = prefilledSessions || existing;
+
+            let target = forceTarget !== null
+                ? parseInt(forceTarget, 10)
+                : (parseInt(targetInput.value, 10) || 1);
+            if (isNaN(target) || target < 1) target = 1;
+
+            // Always clear before re-populating to prevent row accumulation.
+            container.innerHTML = '';
+
+            // Build exactly `target` rows.
+            // Each time column has:
+            //   <input type="time" class="start-time|end-time" />  ← native picker (stores 24h value)
+            //   <span class="time-display">                         ← live 12h text shown below
+            for (let i = 1; i <= target; i++) {
+                const data = sourceData[i - 1] || { startTime: '', endTime: '' };
+                const html = `
+                    <div class="session-row" style="display:flex; align-items:flex-start; gap:12px; background:rgba(255,255,255,0.05); padding:10px 12px; border-radius:8px; border:1px solid #374151;">
+                        <div style="font-size:13px; font-weight:600; min-width:70px; color:#a0aec0; padding-top:20px;">Session ${i}</div>
+                        <div style="flex:1;">
+                            <label style="display:block; font-size:11px; margin-bottom:3px; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em;">Start Time</label>
+                            <input type="time" class="start-time" value="${data.startTime}"
+                                style="width:100%; padding:6px 8px; border-radius:6px; border:1px solid #374151; background:#0d1117; color:#fff; font-size:13px; box-sizing:border-box;" />
+                            <span class="time-display" style="display:block; margin-top:4px; font-size:12px; font-weight:700; color:#00D9FF; letter-spacing:0.04em;">${window.to12h(data.startTime)}</span>
+                        </div>
+                        <div style="flex:1;">
+                            <label style="display:block; font-size:11px; margin-bottom:3px; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em;">End Time</label>
+                            <input type="time" class="end-time" value="${data.endTime}"
+                                style="width:100%; padding:6px 8px; border-radius:6px; border:1px solid #374151; background:#0d1117; color:#fff; font-size:13px; box-sizing:border-box;" />
+                            <span class="time-display" style="display:block; margin-top:4px; font-size:12px; font-weight:700; color:#00D9FF; letter-spacing:0.04em;">${window.to12h(data.endTime)}</span>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', html);
+            }
+        };
+
+        // Delegated input & change listener for time displays.
+        // One listener on `document` covers every session row (including rows added
+        // after the initial render). Guarded by a flag so it is registered only once,
+        // regardless of how many times the modal is opened and closed.
+        if (!window._sessionTimeListenerAttached) {
+            const updateDisplay = (e) => {
+                const isSessionTime = e.target.matches(
+                    '#habit-sessions-container .start-time, #habit-sessions-container .end-time'
+                );
+                if (!isSessionTime) return;
+                // The .time-display <span> is the immediately next sibling of the input.
+                const display = e.target.nextElementSibling;
+                if (display && display.classList.contains('time-display')) {
+                    display.textContent = window.to12h(e.target.value);
+                }
+            };
+            document.addEventListener('input', updateDisplay);
+            document.addEventListener('change', updateDisplay);
+            window._sessionTimeListenerAttached = true;
+        }
+
+        // ----- Helper: attach the Daily Target listener exactly once -----
+        // Called by openCreateHabitModal() and editHabit() AFTER the SPA router
+        // has loaded the habits-library page into the DOM.  Calling at init()
+        // time is too early — the element doesn't exist yet.
+        window._attachHabitTargetListener = () => {
+            if (window._habitTargetListenerAttached) return; // already attached
+            const targetInput = document.getElementById('habit-target');
+            if (!targetInput) return; // element not in DOM yet — skip silently
+            const handler = () => {
+                if (window.renderSessionFields) window.renderSessionFields();
+            };
+            targetInput.addEventListener('input',  handler);
+            targetInput.addEventListener('change', handler);
+            window._habitTargetListenerAttached = true;
+        };
+
+        // (listener attachment moved to window._attachHabitTargetListener,
+        //  called from openCreateHabitModal / editHabit after the page loads)
+
         window.createHabit = () => {
             const nameInput = document.getElementById('habit-name');
             const name = nameInput ? nameInput.value.trim() : '';
@@ -299,10 +428,24 @@ class App {
                 paused: false
             };
 
-            const startTime = document.getElementById('habit-start-time');
-            const endTime = document.getElementById('habit-end-time');
-            if (startTime && startTime.value) habit.startTime = startTime.value;
-            if (endTime && endTime.value) habit.endTime = endTime.value;
+            const container = document.getElementById('habit-sessions-container');
+            const sessions = [];
+            if (container) {
+                const rows = container.querySelectorAll('.session-row');
+                rows.forEach(row => {
+                    sessions.push({
+                        startTime: row.querySelector('.start-time').value,
+                        endTime: row.querySelector('.end-time').value
+                    });
+                });
+            }
+            habit.sessions = sessions;
+            
+            // For backward compatibility / display on cards without full sessions logic
+            if (sessions.length > 0) {
+                if (sessions[0].startTime) habit.startTime = sessions[0].startTime;
+                if (sessions[0].endTime) habit.endTime = sessions[0].endTime;
+            }
             
             if (window.selectedFrequency === 'Weekdays') {
                 habit.weekdays = [...window.selectedWeekdays];
@@ -376,7 +519,8 @@ class App {
             if (!habit) return;
 
             window.editingHabitId = id;
-            document.querySelector('#habit-modal h2').textContent = 'Edit Routine';
+            const titleEl = document.getElementById('habit-modal-title') || document.querySelector('#habit-modal h2');
+            if (titleEl) titleEl.textContent = 'Edit Routine';
             document.getElementById('create-habit-btn').textContent = 'Save Changes';
             
             document.getElementById('habit-name').value = habit.name || '';
@@ -397,10 +541,16 @@ class App {
             window.selectedFrequency = habit.frequency || 'Daily';
             window.selectedWeekdays = habit.weekdays ? [...habit.weekdays] : [];
             
-            const startTime = document.getElementById('habit-start-time');
-            const endTime = document.getElementById('habit-end-time');
-            if(startTime) startTime.value = habit.startTime || '';
-            if(endTime) endTime.value = habit.endTime || '';
+            const prefilledSessions = habit.sessions || [];
+            if (prefilledSessions.length === 0 && (habit.startTime || habit.endTime)) {
+                prefilledSessions.push({ startTime: habit.startTime || '', endTime: habit.endTime || '' });
+            }
+            
+            // Attach the input listener now that the page is in the DOM (SPA load).
+            window._attachHabitTargetListener();
+            if (window.renderSessionFields) {
+                window.renderSessionFields(habit.dailyTarget || 1, prefilledSessions);
+            }
 
             window.updateFrequencyButtons();
             
@@ -434,6 +584,8 @@ class App {
             
             const overlay = document.getElementById('habit-modal-overlay');
             if (overlay) overlay.style.display = 'flex';
+            // Lock background scroll while modal is open
+            document.body.style.overflow = 'hidden';
         };
 
         window.promptDeleteHabit = (id) => {
