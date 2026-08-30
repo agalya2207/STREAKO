@@ -4,6 +4,7 @@ const { signup, login, logout, getCurrentUser } = require('../controllers/authCo
 const authMiddleware = require('../middleware/auth');
 
 router.post('/signup', signup);
+router.post('/register', signup);
 router.post('/login', login);
 router.post('/logout', logout);
 router.get('/me', authMiddleware, getCurrentUser);
