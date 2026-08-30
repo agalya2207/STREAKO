@@ -32,12 +32,7 @@
                     <span class="brand-name">STREAKO</span>
                 </div>
 
-                <div class="navbar-center-links" id="navbarLinks">
-                    <a href="#features" class="nav-link">Features</a>
-                    <a href="#how-it-works" class="nav-link">How It Works</a>
-                    <a href="#pricing" class="nav-link">Pricing</a>
-                    <a href="#about" class="nav-link">About</a>
-                </div>
+
 
                 <div class="navbar-buttons">
                     <button class="btn btn-ghost btn-nav-login" onclick="app.router.navigate('/login')">Log In</button>
@@ -79,9 +74,7 @@
                             <polyline points="12 5 19 12 12 19"></polyline>
                         </svg>
                     </button>
-                    <button class="btn btn-ghost btn-hero-ghost" onclick="document.getElementById('how-it-works').scrollIntoView({behavior: 'smooth'})">
-                        <span>See How It Works</span>
-                    </button>
+
                 </div>
             </div>
         </header>
@@ -177,276 +170,35 @@
             </div>
         </section>
 
-        <!-- 4. CONSISTENCY WITHOUT THE PRESSURE (2-COLUMN SECTION) -->
-        <section class="pressure-free-section" id="about" aria-labelledby="consistencyHeading">
-            <div class="section-container pressure-free-grid">
-                <!-- Left: Copy & Benefits list -->
-                <div class="pressure-free-content">
-                    <div class="section-pill-tag">SMART RECOVERY ENGINE</div>
-                    <h2 id="consistencyHeading" class="section-title text-left">Consistency without the pressure.</h2>
-                    <p class="pressure-free-lead">
-                        Missed a day? STREAKO helps you recover, understand your patterns, and continue building better habits.
-                    </p>
-
-                    <div class="benefits-list">
-                        <div class="benefit-item">
-                            <span class="benefit-check">✓</span>
-                            <span class="benefit-text">Adaptive habit planning</span>
-                        </div>
-                        <div class="benefit-item">
-                            <span class="benefit-check">✓</span>
-                            <span class="benefit-text">Smart recovery after missed days</span>
-                        </div>
-                        <div class="benefit-item">
-                            <span class="benefit-check">✓</span>
-                            <span class="benefit-text">AI-powered recommendations</span>
-                        </div>
-                        <div class="benefit-item">
-                            <span class="benefit-check">✓</span>
-                            <span class="benefit-text">Progress insights</span>
-                        </div>
-                        <div class="benefit-item">
-                            <span class="benefit-check">✓</span>
-                            <span class="benefit-text">Personalized reminders</span>
-                        </div>
-                    </div>
-
-                    <div class="pressure-cta">
-                        <button class="btn btn-primary" onclick="app.router.navigate('/signup')">Experience Calm Tracking →</button>
-                    </div>
-                </div>
-
-                <!-- Right: Futuristic Habit Analytics Preview Card -->
-                <div class="pressure-free-visual">
-                    <div class="analytics-preview-card">
-                        <div class="analytics-card-header">
-                            <div class="analytics-card-title">
-                                <span class="ai-orb"></span>
-                                <span>Adaptive Momentum Engine</span>
-                            </div>
-                            <span class="status-tag-active">Active Sync</span>
-                        </div>
-
-                        <!-- Recovery Mode Highlight Banner -->
-                        <div class="recovery-status-banner">
-                            <div class="recovery-icon">🛡️</div>
-                            <div class="recovery-info">
-                                <div class="recovery-title">Streak Protection Active</div>
-                                <div class="recovery-sub">Meditation missed yesterday &bull; Smart catch-up enabled</div>
-                            </div>
-                        </div>
-
-                        <!-- Quick Metrics Row -->
-                        <div class="analytics-metrics-row">
-                            <div class="metric-mini-box">
-                                <span class="metric-label">Momentum Score</span>
-                                <span class="metric-value">94.8<span class="unit">%</span></span>
-                                <span class="metric-trend positive">↑ +6.2% this week</span>
-                            </div>
-                            <div class="metric-mini-box">
-                                <span class="metric-label">Comeback Rate</span>
-                                <span class="metric-value">100<span class="unit">%</span></span>
-                                <span class="metric-trend positive">0 broken streaks</span>
-                            </div>
-                        </div>
-
-                        <!-- AI Coach Guidance Box -->
-                        <div class="coach-insight-mini">
-                            <div class="coach-avatar">🤖</div>
-                            <div class="coach-speech">
-                                <div class="coach-speech-sender">STREAKO AI Coach</div>
-                                <p>"No guilt for yesterday! We shifted your 15m reading to lunch break so you stay 100% on schedule."</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 5. HOW STREAKO WORKS (3 STEPS) -->
-        <section class="how-it-works-section" id="how-it-works" aria-labelledby="howHeading">
-            <div class="section-header">
-                <h2 id="howHeading" class="section-title">How STREAKO works</h2>
-                <p class="section-subtitle">A simple 3-step approach to lasting consistency.</p>
-            </div>
-
-            <div class="steps-grid-3">
-                <!-- Step 01 -->
-                <div class="step-card">
-                    <div class="step-number">01</div>
-                    <h3 class="step-title">Choose your habits</h3>
-                    <p class="step-desc">Tell STREAKO what habits you want to build and what your daily priorities look like.</p>
-                    <div class="step-line-indicator"></div>
-                </div>
-
-                <!-- Step 02 -->
-                <div class="step-card">
-                    <div class="step-number">02</div>
-                    <h3 class="step-title">Let AI adapt</h3>
-                    <p class="step-desc">STREAKO adjusts your plan around your real life, accommodating busy days and unpredictable events.</p>
-                    <div class="step-line-indicator"></div>
-                </div>
-
-                <!-- Step 03 -->
-                <div class="step-card">
-                    <div class="step-number">03</div>
-                    <h3 class="step-title">Build consistency</h3>
-                    <p class="step-desc">Track progress, receive gentle momentum-saving suggestions, and keep improving every single day.</p>
-                    <div class="step-line-indicator"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 6. PRICING SECTION -->
-        <section class="pricing-section" id="pricing" aria-labelledby="pricingHeading">
-            <div class="section-header">
-                <h2 id="pricingHeading" class="section-title">Simple plans. Better habits.</h2>
-                <p class="section-subtitle">Choose the plan that fits your personal growth journey.</p>
-            </div>
-
-            <div class="pricing-cards-grid">
-                <!-- FREE Plan -->
-                <div class="pricing-card">
-                    <div class="pricing-plan-name">FREE</div>
-                    <div class="pricing-price">
-                        <span class="price-currency">$</span>
-                        <span class="price-amount">0</span>
-                        <span class="price-period">/ month</span>
-                    </div>
-                    <p class="pricing-plan-desc">For individuals starting their habit building journey.</p>
-
-                    <div class="pricing-features-list">
-                        <div class="p-feature-item">
-                            <span class="p-check">✓</span>
-                            <span>Essential habit tracking</span>
-                        </div>
-                        <div class="p-feature-item">
-                            <span class="p-check">✓</span>
-                            <span>Basic progress insights</span>
-                        </div>
-                        <div class="p-feature-item">
-                            <span class="p-check">✓</span>
-                            <span>Daily reminders</span>
-                        </div>
-                    </div>
-
-                    <button class="btn btn-ghost btn-plan" onclick="app.router.navigate('/signup')">Get Started Free</button>
-                </div>
-
-                <!-- PRO Plan (Featured) -->
-                <div class="pricing-card featured">
-                    <div class="pricing-badge-popular">BEST VALUE</div>
-                    <div class="pricing-plan-name">PRO</div>
-                    <div class="pricing-price">
-                        <span class="price-currency">$</span>
-                        <span class="price-amount">9</span>
-                        <span class="price-period">/ month</span>
-                    </div>
-                    <p class="pricing-plan-desc">For high performers who want AI-driven consistency.</p>
-
-                    <div class="pricing-features-list">
-                        <div class="p-feature-item">
-                            <span class="p-check">✓</span>
-                            <span><strong>AI habit coaching</strong></span>
-                        </div>
-                        <div class="p-feature-item">
-                            <span class="p-check">✓</span>
-                            <span>Adaptive scheduling &amp; streak recovery</span>
-                        </div>
-                        <div class="p-feature-item">
-                            <span class="p-check">✓</span>
-                            <span>Advanced analytics &amp; weekly consistency</span>
-                        </div>
-                        <div class="p-feature-item">
-                            <span class="p-check">✓</span>
-                            <span>Smart recommendations &amp; insight alerts</span>
-                        </div>
-                    </div>
-
-                    <button class="btn btn-primary btn-plan" onclick="app.router.navigate('/signup')">Upgrade to Pro</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- 7. FINAL CTA SECTION -->
-        <section class="final-cta-section" aria-labelledby="ctaHeading">
-            <div class="final-cta-container">
-                <div class="final-cta-glow"></div>
-                <div class="final-cta-card">
-                    <h2 id="ctaHeading" class="final-cta-title">Ready to build habits that actually fit your life?</h2>
-                    <p class="final-cta-desc">Start with one habit. Let STREAKO help you build the rest.</p>
-                    <div class="final-cta-actions">
-                        <button class="btn btn-primary btn-cta-large" onclick="app.router.navigate('/signup')">
-                            <span>Start for free</span>
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="5" y1="12" x2="19" y2="12"></line>
-                                <polyline points="12 5 19 12 12 19"></polyline>
-                            </svg>
-                        </button>
-                    </div>
-                    <span class="final-cta-subtext">No credit card required.</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- 8. FOOTER -->
+        <!-- FOOTER -->
         <footer class="landing-footer">
             <div class="landing-footer-container">
-                <!-- Brand Column -->
-                <div class="footer-brand-col">
+
+                <!-- LEFT: Brand + Description -->
+                <div class="footer-left">
                     <div class="footer-brand" onclick="app.router.navigate('/landing')" role="button" tabindex="0">
-                        <svg class="brand-logo-svg" width="28" height="28" viewBox="0 0 100 100" fill="none" style="vertical-align:middle;margin-right:10px;">
+                        <svg class="brand-logo-svg" width="24" height="24" viewBox="0 0 100 100" fill="none" style="vertical-align:middle;margin-right:8px;">
                             <polygon points="50,6 90,28 90,72 50,94 10,72 10,28" stroke="#168CFF" stroke-width="8" fill="rgba(6, 27, 50, 0.6)"/>
                             <path d="M64 36 C64 30 58 26 50 26 C40 26 36 32 36 38 C36 48 64 48 64 60 C64 68 58 74 50 74 C40 74 34 68 34 62" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round" fill="none"/>
                             <circle cx="50" cy="50" r="4" fill="#27DFFF"/>
                         </svg>
                         <span>STREAKO</span>
                     </div>
-                    <p class="footer-tagline">
-                        The intelligent habit-building platform designed for real human lives.
-                    </p>
-                    <div class="footer-copyright">
-                        © 2026 STREAKO. All rights reserved.
-                    </div>
+                    <p class="footer-tagline">The intelligent habit-building platform designed for real human lives.</p>
                 </div>
 
-                <!-- Product Column -->
-                <div class="footer-links-col">
-                    <h5 class="footer-group-title">Product</h5>
-                    <div class="footer-links-list">
-                        <a href="#features">Features</a>
-                        <a href="#how-it-works">How It Works</a>
-                        <a href="#pricing">Pricing</a>
-                    </div>
+                <!-- CENTER: Links -->
+                <div class="footer-center">
+                    <a href="#privacy" class="footer-link">Privacy Policy</a>
+                    <a href="#terms" class="footer-link">Terms of Service</a>
+                    <a href="https://linkedin.com" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
                 </div>
 
-                <!-- Company Column -->
-                <div class="footer-links-col">
-                    <h5 class="footer-group-title">Company</h5>
-                    <div class="footer-links-list">
-                        <a href="#about">About</a>
-                        <a href="mailto:support@streako.ai">Contact</a>
-                    </div>
+                <!-- RIGHT: Copyright -->
+                <div class="footer-right">
+                    <span class="footer-copyright">© 2026 STREAKO. All rights reserved.</span>
                 </div>
 
-                <!-- Legal Column -->
-                <div class="footer-links-col">
-                    <h5 class="footer-group-title">Legal</h5>
-                    <div class="footer-links-list">
-                        <a href="#privacy">Privacy</a>
-                        <a href="#terms">Terms</a>
-                    </div>
-                </div>
-
-                <!-- Connect Column -->
-                <div class="footer-links-col">
-                    <h5 class="footer-group-title">Connect</h5>
-                    <div class="footer-links-list">
-                        <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
-                        <a href="https://github.com/agalya2207/STREAKO" target="_blank" rel="noopener">GitHub</a>
-                        <a href="https://twitter.com" target="_blank" rel="noopener">Twitter / X</a>
-                    </div>
-                </div>
             </div>
         </footer>
     </div>

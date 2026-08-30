@@ -878,287 +878,9 @@
     margin: 0;
 }
 
-/* ========== 5. CONSISTENCY WITHOUT PRESSURE (2-COL) ========== */
-
-.pressure-free-section {
-    padding: 70px 24px 90px;
-    background: linear-gradient(180deg, transparent 0%, rgba(4, 21, 42, 0.6) 50%, transparent 100%);
-    position: relative;
-    z-index: 1;
-}
-
-.pressure-free-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 48px;
-    align-items: center;
-    max-width: 1140px;
-    margin: 0 auto;
-}
-
-.section-pill-tag {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--cyan);
-    letter-spacing: 0.08em;
-    padding: 4px 12px;
-    background: rgba(39, 223, 255, 0.1);
-    border: 1px solid var(--border-light);
-    border-radius: var(--radius-full);
-    margin-bottom: 14px;
-}
-
-.text-left {
-    text-align: left;
-}
-
-.pressure-free-lead {
-    font-size: 16px;
-    color: var(--text-secondary);
-    line-height: 1.6;
-    margin-bottom: 24px;
-}
-
-.benefits-list {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    margin-bottom: 28px;
-}
-
-.benefit-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.benefit-check {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: rgba(39, 223, 255, 0.15);
-    border: 1px solid var(--cyan);
-    color: var(--cyan);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    font-weight: bold;
-    flex-shrink: 0;
-    box-shadow: 0 0 10px rgba(39, 223, 255, 0.3);
-}
-
-.benefit-text {
-    font-size: 14.5px;
-    font-weight: var(--fw-medium);
-    color: var(--text-primary);
-}
-
-.analytics-preview-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-strong);
-    border-radius: var(--radius-lg);
-    padding: 24px;
-    box-shadow: 0 16px 40px rgba(2, 11, 24, 0.8), 0 0 30px rgba(22, 140, 255, 0.15);
-    backdrop-filter: blur(16px);
-}
-
-.analytics-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--border-light);
-    margin-bottom: 18px;
-}
-
-.analytics-card-title {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    font-weight: var(--fw-bold);
-    color: var(--text-primary);
-}
-
-.ai-orb {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: var(--cyan);
-    box-shadow: 0 0 10px var(--cyan);
-    animation: pulseGlow 2s infinite ease-in-out;
-}
-
-.status-tag-active {
-    font-size: 11px;
-    font-weight: var(--fw-semibold);
-    color: var(--cyan);
-    background: rgba(39, 223, 255, 0.12);
-    padding: 3px 8px;
-    border-radius: var(--radius-full);
-}
-
-.recovery-status-banner {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: rgba(22, 140, 255, 0.1);
-    border: 1px solid var(--border-medium);
-    padding: 12px 14px;
-    border-radius: var(--radius-md);
-    margin-bottom: 18px;
-}
-
-.recovery-icon {
-    font-size: 20px;
-}
-
-.recovery-title {
-    font-size: 13px;
-    font-weight: var(--fw-bold);
-    color: var(--text-primary);
-}
-
-.recovery-sub {
-    font-size: 11.5px;
-    color: var(--text-secondary);
-}
-
-.analytics-metrics-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-    margin-bottom: 18px;
-}
-
-.metric-mini-box {
-    background: rgba(4, 21, 42, 0.7);
-    border: 1px solid var(--border-light);
-    border-radius: var(--radius-md);
-    padding: 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.metric-label {
-    font-size: 11px;
-    color: var(--text-tertiary);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-}
-
-.metric-value {
-    font-size: 22px;
-    font-weight: 800;
-    color: var(--text-primary);
-}
-
-.metric-value .unit {
-    font-size: 14px;
-    color: var(--cyan);
-}
-
-.metric-trend.positive {
-    font-size: 11px;
-    color: var(--cyan);
-    font-weight: var(--fw-medium);
-}
-
-.coach-insight-mini {
-    display: flex;
-    gap: 12px;
-    background: rgba(7, 30, 58, 0.6);
-    border: 1px solid var(--border-light);
-    padding: 12px 14px;
-    border-radius: var(--radius-md);
-}
-
-.coach-avatar {
-    font-size: 18px;
-    flex-shrink: 0;
-}
-
-.coach-speech-sender {
-    font-size: 11px;
-    font-weight: var(--fw-bold);
-    color: var(--cyan);
-    margin-bottom: 2px;
-}
-
-.coach-speech p {
-    font-size: 12px;
-    color: var(--text-secondary);
-    line-height: 1.45;
-    margin: 0;
-}
-
 /* ========== 6. HOW IT WORKS (3 STEPS) ========== */
 
-.how-it-works-section {
-    padding: 70px 24px 90px;
-    max-width: 1160px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 1;
-}
 
-.steps-grid-3 {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-}
-
-.step-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-light);
-    border-radius: var(--radius-lg);
-    padding: 36px 28px 30px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    transition: all var(--duration-base) ease;
-}
-
-.step-card:hover {
-    border-color: var(--border-strong);
-    transform: translateY(-4px);
-    box-shadow: 0 12px 30px rgba(2, 11, 24, 0.8), 0 0 20px rgba(22, 140, 255, 0.15);
-}
-
-.step-number {
-    font-size: 38px;
-    font-weight: 800;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--cyan) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 14px;
-    line-height: 1;
-}
-
-.step-title {
-    font-size: 18px;
-    font-weight: var(--fw-bold);
-    color: var(--text-primary);
-    margin-bottom: 10px;
-}
-
-.step-desc {
-    font-size: 14px;
-    color: var(--text-secondary);
-    line-height: 1.6;
-    margin: 0 0 20px;
-    flex: 1;
-}
-
-.step-line-indicator {
-    height: 3px;
-    width: 40px;
-    background: linear-gradient(90deg, var(--primary), var(--cyan));
-    border-radius: 2px;
-}
 
 /* ========== 7. PRICING SECTION ========== */
 
@@ -1371,10 +1093,12 @@
 
 /* ========== 9. COMPREHENSIVE FOOTER ========== */
 
+/* ========== FOOTER ========== */
+
 .landing-footer {
     background: rgba(2, 11, 24, 0.96);
     border-top: 1px solid var(--border-light);
-    padding: 56px 0 40px;
+    padding: 20px 0;
     margin-top: auto;
     position: relative;
     z-index: 1;
@@ -1384,71 +1108,74 @@
     max-width: var(--container-max);
     margin: 0 auto;
     padding: 0 var(--space-6);
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-    gap: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
 }
 
-.footer-brand-col {
+/* LEFT: logo + tagline */
+.footer-left {
     display: flex;
     flex-direction: column;
-    gap: 14px;
-    max-width: 320px;
+    gap: 4px;
+    flex: 1;
 }
 
 .footer-brand {
     display: flex;
     align-items: center;
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 800;
     color: var(--text-primary);
     cursor: pointer;
+    gap: 6px;
 }
 
 .footer-tagline {
-    font-size: 13px;
+    font-size: 11.5px;
     color: var(--text-secondary);
-    line-height: 1.6;
+    line-height: 1.4;
     margin: 0;
+    max-width: 280px;
+}
+
+/* CENTER: links */
+.footer-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex: 0 0 auto;
+}
+
+.footer-link {
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color var(--duration-fast) ease;
+    white-space: nowrap;
+}
+
+.footer-link:hover {
+    color: var(--cyan);
+}
+
+/* RIGHT: copyright */
+.footer-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 1;
 }
 
 .footer-copyright {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-tertiary);
-    margin-top: 6px;
+    white-space: nowrap;
+    text-align: right;
 }
 
-.footer-links-col {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.footer-group-title {
-    font-size: 14px;
-    font-weight: var(--fw-bold);
-    color: var(--text-primary);
-    letter-spacing: 0.04em;
-    margin-bottom: 4px;
-}
-
-.footer-links-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.footer-links-list a {
-    font-size: 13px;
-    color: var(--text-secondary);
-    text-decoration: none;
-    transition: all var(--duration-fast) ease;
-}
-
-.footer-links-list a:hover {
-    color: var(--cyan);
-    transform: translateX(2px);
-}
 
 /* ========== STICKY ELEMENTS ========== */
 
