@@ -1,0 +1,46 @@
+<div class="page active" id="role-selection">
+    <div class="role-selection-page">
+        <div class="role-selection-container">
+            <h1 class="role-section-title">What describes you best?</h1>
+            <p class="role-section-subtitle">Choose your role to personalize your experience</p>
+            
+            <div class="role-cards-grid">
+                <div class="role-option-card" onclick="selectRole(this, 'role1')">
+                    <div class="role-icon">👨🎓</div>
+                    <h3>Student</h3>
+                    <p>Track learning & development</p>
+                </div>
+                <div class="role-option-card" onclick="selectRole(this, 'role1')">
+                    <div class="role-icon">💼</div>
+                    <h3>Employee</h3>
+                    <p>Professional growth & skills</p>
+                </div>
+                <div class="role-option-card" onclick="selectRole(this, 'role1')">
+                    <div class="role-icon">🚀</div>
+                    <h3>Founder</h3>
+                    <p>Build habits for scaling</p>
+                </div>
+            </div>
+
+            <div class="role-mode-section">
+                <h1 class="role-section-title">How will you use Streako?</h1>
+                <p class="role-section-subtitle">Select one to proceed</p>
+                
+                <div class="role-cards-grid">
+                    <div class="role-option-card" onclick="selectRole(this, 'role2')">
+                        <div class="role-icon">📝</div>
+                        <h3>Track My Habits</h3>
+                        <p>Personal habit tracking</p>
+                    </div>
+                    <div class="role-option-card" onclick="selectRole(this, 'role2')">
+                        <div class="role-icon">👨🏫</div>
+                        <h3>I'm a Mentor</h3>
+                        <p>Guide & monitor students</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" style="width: 100%; margin-top: 32px;" onclick="app.router.navigate('/onboarding')">Continue</button>
+        </div>
+    </div>
+</div>

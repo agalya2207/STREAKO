@@ -1,0 +1,156 @@
+<div class="page active" id="habits-library">
+    <div class="sidebar-layout">
+        <div class="sidebar">
+            <div class="sidebar-logo"><svg width="30" height="30" viewBox="0 0 100 100" style="vertical-align:middle;margin-right:8px;flex-shrink:0;"><path d="M85.45 43.75 A36 36 0 1 1 56.25 14.55" fill="none" stroke="#4F46E5" stroke-width="11" stroke-linecap="round"/><path d="M30 58 L46 74 L83.7 21.72" fill="none" stroke="#4F46E5" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/><circle cx="46" cy="74" r="4" fill="#2DD4BF"/></svg><span>Streako</span></div>
+            <div class="sidebar-nav">
+                <div class="nav-item" onclick="app.router.navigate('/dashboard')">📅 Today</div>
+                <div class="nav-item active" onclick="app.router.navigate('/habits-library')">📚 Habits</div>
+                <div class="nav-item" onclick="app.router.navigate('/timeline')">⏰ Timeline</div>
+                <div class="nav-item" onclick="app.router.navigate('/calendar')">📆 Calendar</div>
+                <div class="nav-item" onclick="app.router.navigate('/goals')">🎯 Goals</div>
+                <div class="nav-item" onclick="app.router.navigate('/analytics')">📊 Analytics</div>
+                <div class="nav-item" onclick="app.router.navigate('/journal')">📝 Journal</div>
+                <div class="nav-item" onclick="app.router.navigate('/settings')">⚙️ Settings</div>
+            </div>
+            <div class="sidebar-profile">
+                <div class="profile-avatar">JD</div>
+                <div class="profile-info">
+                    <p>John Doe</p>
+                    <p>john@email.com</p>
+                </div>
+            </div>
+        </div>
+        <div class="main-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
+                <div>
+                    <h1 class="header-title">Routine Library</h1>
+                    <p class="header-subtitle">Configure and manage your daily habits & routines.</p>
+                </div>
+                <button class="btn btn-primary">+ Create Habit</button>
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 8px;">
+                <div class="tag tag-primary" style="background: var(--primary); color: white; cursor: pointer;">All</div>
+                <div class="tag tag-primary" style="cursor: pointer;">🏋️ Fitness</div>
+                <div class="tag tag-primary" style="cursor: pointer;">🧠 Learning</div>
+                <div class="tag tag-primary" style="cursor: pointer;">💼 Career</div>
+                <div class="tag tag-primary" style="cursor: pointer;">💚 Health</div>
+                <div class="tag tag-primary" style="cursor: pointer;">✍️ Personal</div>
+                <div class="tag tag-primary" style="cursor: pointer;">🧘 Mindfulness</div>
+            </div>
+
+            <div class="habits-grid">
+                <div class="habit-card">
+                    <div class="habit-header">
+                        <div class="habit-icon">💪</div>
+                        <div class="habit-actions">
+                            <button class="habit-action-btn">⏸️</button>
+                            <button class="habit-action-btn">✏️</button>
+                            <button class="habit-action-btn">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="habit-name">Morning Workout</div>
+                    <div class="habit-desc">30 min strength training every morning</div>
+                    <div class="habit-stats">
+                        <div class="habit-stat"><strong>🔥 12</strong></div>
+                        <div class="habit-stat"><strong>🏆 31d</strong></div>
+                        <div class="habit-stat"><strong>📅 Daily</strong></div>
+                    </div>
+                </div>
+
+                <div class="habit-card">
+                    <div class="habit-header">
+                        <div class="habit-icon">📚</div>
+                        <div class="habit-actions">
+                            <button class="habit-action-btn">⏸️</button>
+                            <button class="habit-action-btn">✏️</button>
+                            <button class="habit-action-btn">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="habit-name">Reading</div>
+                    <div class="habit-desc">Read 20 pages daily</div>
+                    <div class="habit-stats">
+                        <div class="habit-stat"><strong>🔥 8</strong></div>
+                        <div class="habit-stat"><strong>🏆 18d</strong></div>
+                        <div class="habit-stat"><strong>📅 Daily</strong></div>
+                    </div>
+                </div>
+
+                <div class="habit-card">
+                    <div class="habit-header">
+                        <div class="habit-icon">🧘</div>
+                        <div class="habit-actions">
+                            <button class="habit-action-btn">⏸️</button>
+                            <button class="habit-action-btn">✏️</button>
+                            <button class="habit-action-btn">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="habit-name">Meditation</div>
+                    <div class="habit-desc">10 min mindfulness practice</div>
+                    <div style="margin-bottom: 10px;">
+                        <span class="tag tag-recovery">🔄 Recovery Available</span>
+                    </div>
+                    <div class="habit-stats">
+                        <div class="habit-stat"><strong>🔥 5</strong></div>
+                        <div class="habit-stat"><strong>🏆 14d</strong></div>
+                        <div class="habit-stat"><strong>📅 Daily</strong></div>
+                    </div>
+                </div>
+
+                <div class="habit-card">
+                    <div class="habit-header">
+                        <div class="habit-icon">💧</div>
+                        <div class="habit-actions">
+                            <button class="habit-action-btn">⏸️</button>
+                            <button class="habit-action-btn">✏️</button>
+                            <button class="habit-action-btn">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="habit-name">Hydration</div>
+                    <div class="habit-desc">Drink 8 glasses of water</div>
+                    <div class="habit-stats">
+                        <div class="habit-stat"><strong>🔥 21</strong></div>
+                        <div class="habit-stat"><strong>🏆 45d</strong></div>
+                        <div class="habit-stat"><strong>📅 Daily</strong></div>
+                    </div>
+                </div>
+
+                <div class="habit-card">
+                    <div class="habit-header">
+                        <div class="habit-icon">🌙</div>
+                        <div class="habit-actions">
+                            <button class="habit-action-btn">⏸️</button>
+                            <button class="habit-action-btn">✏️</button>
+                            <button class="habit-action-btn">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="habit-name">Sleep 8 Hours</div>
+                    <div class="habit-desc">Get quality sleep every night</div>
+                    <div class="habit-stats">
+                        <div class="habit-stat"><strong>🔥 7</strong></div>
+                        <div class="habit-stat"><strong>🏆 22d</strong></div>
+                        <div class="habit-stat"><strong>📅 Daily</strong></div>
+                    </div>
+                </div>
+
+                <div class="habit-card">
+                    <div class="habit-header">
+                        <div class="habit-icon">✍️</div>
+                        <div class="habit-actions">
+                            <button class="habit-action-btn">⏸️</button>
+                            <button class="habit-action-btn">✏️</button>
+                            <button class="habit-action-btn">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="habit-name">Journaling</div>
+                    <div class="habit-desc">Write daily reflection (5-10 min)</div>
+                    <div class="habit-stats">
+                        <div class="habit-stat"><strong>🔥 4</strong></div>
+                        <div class="habit-stat"><strong>🏆 12d</strong></div>
+                        <div class="habit-stat"><strong>📅 Daily</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
