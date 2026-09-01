@@ -1,0 +1,17 @@
+<div class="page active" id="login">
+    <div class="auth-layout">
+        <div class="auth-card">
+            <div class="navbar-brand" style="margin-bottom: 24px;"><svg width="30" height="30" viewBox="0 0 100 100" style="vertical-align:middle;margin-right:8px;flex-shrink:0;"><path d="M85.45 43.75 A36 36 0 1 1 56.25 14.55" fill="none" stroke="#4F46E5" stroke-width="11" stroke-linecap="round"/><path d="M30 58 L46 74 L83.7 21.72" fill="none" stroke="#4F46E5" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/><circle cx="46" cy="74" r="4" fill="#2DD4BF"/></svg><span>Streako</span></div>
+            <h2>Welcome back</h2>
+            <input type="email" class="input-field" placeholder="Email address">
+            <input type="password" class="input-field" placeholder="Password">
+            <div style="text-align: right; margin-bottom: 24px;">
+                <span class="link">Forgot password?</span>
+            </div>
+            <button class="btn btn-primary" style="width: 100%; margin-bottom: 16px;" onclick="app.router.navigate('/dashboard')">Log In</button>
+            <div class="auth-footer">
+                Don't have an account? <span class="link" onclick="app.router.navigate('/signup')">Sign up</span>
+            </div>
+        </div>
+    </div>
+</div>
