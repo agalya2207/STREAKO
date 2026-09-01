@@ -1,0 +1,98 @@
+<div class="page active" id="calendar">
+    <div class="sidebar-layout">
+        <div class="sidebar">
+            <div class="sidebar-logo"><svg width="30" height="30" viewBox="0 0 100 100" style="vertical-align:middle;margin-right:8px;flex-shrink:0;"><path d="M85.45 43.75 A36 36 0 1 1 56.25 14.55" fill="none" stroke="#4F46E5" stroke-width="11" stroke-linecap="round"/><path d="M30 58 L46 74 L83.7 21.72" fill="none" stroke="#4F46E5" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/><circle cx="46" cy="74" r="4" fill="#2DD4BF"/></svg><span>Streako</span></div>
+            <div class="sidebar-nav">
+                <div class="nav-item" onclick="app.router.navigate('/dashboard')">📅 Today</div>
+                <div class="nav-item" onclick="app.router.navigate('/habits-library')">📚 Habits</div>
+                <div class="nav-item" onclick="app.router.navigate('/timeline')">⏰ Timeline</div>
+                <div class="nav-item active" onclick="app.router.navigate('/calendar')">📆 Calendar</div>
+                <div class="nav-item" onclick="app.router.navigate('/goals')">🎯 Goals</div>
+                <div class="nav-item" onclick="app.router.navigate('/analytics')">📊 Analytics</div>
+                <div class="nav-item" onclick="app.router.navigate('/journal')">📝 Journal</div>
+                <div class="nav-item" onclick="app.router.navigate('/settings')">⚙️ Settings</div>
+            </div>
+            <div class="sidebar-profile">
+                <div class="profile-avatar">JD</div>
+                <div class="profile-info">
+                    <p>John Doe</p>
+                    <p>john@email.com</p>
+                </div>
+            </div>
+        </div>
+        <div class="main-content">
+            <h1 class="header-title">Productivity Calendar</h1>
+            <p class="header-subtitle">Track your daily consistency and habits.</p>
+
+            <div style="display: grid; grid-template-columns: 1fr 250px; gap: 32px; margin-top: 32px;">
+                <div>
+                    <div style="background: var(--bg-card); border-radius: 16px; padding: 24px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                            <h2 style="font-size: 20px; font-weight: 600;">August 2026</h2>
+                            <div style="display: flex; gap: 8px;">
+                                <button class="btn-ghost" style="padding: 6px 12px; font-size: 12px;">←</button>
+                                <button class="btn-ghost" style="padding: 6px 12px; font-size: 12px;">→</button>
+                            </div>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center;">
+                            <div style="font-weight: 600; padding: 8px; font-size: 12px;">SUN</div>
+                            <div style="font-weight: 600; padding: 8px; font-size: 12px;">MON</div>
+                            <div style="font-weight: 600; padding: 8px; font-size: 12px;">TUE</div>
+                            <div style="font-weight: 600; padding: 8px; font-size: 12px;">WED</div>
+                            <div style="font-weight: 600; padding: 8px; font-size: 12px;">THU</div>
+                            <div style="font-weight: 600; padding: 8px; font-size: 12px;">FRI</div>
+                            <div style="font-weight: 600; padding: 8px; font-size: 12px;">SAT</div>
+
+                            <div style="padding: 12px; background: rgba(47, 143, 255, 0.1); border-radius: 8px; cursor: pointer;">1</div>
+                            <div style="padding: 12px; background: rgba(47, 143, 255, 0.2); border-radius: 8px; cursor: pointer; border: 2px solid var(--primary);">2<div style="font-size: 10px; color: var(--primary); font-weight: 600;">85%</div></div>
+                            <div style="padding: 12px; background: rgba(47, 143, 255, 0.3); border-radius: 8px; cursor: pointer;">3<div style="font-size: 10px; color: var(--primary); font-weight: 600;">92%</div></div>
+                            <div style="padding: 12px; background: rgba(47, 143, 255, 0.2); border-radius: 8px; cursor: pointer;">4<div style="font-size: 10px; color: var(--primary); font-weight: 600;">78%</div></div>
+                            <div style="padding: 12px; background: rgba(47, 143, 255, 0.15); border-radius: 8px; cursor: pointer;">5<div style="font-size: 10px; color: var(--text-secondary);">60%</div></div>
+                            <div style="padding: 12px; background: rgba(47, 143, 255, 0.25); border-radius: 8px; cursor: pointer;">6<div style="font-size: 10px; color: var(--primary); font-weight: 600;">88%</div></div>
+                            <div style="padding: 12px; background: rgba(160, 160, 176, 0.1); border-radius: 8px; cursor: pointer;">7</div>
+
+                            <div style="padding: 12px; background: rgba(47, 143, 255, 0.1); border-radius: 8px; cursor: pointer;">8</div>
+                            <div style="padding: 12px; background: rgba(47, 143, 255, 0.3); border-radius: 8px; cursor: pointer;">9<div style="font-size: 10px; color: var(--primary); font-weight: 600;">95%</div></div>
+                            <div style="padding: 12px; background: rgba(47, 143, 255, 0.25); border-radius: 8px; cursor: pointer;">10<div style="font-size: 10px; color: var(--primary); font-weight: 600;">82%</div></div>
+                            <div style="padding: 12px; background: rgba(47, 143, 255, 0.2); border-radius: 8px; cursor: pointer;">11<div style="font-size: 10px; color: var(--primary); font-weight: 600;">76%</div></div>
+                            <div style="padding: 12px; background: rgba(47, 143, 255, 0.35); border-radius: 8px; cursor: pointer;">12<div style="font-size: 10px; color: var(--primary); font-weight: 600;">100%</div></div>
+                            <div style="padding: 12px; background: rgba(47, 143, 255, 0.15); border-radius: 8px; cursor: pointer;">13<div style="font-size: 10px; color: var(--text-secondary);">65%</div></div>
+                            <div style="padding: 12px; background: rgba(160, 160, 176, 0.1); border-radius: 8px; cursor: pointer;">14</div>
+
+                            <div style="padding: 12px; background: rgba(47, 143, 255, 0.1); border-radius: 8px; cursor: pointer;">15</div>
+                            <div style="padding: 12px; background: rgba(47, 143, 255, 0.2); border-radius: 8px; cursor: pointer;">16<div style="font-size: 10px; color: var(--primary); font-weight: 600;">80%</div></div>
+                            <div style="padding: 12px; background: rgba(47, 143, 255, 0.25); border-radius: 8px; cursor: pointer;">17<div style="font-size: 10px; color: var(--primary); font-weight: 600;">85%</div></div>
+                            <div style="padding: 12px; background: rgba(47, 143, 255, 0.3); border-radius: 8px; cursor: pointer;">18<div style="font-size: 10px; color: var(--primary); font-weight: 600;">90%</div></div>
+                            <div style="padding: 12px; background: rgba(47, 143, 255, 0.2); border-radius: 8px; cursor: pointer;">19<div style="font-size: 10px; color: var(--primary); font-weight: 600;">75%</div></div>
+                            <div style="padding: 12px; background: rgba(47, 143, 255, 0.28); border-radius: 8px; cursor: pointer;">20<div style="font-size: 10px; color: var(--primary); font-weight: 600;">93%</div></div>
+                            <div style="padding: 12px; background: rgba(160, 160, 176, 0.1); border-radius: 8px; cursor: pointer;">21</div>
+
+                            <div style="padding: 12px; background: rgba(47, 143, 255, 0.15); border-radius: 8px; cursor: pointer;">22<div style="font-size: 10px; color: var(--text-secondary);">70%</div></div>
+                            <div style="padding: 12px; background: rgba(47, 143, 255, 0.2); border-radius: 8px; cursor: pointer;">23<div style="font-size: 10px; color: var(--primary); font-weight: 600;">81%</div></div>
+                            <div style="padding: 12px; background: rgba(47, 143, 255, 0.3); border-radius: 8px; cursor: pointer;">24<div style="font-size: 10px; color: var(--primary); font-weight: 600;">89%</div></div>
+                            <div style="padding: 12px; background: rgba(47, 143, 255, 0.25); border-radius: 8px; cursor: pointer;">25<div style="font-size: 10px; color: var(--primary); font-weight: 600;">87%</div></div>
+                            <div style="padding: 12px; background: rgba(47, 143, 255, 0.35); border-radius: 8px; cursor: pointer;">26<div style="font-size: 10px; color: var(--primary); font-weight: 600;">98%</div></div>
+                            <div style="padding: 12px; background: rgba(47, 143, 255, 0.2); border-radius: 8px; cursor: pointer;">27<div style="font-size: 10px; color: var(--primary); font-weight: 600;">84%</div></div>
+                            <div style="padding: 12px; background: rgba(160, 160, 176, 0.1); border-radius: 8px; cursor: pointer;">28</div>
+
+                            <div style="padding: 12px; background: rgba(47, 143, 255, 0.1); border-radius: 8px; cursor: pointer;">29</div>
+                            <div style="padding: 12px; background: rgba(47, 143, 255, 0.3); border-radius: 8px; cursor: pointer; border: 3px solid var(--primary);">30<div style="font-size: 10px; color: var(--primary); font-weight: 600;">75%</div></div>
+                            <div style="padding: 12px; background: rgba(47, 143, 255, 0.15); border-radius: 8px; cursor: pointer;">31<div style="font-size: 10px; color: var(--text-secondary);">60%</div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div style="background: var(--bg-card); border-radius: 16px; padding: 20px;">
+                        <h3 style="margin-bottom: 16px; font-size: 14px;">Day Details</h3>
+                        <div style="text-align: center; padding: 24px;">
+                            <div style="font-size: 32px; margin-bottom: 8px;">📅</div>
+                            <div style="font-size: 12px; color: var(--text-secondary);">Click a day to see its habits, tasks, and journal entry.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
