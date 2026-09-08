@@ -1,0 +1,144 @@
+<div class="page active" id="analytics">
+    <div class="sidebar-layout">
+        <div class="sidebar">
+            <div class="sidebar-logo" onclick="app.router.navigate('/landing')" style="cursor: pointer;"><svg width="30" height="30" viewBox="0 0 100 100" style="vertical-align:middle;margin-right:8px;flex-shrink:0;"><path d="M85.45 43.75 A36 36 0 1 1 56.25 14.55" fill="none" stroke="#4F46E5" stroke-width="11" stroke-linecap="round"/><path d="M30 58 L46 74 L83.7 21.72" fill="none" stroke="#4F46E5" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/><circle cx="46" cy="74" r="4" fill="#2DD4BF"/></svg><span>Streako</span></div>
+            <div class="sidebar-nav">
+                <div class="nav-item" onclick="app.router.navigate('/landing')">🏠 Home</div>
+                <div class="nav-item" onclick="app.router.navigate('/dashboard')">📅 Today</div>
+                <div class="nav-item" onclick="app.router.navigate('/habits-library')">📚 Habits</div>
+                <div class="nav-item" onclick="app.router.navigate('/timeline')">⏰ Timeline</div>
+                <div class="nav-item" onclick="app.router.navigate('/calendar')">📆 Calendar</div>
+                <div class="nav-item" onclick="app.router.navigate('/goals')">🎯 Goals</div>
+                <div class="nav-item active" onclick="app.router.navigate('/analytics')">📊 Analytics</div>
+                <div class="nav-item" onclick="app.router.navigate('/journal')">📝 Journal</div>
+                <div class="nav-item" onclick="app.router.navigate('/settings')">⚙️ Settings</div>
+            </div>
+            <div class="sidebar-profile">
+                <div class="profile-avatar">JD</div>
+                <div class="profile-info">
+                    <p>John Doe</p>
+                    <p>john@email.com</p>
+                </div>
+            </div>
+        </div>
+        <div class="main-content">
+            <h1 class="header-title">Productivity Analytics</h1>
+            <p class="header-subtitle">Deep insights into your habits and consistency.</p>
+
+            <div class="stats-row" style="margin-top: 32px;">
+                <div class="stat-card">
+                    <div style="font-size: 28px; margin-bottom: 8px;">🔥</div>
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">Current Streak</div>
+                </div>
+                <div class="stat-card">
+                    <div style="font-size: 28px; margin-bottom: 8px;">🏆</div>
+                    <div class="stat-number">45</div>
+                    <div class="stat-label">Longest Streak</div>
+                </div>
+                <div class="stat-card">
+                    <div style="font-size: 28px; margin-bottom: 8px;">📊</div>
+                    <div class="stat-number">84%</div>
+                    <div class="stat-label">Avg Weekly Completion</div>
+                </div>
+                <div class="stat-card">
+                    <div style="font-size: 28px; margin-bottom: 8px;">✅</div>
+                    <div class="stat-number">328</div>
+                    <div class="stat-label">Total Completed Tasks</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 32px;">
+                <div class="card" style="margin-bottom: 32px;">
+                    <h3 style="margin-bottom: 20px; font-size: 14px; font-weight: 600;">Consistency Heatmap (Last 6 Months)</h3>
+                    <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 16px;">Darker shades indicate higher completion rates.</div>
+                    
+                    <svg style="width: 100%; height: 120px;" viewBox="0 0 800 120" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Legend for months -->
+                        <text x="5" y="15" font-size="11" fill="var(--text-secondary)">Mar</text>
+                        <text x="90" y="15" font-size="11" fill="var(--text-secondary)">Apr</text>
+                        <text x="175" y="15" font-size="11" fill="var(--text-secondary)">May</text>
+                        <text x="260" y="15" font-size="11" fill="var(--text-secondary)">Jun</text>
+                        <text x="345" y="15" font-size="11" fill="var(--text-secondary)">Jul</text>
+                        <text x="430" y="15" font-size="11" fill="var(--text-secondary)">Aug</text>
+                        
+                        <!-- Day labels -->
+                        <text x="0" y="35" font-size="10" fill="var(--text-secondary)">S</text>
+                        <text x="0" y="55" font-size="10" fill="var(--text-secondary)">M</text>
+                        <text x="0" y="75" font-size="10" fill="var(--text-secondary)">T</text>
+                        <text x="0" y="95" font-size="10" fill="var(--text-secondary)">W</text>
+                        
+                        <!-- Heatmap grid -->
+                        <rect x="10" y="30" width="12" height="12" fill="rgba(47, 143, 255, 0.1)"/>
+                        <rect x="24" y="30" width="12" height="12" fill="rgba(47, 143, 255, 0.2)"/>
+                        <rect x="38" y="30" width="12" height="12" fill="rgba(47, 143, 255, 0.3)"/>
+                        <rect x="52" y="30" width="12" height="12" fill="rgba(47, 143, 255, 0.15)"/>
+                        <rect x="66" y="30" width="12" height="12" fill="rgba(47, 143, 255, 0.25)"/>
+                        <rect x="80" y="30" width="12" height="12" fill="rgba(47, 143, 255, 0.35)"/>
+                        
+                        <rect x="10" y="44" width="12" height="12" fill="rgba(47, 143, 255, 0.4)"/>
+                        <rect x="24" y="44" width="12" height="12" fill="rgba(47, 143, 255, 0.2)"/>
+                        <rect x="38" y="44" width="12" height="12" fill="rgba(47, 143, 255, 0.5)"/>
+                        <rect x="52" y="44" width="12" height="12" fill="rgba(47, 143, 255, 0.3)"/>
+                        <rect x="66" y="44" width="12" height="12" fill="rgba(47, 143, 255, 0.25)"/>
+                        <rect x="80" y="44" width="12" height="12" fill="rgba(47, 143, 255, 0.45)"/>
+                    </svg>
+
+                    <div style="margin-top: 16px; text-align: right; font-size: 11px; color: var(--text-secondary);">
+                        Less ← <span style="display: inline-block; width: 12px; height: 12px; background: rgba(47, 143, 255, 0.1); vertical-align: middle;"></span>
+                        <span style="display: inline-block; width: 12px; height: 12px; background: rgba(47, 143, 255, 0.3); vertical-align: middle;"></span>
+                        <span style="display: inline-block; width: 12px; height: 12px; background: rgba(47, 143, 255, 0.5); vertical-align: middle;"></span> → More
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+                <div class="card">
+                    <h3 style="margin-bottom: 20px; font-size: 14px; font-weight: 600;">30-Day Productivity Index</h3>
+                    <svg style="width: 100%; height: 200px;" viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Grid -->
+                        <line x1="20" y1="130" x2="280" y2="130" stroke="rgba(47, 143, 255, 0.1)" stroke-width="1"/>
+                        <line x1="20" y1="110" x2="280" y2="110" stroke="rgba(47, 143, 255, 0.1)" stroke-width="1"/>
+                        <line x1="20" y1="90" x2="280" y2="90" stroke="rgba(47, 143, 255, 0.1)" stroke-width="1"/>
+                        <line x1="20" y1="70" x2="280" y2="70" stroke="rgba(47, 143, 255, 0.1)" stroke-width="1"/>
+                        
+                        <!-- Line chart -->
+                        <polyline points="20,80 30,70 40,75 50,65 60,70 70,60 80,65 90,55 100,60 110,50 120,55 130,45 140,50 150,40 160,45 170,35 180,40 190,30 200,35 210,25 220,30 230,20 240,25 250,15 260,20 270,10 280,15" 
+                                  fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        
+                        <!-- Axis labels -->
+                        <text x="280" y="145" font-size="10" fill="var(--text-secondary)">30d</text>
+                        <text x="10" y="145" font-size="10" fill="var(--text-secondary)">1d</text>
+                    </svg>
+                </div>
+
+                <div class="card">
+                    <h3 style="margin-bottom: 20px; font-size: 14px; font-weight: 600;">Category Distribution</h3>
+                    <svg style="width: 100%; height: 200px;" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Donut chart circles -->
+                        <circle cx="100" cy="75" r="50" fill="none" stroke="var(--primary)" stroke-width="15" stroke-dasharray="78.5 314.16" transform="rotate(-90 100 75)"/>
+                        <circle cx="100" cy="75" r="50" fill="none" stroke="var(--accent-orange)" stroke-width="15" stroke-dasharray="62.8 314.16" transform="rotate(0 100 75)"/>
+                        <circle cx="100" cy="75" r="50" fill="none" stroke="var(--accent-green)" stroke-width="15" stroke-dasharray="47.1 314.16" transform="rotate(72 100 75)"/>
+                        <circle cx="100" cy="75" r="50" fill="none" stroke="var(--accent-red)" stroke-width="15" stroke-dasharray="31.4 314.16" transform="rotate(144 100 75)"/>
+                        
+                        <!-- Center circle -->
+                        <circle cx="100" cy="75" r="30" fill="var(--bg-dark)"/>
+                        
+                        <!-- Legend -->
+                        <rect x="10" y="10" width="10" height="10" fill="var(--primary)"/>
+                        <text x="25" y="18" font-size="11" fill="var(--text-secondary)">Fitness (25%)</text>
+                        
+                        <rect x="10" y="30" width="10" height="10" fill="var(--accent-orange)"/>
+                        <text x="25" y="38" font-size="11" fill="var(--text-secondary)">Career (20%)</text>
+                        
+                        <rect x="10" y="50" width="10" height="10" fill="var(--accent-green)"/>
+                        <text x="25" y="58" font-size="11" fill="var(--text-secondary)">Learning (15%)</text>
+                        
+                        <rect x="10" y="70" width="10" height="10" fill="var(--accent-red)"/>
+                        <text x="25" y="78" font-size="11" fill="var(--text-secondary)">Personal (10%)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
