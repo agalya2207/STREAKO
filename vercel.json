@@ -2,29 +2,37 @@
   "version": 2,
   "builds": [
     {
-      "src": "streako-backend/index.js",
+      "src": "backend/index.js",
       "use": "@vercel/node"
     },
     {
-      "src": "streako-backend/public/**/*",
+      "src": "frontend/public/**/*",
       "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "streako-backend/index.js"
+      "dest": "backend/index.js"
     },
     {
-      "src": "/(css|js|assets|pages)/(.*)",
-      "dest": "streako-backend/public/$1/$2"
+      "src": "/(styles|css)/(.*)",
+      "dest": "frontend/src/styles/$2"
+    },
+    {
+      "src": "/src/(.*)",
+      "dest": "frontend/src/$1"
+    },
+    {
+      "src": "/(assets|pages)/(.*)",
+      "dest": "frontend/public/$1/$2"
     },
     {
       "handle": "filesystem"
     },
     {
       "src": "/(.*)",
-      "dest": "streako-backend/public/index.html"
+      "dest": "frontend/public/index.html"
     }
   ]
 }
