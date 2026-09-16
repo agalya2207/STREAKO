@@ -39,16 +39,93 @@ class App {
             element.classList.add('selected');
         };
 
+        // Global Notification Toast
+        window.showNotification = (message, type = 'info') => {
+            let toastContainer = document.getElementById('toast-container');
+            if (!toastContainer) {
+                toastContainer = document.createElement('div');
+                toastContainer.id = 'toast-container';
+                toastContainer.style.cssText = 'position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; pointer-events: none;';
+                document.body.appendChild(toastContainer);
+            }
+            const toast = document.createElement('div');
+            toast.style.cssText = `background: ${type === 'success' ? 'rgba(5, 150, 105, 0.95)' : 'rgba(30, 41, 59, 0.95)'}; color: white; padding: 12px 20px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s ease; transform: translateY(20px); opacity: 0; pointer-events: auto;`;
+            toast.textContent = message;
+            toastContainer.appendChild(toast);
+            requestAnimationFrame(() => {
+                toast.style.transform = 'translateY(0)';
+                toast.style.opacity = '1';
+            });
+            setTimeout(() => {
+                toast.style.transform = 'translateY(20px)';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        };
+
         window.markRecovered = () => {
             const card = document.getElementById('recovery-card');
-            if (card) {
-                card.innerHTML = '<div style="display: flex; gap: 16px; align-items: center;"><div style="font-size: 28px;">✅</div><div class="recovery-text"><strong>Streak Recovered!</strong> "Meditation" is back on track. Your Comeback Rate just went up.</div></div>';
-                setTimeout(() => { card.style.display = 'none'; }, 2500);
+            if (!card) return;
+
+            // INCREMENT COMEBACK RATE
+            const comebackRateElement = document.querySelector('[data-metric="comeback-rate"]');
+            if (comebackRateElement) {
+                let currentRate = parseInt(comebackRateElement.textContent) || 80;
+                const newRate = Math.min(currentRate + 5, 100);
+                comebackRateElement.textContent = newRate + '%';
+                
+                // Animate the change
+                comebackRateElement.style.transition = 'transform 0.3s ease';
+                comebackRateElement.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    comebackRateElement.style.transform = 'scale(1)';
+                }, 300);
+            }
+
+            card.innerHTML = `
+                <div class="recovery-success" style="display: flex; gap: 16px; align-items: center;">
+                    <div style="font-size: 28px;">✅</div>
+                    <div class="recovery-text">
+                        <strong>Streak Recovered!</strong>
+                        <p style="margin: 4px 0 0 0;">"Meditation" is back on track.</p>
+                        <p style="margin: 2px 0 0 0;">Your Comeback Rate just went up to ${
+                            document.querySelector('[data-metric="comeback-rate"]')?.textContent || '85%'
+                        }.</p>
+                    </div>
+                </div>
+            `;
+
+            // SHOW NOTIFICATION
+            if (window.showNotification) {
+                window.showNotification('🔥 Streak recovered! Keep it up!', 'success');
+            }
+
+            // SAVE RECOVERY STATE
+            Storage.set('streakRecovered', true);
+            Storage.set('lastRecoveryDate', new Date().toISOString());
+
+            setTimeout(() => {
+                card.style.display = 'none';
+            }, 2500);
+        };
+
+        // Check if already recovered today
+        window.checkRecoveryStatus = () => {
+            const lastRecoveryDate = Storage.get('lastRecoveryDate');
+            const today = new Date().toISOString().split('T')[0];
+            const lastRecoveryDay = lastRecoveryDate ? lastRecoveryDate.split('T')[0] : null;
+
+            // If recovered today, hide the card
+            if (lastRecoveryDay === today) {
+                const card = document.getElementById('recovery-card');
+                if (card) {
+                    card.style.display = 'none';
+                }
             }
         };
 
         window.updateDashboardSubtitle = () => {
-            const boxes = document.querySelectorAll('.priority-checkbox');
+            const boxes = document.querySelectorAll('.habit-checkbox');
             const remaining = Array.from(boxes).filter(b => !b.checked).length;
             const subtitle = document.getElementById('dashboard-subtitle');
             if (subtitle) {
@@ -58,12 +135,12 @@ class App {
                     1: "1 habit left today — you're almost there ⚡",
                     0: "All done for today — perfect record! 🎉"
                 };
-                subtitle.textContent = messages[remaining] || messages[3];
+                subtitle.textContent = messages[remaining] !== undefined ? messages[remaining] : `${remaining} habits left today — keep it up! 🔥`;
             }
         };
 
-        // Priorities State & Render Logic
-        window.prioritiesData = [];
+        // Priorities State & Render Logic (Loaded from Storage)
+        window.prioritiesData = Storage.get('priorities', []);
         window.isAddingPriority = false;
 
         window.renderPriorities = () => {
@@ -127,6 +204,16 @@ class App {
                 const input = document.getElementById('new-priority-input');
                 if (input) {
                     input.focus();
+                    input.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            window.savePriority();
+                        }
+                        if (e.key === 'Escape') {
+                            e.preventDefault();
+                            window.cancelPriority();
+                        }
+                    });
                     input.addEventListener('keypress', (e) => {
                         if (e.key === 'Enter') window.savePriority();
                     });
@@ -146,9 +233,17 @@ class App {
 
         window.savePriority = () => {
             const input = document.getElementById('new-priority-input');
-            if (input && input.value.trim()) {
-                window.prioritiesData.push({ text: input.value.trim(), completed: false });
+            const text = input ? input.value.trim() : '';
+            if (text) {
+                window.prioritiesData.push({
+                    id: Date.now(),
+                    text,
+                    completed: false
+                });
                 
+                // SAVE TO STORAGE
+                Storage.set('priorities', window.prioritiesData);
+
                 // Keep adding if we haven't hit 3 yet
                 if (window.prioritiesData.length >= 3) {
                     window.isAddingPriority = false;
@@ -162,11 +257,13 @@ class App {
 
         window.deletePriority = (index) => {
             window.prioritiesData.splice(index, 1);
+            Storage.set('priorities', window.prioritiesData);
             window.renderPriorities();
         };
 
         window.togglePriority = (index) => {
             window.prioritiesData[index].completed = !window.prioritiesData[index].completed;
+            Storage.set('priorities', window.prioritiesData);
             window.renderPriorities();
         };
 
@@ -612,6 +709,8 @@ class App {
                         <p style="color: #a0aec0; font-size: 14px; margin-bottom: 0;">No active routines for today.</p>
                     </div>
                 `;
+                const completionElement = document.querySelector('[data-metric="completion"]');
+                if (completionElement) completionElement.textContent = '100%';
                 return;
             }
 
@@ -620,9 +719,9 @@ class App {
                 const isCompleted = Storage.isCompleted(habit.id, today);
                 
                 const html = `
-                    <div class="habit-card" style="border: 1px solid rgba(255, 255, 255, 0.1); padding: 14px; border-radius: 8px; background: ${isCompleted ? 'rgba(0, 217, 255, 0.05)' : 'rgba(0, 0, 0, 0.2)'}; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease; opacity: ${isCompleted ? '0.5' : '1'}; border-color: ${isCompleted ? 'rgba(0, 217, 255, 0.2)' : 'rgba(255,255,255,0.1)'};">
+                    <div class="habit-card" data-habit-id="${habit.id}" style="border: 1px solid rgba(255, 255, 255, 0.1); padding: 14px; border-radius: 8px; background: ${isCompleted ? 'rgba(0, 217, 255, 0.05)' : 'rgba(0, 0, 0, 0.2)'}; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease; opacity: ${isCompleted ? '0.5' : '1'}; border-color: ${isCompleted ? 'rgba(0, 217, 255, 0.2)' : 'rgba(255,255,255,0.1)'};">
                         <div style="display: flex; align-items: center; gap: 16px;">
-                            <input type="checkbox" onchange="window.toggleHabitCompletion('${habit.id}')" ${isCompleted ? 'checked' : ''} style="width: 20px; height: 20px; cursor: pointer; accent-color: #00D9FF;">
+                            <input type="checkbox" class="habit-checkbox" data-habit-id="${habit.id}" onchange="window.toggleHabitCompletion('${habit.id}')" ${isCompleted ? 'checked' : ''} style="width: 20px; height: 20px; cursor: pointer; accent-color: #00D9FF;">
                             <div style="display: flex; flex-direction: column;">
                                 <span class="habit-name" style="font-size: 15px; font-weight: 600; color: ${isCompleted ? '#a0aec0' : '#ffffff'}; text-decoration: ${isCompleted ? 'line-through' : 'none'}; transition: all 0.3s ease;">${habit.name}</span>
                                 <span style="font-size: 13px; color: #a0aec0; margin-top: 4px;">${habit.icon} ${habit.category} • 🔥 ${habit.streak || 0} Streak</span>
@@ -633,18 +732,35 @@ class App {
                 `;
                 container.insertAdjacentHTML('beforeend', html);
             });
+
+            // RECALCULATE METRICS AFTER RENDER
+            setTimeout(() => {
+                const completedCount = document.querySelectorAll('.habit-checkbox:checked').length;
+                const totalCount = document.querySelectorAll('.habit-checkbox').length;
+                const percentage = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+
+                const completionElement = document.querySelector('[data-metric="completion"]');
+                if (completionElement) {
+                    completionElement.textContent = percentage + '%';
+                }
+                if (window.updateDashboardSubtitle) window.updateDashboardSubtitle();
+            }, 100);
         };
 
         window.toggleHabitCompletion = (id) => {
             if (!Storage) return;
             const today = new Date().toISOString().split('T')[0];
-            if (Storage.isCompleted(id, today)) {
-                Storage.unmarkCompleted(id, today);
-            } else {
+            const willBeCompleted = !Storage.isCompleted(id, today);
+            if (willBeCompleted) {
                 Storage.markCompleted(id, today);
+                // SHOW NOTIFICATION
+                if (window.showNotification) {
+                    window.showNotification('✅ Great job! Keep going!', 'success');
+                }
+            } else {
+                Storage.unmarkCompleted(id, today);
             }
             window.renderDashboardHabits();
-            if (window.updateDashboardSubtitle) window.updateDashboardSubtitle();
         };
 
         // Page Load Event Listener
@@ -653,6 +769,28 @@ class App {
             if (path === '/dashboard' || path === '/') {
                 window.renderPriorities();
                 window.renderDashboardHabits();
+                if (window.checkRecoveryStatus) window.checkRecoveryStatus();
+
+                // Setup mobile sidebar toggle & overlay
+                const hamburger = document.getElementById('hamburger-toggle');
+                const sidebar = document.querySelector('.sidebar');
+                const overlay = document.getElementById('sidebar-overlay');
+                if (hamburger && sidebar && overlay) {
+                    hamburger.onclick = () => {
+                        sidebar.classList.toggle('open');
+                        overlay.classList.toggle('show');
+                    };
+                    overlay.onclick = () => {
+                        sidebar.classList.remove('open');
+                        overlay.classList.remove('show');
+                    };
+                    document.querySelectorAll('.sidebar-nav .nav-item').forEach(item => {
+                        item.addEventListener('click', () => {
+                            sidebar.classList.remove('open');
+                            overlay.classList.remove('show');
+                        });
+                    });
+                }
             }
             if (path === '/habits-library') {
                 window.renderHabits();
@@ -668,11 +806,6 @@ class App {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const app = new App();
-    app.init();
-});
-
-
 export { App };
 export default App;
+

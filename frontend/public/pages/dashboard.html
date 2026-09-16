@@ -1,4 +1,101 @@
 <div class="page active" id="dashboard">
+    <style>
+      .mobile-header {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 60px;
+        background: linear-gradient(135deg, #001428 0%, #0a2540 100%);
+        border-bottom: 1px solid rgba(0, 217, 255, 0.2);
+        z-index: 1000;
+        padding: 10px 20px;
+        box-sizing: border-box;
+      }
+
+      .mobile-header.show {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .hamburger-btn {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 0;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        transition: background 0.2s;
+      }
+
+      .hamburger-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .mobile-header-title {
+        color: white;
+        font-weight: 600;
+        font-size: 18px;
+        flex: 1;
+        text-align: center;
+      }
+
+      @media (max-width: 767px) {
+        .mobile-header.show {
+          display: flex;
+        }
+
+        .sidebar-layout {
+          padding-top: 60px;
+        }
+
+        .sidebar {
+          position: fixed;
+          left: 0;
+          top: 60px;
+          height: calc(100vh - 60px);
+          z-index: 999;
+          box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+          background: #001428;
+        }
+
+        .overlay {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.6);
+          z-index: 998;
+        }
+
+        .overlay.show {
+          display: block;
+        }
+      }
+    </style>
+
+    <!-- Mobile Header -->
+    <header class="mobile-header show">
+      <button class="hamburger-btn" id="hamburger-toggle" aria-label="Toggle navigation">
+        ☰
+      </button>
+      <div class="mobile-header-title">Dashboard</div>
+      <div style="width: 40px;"></div>
+    </header>
+
+    <!-- Mobile Overlay -->
+    <div class="overlay" id="sidebar-overlay"></div>
+
     <div class="sidebar-layout">
         <div class="sidebar">
             <div class="sidebar-logo" onclick="app.router.navigate('/landing')" style="cursor: pointer;"><svg width="30" height="30" viewBox="0 0 100 100" style="vertical-align:middle;margin-right:8px;flex-shrink:0;"><path d="M85.45 43.75 A36 36 0 1 1 56.25 14.55" fill="none" stroke="#4F46E5" stroke-width="11" stroke-linecap="round"/><path d="M30 58 L46 74 L83.7 21.72" fill="none" stroke="#4F46E5" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/><circle cx="46" cy="74" r="4" fill="#2DD4BF"/></svg><span>Streako</span></div>
@@ -27,11 +124,11 @@
 
             <div class="stats-row">
                 <div class="stat-card">
-                    <div class="stat-number">75%</div>
+                    <div class="stat-number" data-metric="completion">75%</div>
                     <div class="stat-label">Today's Completion</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">🔥 12</div>
+                    <div class="stat-number" data-metric="current-streak">🔥 12</div>
                     <div class="stat-label">Current Streak</div>
                 </div>
                 <div class="stat-card">
@@ -40,7 +137,7 @@
                 </div>
                 <div class="stat-card has-tooltip">
                     <div class="tooltip-box">% of missed habits you recovered by completing a makeup task the next day.</div>
-                    <div class="stat-number">80%</div>
+                    <div class="stat-number" data-metric="comeback-rate">80%</div>
                     <div class="stat-label">Comeback Rate <span class="tooltip-icon">i</span></div>
                 </div>
             </div>

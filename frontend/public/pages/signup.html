@@ -1,15 +1,175 @@
 <div class="page active" id="signup">
     <div class="auth-layout">
         <div class="auth-card">
-            <div class="navbar-brand" onclick="app.router.navigate('/landing')" style="margin-bottom: 24px; cursor: pointer;"><svg width="30" height="30" viewBox="0 0 100 100" style="vertical-align:middle;margin-right:8px;flex-shrink:0;"><path d="M85.45 43.75 A36 36 0 1 1 56.25 14.55" fill="none" stroke="#4F46E5" stroke-width="11" stroke-linecap="round"/><path d="M30 58 L46 74 L83.7 21.72" fill="none" stroke="#4F46E5" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/><circle cx="46" cy="74" r="4" fill="#2DD4BF"/></svg><span>Streako</span></div>
+            <div class="navbar-brand" onclick="app.router.navigate('/landing')" style="margin-bottom: 24px; cursor: pointer;">
+                <svg width="30" height="30" viewBox="0 0 100 100" style="vertical-align:middle;margin-right:8px;flex-shrink:0;">
+                    <path d="M85.45 43.75 A36 36 0 1 1 56.25 14.55" fill="none" stroke="#4F46E5" stroke-width="11" stroke-linecap="round"/>
+                    <path d="M30 58 L46 74 L83.7 21.72" fill="none" stroke="#4F46E5" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="46" cy="74" r="4" fill="#2DD4BF"/>
+                </svg>
+                <span>Streako</span>
+            </div>
+
             <h2>Create your account</h2>
-            <input type="email" class="input-field" placeholder="Email address">
-            <input type="password" class="input-field" placeholder="Password">
-            <input type="password" class="input-field" placeholder="Confirm password">
-            <button class="btn btn-primary" style="width: 100%; margin-bottom: 16px;" onclick="app.router.navigate('/role-selection')">Sign Up</button>
+
+            <!-- Error Message Display -->
+            <div id="signup-error" class="error-message" style="display: none; background: #fee; color: #c00; padding: 12px; border-radius: 6px; margin-bottom: 16px; font-size: 14px;"></div>
+
+            <!-- Success Message Display -->
+            <div id="signup-success" style="display: none; background: #efe; color: #0a0; padding: 12px; border-radius: 6px; margin-bottom: 16px; font-size: 14px;"></div>
+
+            <!-- Signup Form -->
+            <form id="signup-form" style="width: 100%;">
+                <input 
+                    type="text" 
+                    id="signup-fullname" 
+                    class="input-field" 
+                    placeholder="Full name"
+                    required
+                >
+                <input 
+                    type="email" 
+                    id="signup-email" 
+                    class="input-field" 
+                    placeholder="Email address"
+                    required
+                >
+                <input 
+                    type="password" 
+                    id="signup-password" 
+                    class="input-field" 
+                    placeholder="Password (min 6 characters)"
+                    required
+                >
+                <input 
+                    type="password" 
+                    id="signup-confirm-password" 
+                    class="input-field" 
+                    placeholder="Confirm password"
+                    required
+                >
+
+                <button 
+                    type="submit" 
+                    class="btn btn-primary" 
+                    id="signup-btn"
+                    style="width: 100%; margin-bottom: 16px;"
+                >
+                    Sign Up
+                </button>
+            </form>
+
             <div class="auth-footer">
                 Already have an account? <span class="link" onclick="app.router.navigate('/login')">Log in</span>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+// Signup Form Handler
+document.getElementById('signup-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const fullName = document.getElementById('signup-fullname').value.trim();
+    const email = document.getElementById('signup-email').value.trim();
+    const password = document.getElementById('signup-password').value;
+    const confirmPassword = document.getElementById('signup-confirm-password').value;
+    const errorDiv = document.getElementById('signup-error');
+    const successDiv = document.getElementById('signup-success');
+    const signupBtn = document.getElementById('signup-btn');
+
+    // Clear previous messages
+    errorDiv.style.display = 'none';
+    successDiv.style.display = 'none';
+    errorDiv.textContent = '';
+    successDiv.textContent = '';
+
+    // Validation
+    if (!fullName || !email || !password || !confirmPassword) {
+        errorDiv.textContent = 'All fields are required';
+        errorDiv.style.display = 'block';
+        return;
+    }
+
+    if (password.length < 6) {
+        errorDiv.textContent = 'Password must be at least 6 characters';
+        errorDiv.style.display = 'block';
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        errorDiv.textContent = 'Passwords do not match';
+        errorDiv.style.display = 'block';
+        return;
+    }
+
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        errorDiv.textContent = 'Invalid email format';
+        errorDiv.style.display = 'block';
+        return;
+    }
+
+    // Show loading state
+    signupBtn.disabled = true;
+    signupBtn.textContent = 'Creating account...';
+
+    try {
+        // Call backend API
+        const response = await fetch('/api/auth/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 
+                email, 
+                password,
+                fullName 
+            }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || 'Signup failed');
+        }
+
+        // Show success message
+        successDiv.textContent = '✓ Account created! Please check your email to verify your account, then log in.';
+        successDiv.style.display = 'block';
+        signupBtn.textContent = 'Account Created';
+
+        // Clear form
+        document.getElementById('signup-form').reset();
+
+        // Redirect to login after 3 seconds
+        setTimeout(() => {
+            if (window.app && window.app.router) {
+                window.app.router.navigate('/login');
+            } else {
+                window.location.href = '/login';
+            }
+        }, 3000);
+
+    } catch (error) {
+        console.error('Signup error:', error);
+        errorDiv.textContent = error.message || 'Signup failed. Please try again.';
+        errorDiv.style.display = 'block';
+        signupBtn.disabled = false;
+        signupBtn.textContent = 'Sign Up';
+    }
+});
+
+// Check if already logged in - redirect to dashboard
+document.addEventListener('DOMContentLoaded', () => {
+    const token = localStorage.getItem('access_token');
+    if (token && document.getElementById('signup')) {
+        // User is already logged in, redirect to dashboard
+        if (window.app && window.app.router) {
+            window.app.router.navigate('/dashboard');
+        }
+    }
+});
+</script>

@@ -6,7 +6,9 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "node index.js"
+    "dev": "node index.js",
+    "build": "echo 'Frontend ready'",
+    "preview": "node index.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
