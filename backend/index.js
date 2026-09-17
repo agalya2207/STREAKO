@@ -1,7 +1,11 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-require('dotenv').config({ path: path.join(__dirname, '.env') });
+
+// Only load .env in development
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config({ path: path.join(__dirname, '.env') });
+}
 
 const routes = require('./routes');
 const errorHandler = require('./middleware/errorHandler');
@@ -13,10 +17,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Mount central API routes
 app.use('/api', routes);
-
-// Centralized error handling
 app.use(errorHandler);
 
 if (require.main === module) {
