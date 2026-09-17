@@ -1,7 +1,7 @@
 /**
  * Base API Client for STREAKO Frontend
  */
-const API_BASE_URL = window.__API_URL__ || 'http://localhost:5000/api';
+const API_BASE_URL = window.__API_URL__ || 'https://streako-rk83.vercel.app/api';
 
 class ApiClient {
     constructor(baseUrl = API_BASE_URL) {
