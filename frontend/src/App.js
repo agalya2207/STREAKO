@@ -63,6 +63,24 @@ class App {
             }, 3000);
         };
 
+        // Global logout function
+        window.logout = async () => {
+            try {
+                await fetch('/api/auth/logout', { method: 'POST', headers: { 'Content-Type': 'application/json' } });
+            } catch (e) { /* ignore network errors on logout */ }
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('streako_auth_token');
+            localStorage.removeItem('refresh_token');
+            localStorage.removeItem('expires_at');
+            localStorage.removeItem('user');
+            localStorage.removeItem('streako_user');
+            localStorage.removeItem('user_id');
+            localStorage.removeItem('user_email');
+            if (window.app && window.app.router) window.app.router.navigate('/login');
+            else window.location.href = '/login';
+        };
+
+
         window.markRecovered = () => {
             const card = document.getElementById('recovery-card');
             if (!card) return;
@@ -964,14 +982,69 @@ class App {
             if (path === '/habits-library') {
                 window.renderHabits();
             }
+
+            // Populate sidebar profile and settings page from localStorage
+            const userEmail = localStorage.getItem('user_email') || '';
+            const userJson = localStorage.getItem('user') || localStorage.getItem('streako_user') || '{}';
+            let userName = '';
+            try {
+                const userObj = JSON.parse(userJson);
+                userName = userObj.fullName || userObj.full_name || userObj.name || '';
+            } catch (e) { /* ignore */ }
+
+            if (!userName && userEmail) {
+                const prefix = userEmail.split('@')[0];
+                userName = prefix.charAt(0).toUpperCase() + prefix.slice(1);
+            }
+
+            // Sidebar profile elements (present on dashboard, settings, etc.)
+            const sidebarName = document.getElementById('sidebar-name');
+            const sidebarEmail = document.getElementById('sidebar-email');
+            const sidebarAvatar = document.getElementById('sidebar-avatar');
+            if (sidebarName && userName) sidebarName.textContent = userName;
+            if (sidebarEmail && userEmail) sidebarEmail.textContent = userEmail;
+            if (sidebarAvatar && userName) {
+                const initials = userName.split(' ').filter(Boolean).map(n => n[0]).join('').toUpperCase().slice(0, 2);
+                sidebarAvatar.textContent = initials || 'ST';
+            }
+
+            // Dashboard greeting
+            const greetingEl = document.getElementById('dashboard-greeting');
+            if (greetingEl) {
+                const hour = new Date().getHours();
+                const timeGreeting = hour < 12 ? 'Good Morning' : hour < 17 ? 'Good Afternoon' : 'Good Evening';
+                greetingEl.textContent = userName ? `${timeGreeting}, ${userName} 👋` : `${timeGreeting} 👋`;
+            }
+
+            // Settings page fields
+            if (path === '/settings') {
+                const nameInput = document.getElementById('settings-fullname');
+                const emailInput = document.getElementById('settings-email');
+                if (nameInput) nameInput.value = userName;
+                if (emailInput) emailInput.value = userEmail;
+            }
         });
 
         // Initialize default habits if needed
         window.seedHabits();
 
-        // Trigger initial route match based on current path
+        // Smart auth-aware routing on initial load
         const currentPath = window.location.pathname === '/' ? '/landing' : window.location.pathname;
-        this.router.handleRoute(currentPath);
+        const token = localStorage.getItem('access_token');
+        const protectedRoutes = ['/dashboard', '/habits-library', '/timeline', '/calendar', '/goals', '/analytics', '/journal', '/settings', '/mentor-dashboard'];
+        const authRoutes = ['/login', '/signup', '/landing', '/'];
+
+        if (token && authRoutes.includes(currentPath)) {
+            // Already logged in — go straight to dashboard
+            window.history.replaceState({}, '', '/dashboard');
+            this.router.handleRoute('/dashboard');
+        } else if (!token && protectedRoutes.includes(currentPath)) {
+            // Not logged in — redirect to login
+            window.history.replaceState({}, '', '/login');
+            this.router.handleRoute('/login');
+        } else {
+            this.router.handleRoute(currentPath);
+        }
     }
 }
 

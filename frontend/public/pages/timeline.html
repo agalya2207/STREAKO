@@ -1,9 +1,8 @@
 <div class="page active" id="timeline">
     <div class="sidebar-layout">
         <div class="sidebar">
-            <div class="sidebar-logo" onclick="app.router.navigate('/landing')" style="cursor: pointer;"><svg width="30" height="30" viewBox="0 0 100 100" style="vertical-align:middle;margin-right:8px;flex-shrink:0;"><path d="M85.45 43.75 A36 36 0 1 1 56.25 14.55" fill="none" stroke="#4F46E5" stroke-width="11" stroke-linecap="round"/><path d="M30 58 L46 74 L83.7 21.72" fill="none" stroke="#4F46E5" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/><circle cx="46" cy="74" r="4" fill="#2DD4BF"/></svg><span>Streako</span></div>
+            <div class="sidebar-logo" onclick="app.router.navigate('/dashboard')" style="cursor: pointer;"><svg width="30" height="30" viewBox="0 0 100 100" style="vertical-align:middle;margin-right:8px;flex-shrink:0;"><path d="M85.45 43.75 A36 36 0 1 1 56.25 14.55" fill="none" stroke="#4F46E5" stroke-width="11" stroke-linecap="round"/><path d="M30 58 L46 74 L83.7 21.72" fill="none" stroke="#4F46E5" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/><circle cx="46" cy="74" r="4" fill="#2DD4BF"/></svg><span>Streako</span></div>
             <div class="sidebar-nav">
-                <div class="nav-item" onclick="app.router.navigate('/landing')">🏠 Home</div>
                 <div class="nav-item" onclick="app.router.navigate('/dashboard')">📅 Today</div>
                 <div class="nav-item" onclick="app.router.navigate('/habits-library')">📚 Habits</div>
                 <div class="nav-item active" onclick="app.router.navigate('/timeline')">⏰ Timeline</div>
@@ -14,11 +13,14 @@
                 <div class="nav-item" onclick="app.router.navigate('/settings')">⚙️ Settings</div>
             </div>
             <div class="sidebar-profile">
-                <div class="profile-avatar">JD</div>
+                <div class="profile-avatar" id="sidebar-avatar">AG</div>
                 <div class="profile-info">
-                    <p>John Doe</p>
-                    <p>john@email.com</p>
+                    <p id="sidebar-name">User</p>
+                    <p id="sidebar-email">user@email.com</p>
                 </div>
+            </div>
+            <div style="padding: 0 16px 16px;">
+                <button onclick="window.logout()" style="width:100%;padding:10px;background:rgba(239,68,68,0.15);color:#ef4444;border:1px solid rgba(239,68,68,0.3);border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;transition:all 0.2s;" onmouseover="this.style.background='rgba(239,68,68,0.3)'" onmouseout="this.style.background='rgba(239,68,68,0.15)'">🚪 Log Out</button>
             </div>
         </div>
         <div class="main-content">

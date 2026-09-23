@@ -141,11 +141,26 @@ const login = async (req, res, next) => {
       return res.status(401).json({ error: error.message });
     }
 
+    let fullName = data.user.user_metadata?.full_name || '';
+    try {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('full_name')
+        .eq('id', data.user.id)
+        .single();
+      if (profile?.full_name) {
+        fullName = profile.full_name;
+      }
+    } catch (profErr) {
+      console.warn('Profile fetch warning on login:', profErr.message);
+    }
+
     res.status(200).json({
       message: 'Login successful',
       user: {
         id: data.user.id,
         email: data.user.email,
+        fullName: fullName || '',
       },
       session: {
         access_token: data.session.access_token,
