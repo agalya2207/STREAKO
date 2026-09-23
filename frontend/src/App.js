@@ -766,6 +766,142 @@ class App {
         // Page Load Event Listener
         window.addEventListener('page-loaded', (e) => {
             const path = e.detail.path;
+            
+            if (path === '/login') {
+                const token = localStorage.getItem('access_token');
+                if (token && document.getElementById('login')) {
+                    if (window.app && window.app.router) {
+                        window.app.router.navigate('/dashboard');
+                    }
+                }
+                const loginForm = document.getElementById('login-form');
+                if (loginForm) {
+                    loginForm.addEventListener('submit', async (e) => {
+                        e.preventDefault();
+                        const email = document.getElementById('login-email').value.trim();
+                        const password = document.getElementById('login-password').value;
+                        const errorDiv = document.getElementById('login-error');
+                        const loginBtn = document.getElementById('login-btn');
+                        errorDiv.style.display = 'none';
+                        errorDiv.textContent = '';
+                        if (!email || !password) {
+                            errorDiv.textContent = 'Email and password are required';
+                            errorDiv.style.display = 'block';
+                            return;
+                        }
+                        loginBtn.disabled = true;
+                        loginBtn.textContent = 'Logging in...';
+                        try {
+                            const response = await fetch('/api/auth/login', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ email, password }),
+                            });
+                            const data = await response.json();
+                            if (!response.ok) throw new Error(data.error || 'Login failed');
+                            
+                            localStorage.setItem('access_token', data.session.access_token);
+                            localStorage.setItem('refresh_token', data.session.refresh_token);
+                            localStorage.setItem('user_id', data.user.id);
+                            localStorage.setItem('user_email', data.user.email);
+                            localStorage.setItem('expires_at', data.session.expires_at);
+                            
+                            errorDiv.style.display = 'none';
+                            loginBtn.textContent = '✓ Login successful';
+                            setTimeout(() => {
+                                if (window.app && window.app.router) window.app.router.navigate('/dashboard');
+                                else window.location.href = '/dashboard';
+                            }, 500);
+                        } catch (error) {
+                            console.error('Login error:', error);
+                            errorDiv.textContent = error.message || 'Login failed. Please try again.';
+                            errorDiv.style.display = 'block';
+                            loginBtn.disabled = false;
+                            loginBtn.textContent = 'Log In';
+                        }
+                    });
+                }
+            }
+
+            if (path === '/signup') {
+                const token = localStorage.getItem('access_token');
+                if (token && document.getElementById('signup')) {
+                    if (window.app && window.app.router) {
+                        window.app.router.navigate('/dashboard');
+                    }
+                }
+                const signupForm = document.getElementById('signup-form');
+                if (signupForm) {
+                    signupForm.addEventListener('submit', async (e) => {
+                        e.preventDefault();
+                        const fullName = document.getElementById('signup-fullname').value.trim();
+                        const email = document.getElementById('signup-email').value.trim();
+                        const password = document.getElementById('signup-password').value;
+                        const confirmPassword = document.getElementById('signup-confirm-password').value;
+                        const errorDiv = document.getElementById('signup-error');
+                        const successDiv = document.getElementById('signup-success');
+                        const signupBtn = document.getElementById('signup-btn');
+                        
+                        errorDiv.style.display = 'none';
+                        successDiv.style.display = 'none';
+                        errorDiv.textContent = '';
+                        successDiv.textContent = '';
+                        
+                        if (!fullName || !email || !password || !confirmPassword) {
+                            errorDiv.textContent = 'All fields are required';
+                            errorDiv.style.display = 'block';
+                            return;
+                        }
+                        if (password.length < 6) {
+                            errorDiv.textContent = 'Password must be at least 6 characters';
+                            errorDiv.style.display = 'block';
+                            return;
+                        }
+                        if (password !== confirmPassword) {
+                            errorDiv.textContent = 'Passwords do not match';
+                            errorDiv.style.display = 'block';
+                            return;
+                        }
+                        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        if (!emailRegex.test(email)) {
+                            errorDiv.textContent = 'Invalid email format';
+                            errorDiv.style.display = 'block';
+                            return;
+                        }
+                        
+                        signupBtn.disabled = true;
+                        signupBtn.textContent = 'Creating account...';
+                        
+                        try {
+                            const response = await fetch('/api/auth/signup', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ email, password, fullName }),
+                            });
+                            const data = await response.json();
+                            if (!response.ok) throw new Error(data.error || 'Signup failed');
+                            
+                            successDiv.textContent = '✓ Account created!';
+                            successDiv.style.display = 'block';
+                            signupBtn.textContent = 'Account Created';
+                            document.getElementById('signup-form').reset();
+                            
+                            // Immediately redirect to dashboard as requested
+                            setTimeout(() => {
+                                if (window.app && window.app.router) window.app.router.navigate('/dashboard');
+                                else window.location.href = '/dashboard';
+                            }, 1000);
+                        } catch (error) {
+                            console.error('Signup error:', error);
+                            errorDiv.textContent = error.message || 'Signup failed. Please try again.';
+                            errorDiv.style.display = 'block';
+                            signupBtn.disabled = false;
+                            signupBtn.textContent = 'Sign Up';
+                        }
+                    });
+                }
+            }
+
             if (path === '/dashboard' || path === '/') {
                 window.renderPriorities();
                 window.renderDashboardHabits();

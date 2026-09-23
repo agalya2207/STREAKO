@@ -39,8 +39,7 @@
                     type="submit" 
                     class="btn btn-primary" 
                     id="login-btn"
-                    style="width: 100%; margin-bottom: 16px;"
-                 onclick="window.showNotification('Coming soon!', 'info')">
+                    style="width: 100%; margin-bottom: 16px;">
                     Log In
                 </button>
             </form>
@@ -51,85 +50,4 @@
         </div>
     </div>
 </div>
-
-<script>
-// Login Form Handler
-document.getElementById('login-form')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const email = document.getElementById('login-email').value.trim();
-    const password = document.getElementById('login-password').value;
-    const errorDiv = document.getElementById('login-error');
-    const loginBtn = document.getElementById('login-btn');
-
-    // Clear previous errors
-    errorDiv.style.display = 'none';
-    errorDiv.textContent = '';
-
-    // Validation
-    if (!email || !password) {
-        errorDiv.textContent = 'Email and password are required';
-        errorDiv.style.display = 'block';
-        return;
-    }
-
-    // Show loading state
-    loginBtn.disabled = true;
-    loginBtn.textContent = 'Logging in...';
-
-    try {
-        // Call backend API
-        const response = await fetch('/api/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }),
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.error || 'Login failed');
-        }
-
-        // Store tokens in localStorage
-        localStorage.setItem('access_token', data.session.access_token);
-        localStorage.setItem('refresh_token', data.session.refresh_token);
-        localStorage.setItem('user_id', data.user.id);
-        localStorage.setItem('user_email', data.user.email);
-        localStorage.setItem('expires_at', data.session.expires_at);
-
-        // Show success and redirect
-        errorDiv.style.display = 'none';
-        loginBtn.textContent = '✓ Login successful';
-        
-        // Redirect to dashboard after 500ms
-        setTimeout(() => {
-            if (window.app && window.app.router) {
-                window.app.router.navigate('/dashboard');
-            } else {
-                window.location.href = '/dashboard';
-            }
-        }, 500);
-
-    } catch (error) {
-        console.error('Login error:', error);
-        errorDiv.textContent = error.message || 'Login failed. Please try again.';
-        errorDiv.style.display = 'block';
-        loginBtn.disabled = false;
-        loginBtn.textContent = 'Log In';
-    }
-});
-
-// Check if already logged in - redirect to dashboard
-document.addEventListener('DOMContentLoaded', () => {
-    const token = localStorage.getItem('access_token');
-    if (token && document.getElementById('login')) {
-        // User is already logged in, redirect to dashboard
-        if (window.app && window.app.router) {
-            window.app.router.navigate('/dashboard');
-        }
-    }
-});
-</script>
+
