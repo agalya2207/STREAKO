@@ -1,223 +1,83 @@
-<div class="page active dailyos-layout">
-    <!-- Desktop Sidebar -->
-    <aside class="dailyos-sidebar">
-        <div class="dailyos-logo-section" onclick="window.goToPage('dashboard')">
-            <div class="dailyos-logo-icon">⚡</div>
-            <div class="dailyos-logo-text">
-                <h2>Daily<span>OS</span></h2>
-                <p>Premium Productivity</p>
+<div class="page active" id="calendar">
+    <div class="sidebar-layout">
+                <div class="sidebar">
+            <div class="sidebar-logo" onclick="app.router.navigate('/dashboard')">
+                <div class="sidebar-logo-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+                        <path d="M5 3v4"/>
+                        <path d="M19 17v4"/>
+                        <path d="M3 5h4"/>
+                        <path d="M17 19h4"/>
+                    </svg>
+                </div>
+                <div class="sidebar-logo-text">
+                    <span class="sidebar-logo-title">Streako<span>.ai</span></span>
+                    <span class="sidebar-logo-sub">PREMIUM PRODUCTIVITY</span>
+                </div>
+            </div>
+            <div class="sidebar-nav">
+                <div class="nav-item " onclick="app.router.navigate('/dashboard')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
+                    <span>Today</span>
+                </div>
+                <div class="nav-item " onclick="app.router.navigate('/habits-library')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                    <span>Habits</span>
+                </div>
+                <div class="nav-item " onclick="app.router.navigate('/timeline')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <span>Planner</span>
+                </div>
+                <div class="nav-item active" onclick="app.router.navigate('/calendar')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                    <span>Calendar</span>
+                </div>
+                <div class="nav-item " onclick="app.router.navigate('/goals')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                    <span>Goals</span>
+                </div>
+                <div class="nav-item " onclick="app.router.navigate('/analytics')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
+                    <span>Analytics</span>
+                </div>
+                <div class="nav-item " onclick="app.router.navigate('/journal')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    <span>Journal</span>
+                </div>
+                <div class="nav-item " onclick="app.router.navigate('/settings')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    <span>Settings</span>
+                </div>
+            </div>
+            <div class="sidebar-profile">
+                <div class="profile-avatar" id="sidebar-avatar">AG</div>
+                <div class="profile-info" onclick="app.router.navigate('/settings')">
+                    <p id="sidebar-name">User</p>
+                    <p id="sidebar-email">user@email.com</p>
+                </div>
+                <button class="profile-action-btn" onclick="window.logout()" title="Log Out">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        <polyline points="16 17 21 12 16 7"/>
+                        <line x1="21" y1="12" x2="9" y2="12"/>
+                    </svg>
+                </button>
             </div>
         </div>
-
-        <nav class="dailyos-nav">
-            <button onclick="window.goToPage('dashboard')" class="dailyos-nav-item">
-                <span class="nav-icon">⚡</span>
-                <span>Today</span>
-                <span class="nav-badge" id="sidebar-streak-badge">🔥 14</span>
-            </button>
-            <button onclick="window.goToPage('habits-library')" class="dailyos-nav-item">
-                <span class="nav-icon">🔁</span>
-                <span>Habits</span>
-            </button>
-            <button onclick="window.goToPage('timeline')" class="dailyos-nav-item">
-                <span class="nav-icon">📅</span>
-                <span>Planner</span>
-            </button>
-            <button onclick="window.goToPage('calendar')" class="dailyos-nav-item active">
-                <span class="nav-icon">🗓️</span>
-                <span>Calendar</span>
-            </button>
-            <button onclick="window.goToPage('goals')" class="dailyos-nav-item">
-                <span class="nav-icon">🎯</span>
-                <span>Goals</span>
-            </button>
-            <button onclick="window.goToPage('analytics')" class="dailyos-nav-item">
-                <span class="nav-icon">📊</span>
-                <span>Analytics</span>
-            </button>
-            <button onclick="window.goToPage('journal')" class="dailyos-nav-item">
-                <span class="nav-icon">📝</span>
-                <span>Journal</span>
-            </button>
-            <button onclick="window.goToPage('settings')" class="dailyos-nav-item">
-                <span class="nav-icon">⚙️</span>
-                <span>Settings</span>
-            </button>
-        </nav>
-
-        <div class="dailyos-user-profile" onclick="window.goToPage('settings')">
-            <div class="dailyos-avatar" id="sidebar-avatar">AV</div>
-            <div class="dailyos-user-info">
-                <div class="dailyos-user-name" id="sidebar-name">Alex Vance</div>
-                <div class="dailyos-user-role" id="sidebar-role">Consistency: Elite</div>
-            </div>
-            <span style="color: var(--text-tertiary); font-size: 14px;">⚙️</span>
-        </div>
-    </aside>
-
-    <!-- Mobile Header -->
-    <div class="dailyos-mobile-header">
-        <div style="display: flex; align-items: center; gap: 10px;" onclick="window.goToPage('dashboard')">
-            <div class="dailyos-logo-icon" style="width: 30px; height: 30px; font-size: 16px;">⚡</div>
-            <span style="font-weight: 800; font-size: 16px;">Daily<span style="color: var(--primary-bright);">OS</span></span>
-        </div>
-        <span class="badge badge-lime">Calendar</span>
-    </div>
-
-    <!-- Main Content -->
-    <main class="dailyos-main">
-        <!-- Top Bar -->
-        <header class="dailyos-topbar">
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <span class="badge badge-lime">Activity & Routine Calendar</span>
-                <span style="color: var(--text-secondary); font-size: 13px;">Historical habit consistency and activity heatmaps</span>
-            </div>
-            <div style="display: flex; gap: 8px;">
-                <button onclick="window.goToPage('dashboard')" class="btn btn-secondary btn-sm">Today's Focus</button>
-            </div>
-        </header>
-
-        <div class="dailyos-content">
-            <!-- Header Section with Month Navigator -->
-            <div class="dailyos-page-header">
-                <div class="dailyos-page-title">
-                    <h1>Activity & Routine Calendar</h1>
-                    <p>Track your monthly consistency, review past achievements, and identify routine patterns.</p>
-                </div>
-
-                <!-- Month Navigator -->
-                <div style="display: flex; align-items: center; gap: 10px; background: #121214; border: 1px solid #27272a; padding: 6px 12px; border-radius: 12px;">
-                    <button onclick="window.changeCalendarMonth(-1)" class="btn btn-ghost btn-sm">◀ Prev</button>
-                    <span id="calendar-month-year-label" style="font-weight: 800; font-size: 15px; color: #ffffff; min-width: 150px; text-align: center;">September 2026</span>
-                    <button onclick="window.changeCalendarMonth(1)" class="btn btn-ghost btn-sm">Next ▶</button>
-                    <button onclick="window.resetCalendarToCurrentMonth()" class="btn btn-accent-glow btn-sm">This Month</button>
-                </div>
-            </div>
-
-            <!-- Monthly Stats Summary -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 24px;">
-                <div class="dailyos-metric-card" style="padding: 14px 18px;">
-                    <div>
-                        <div class="metric-label">Active Days</div>
-                        <div class="metric-value" style="color: var(--primary-bright);" id="cal-stat-active-days">21 / 23 Days</div>
-                        <div class="metric-sub">91% day engagement</div>
                     </div>
                 </div>
-                <div class="dailyos-metric-card" style="padding: 14px 18px;">
-                    <div>
-                        <div class="metric-label">Perfect Days</div>
-                        <div class="metric-value" style="color: #fb923c;" id="cal-stat-perfect-days">15 Days</div>
-                        <div class="metric-sub">100% routine completion</div>
-                    </div>
-                </div>
-                <div class="dailyos-metric-card" style="padding: 14px 18px;">
-                    <div>
-                        <div class="metric-label">Monthly Consistency</div>
-                        <div class="metric-value" style="color: #22d3ee;" id="cal-stat-consistency">88%</div>
-                        <div class="metric-sub">Top Tier Consistency</div>
-                    </div>
-                </div>
-                <div class="dailyos-metric-card" style="padding: 14px 18px;">
-                    <div>
-                        <div class="metric-label">Total Routines Logged</div>
-                        <div class="metric-value" id="cal-stat-total-logged">142</div>
-                        <div class="metric-sub">Across 6 active habits</div>
+
+                <div>
+                    <div style="background: var(--bg-card); border-radius: 16px; padding: 20px;">
+                        <h3 style="margin-bottom: 16px; font-size: 14px;">Day Details</h3>
+                        <div style="text-align: center; padding: 24px;">
+                            <div style="font-size: 32px; margin-bottom: 8px;">📅</div>
+                            <div style="font-size: 12px; color: var(--text-secondary);">Click a day to see its habits, tasks, and journal entry.</div>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Full Calendar Matrix Card -->
-            <div class="dailyos-card" style="padding: 24px;">
-                <!-- Weekdays Header -->
-                <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center; margin-bottom: 12px;">
-                    <div style="font-size: 12px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase;">Mon</div>
-                    <div style="font-size: 12px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase;">Tue</div>
-                    <div style="font-size: 12px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase;">Wed</div>
-                    <div style="font-size: 12px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase;">Thu</div>
-                    <div style="font-size: 12px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase;">Fri</div>
-                    <div style="font-size: 12px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase;">Sat</div>
-                    <div style="font-size: 12px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase;">Sun</div>
-                </div>
-
-                <!-- Days Grid -->
-                <div id="calendar-days-grid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px;">
-                    <!-- Dynamically generated by JS -->
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Mobile Bottom Navigation -->
-    <nav class="dailyos-mobile-nav">
-        <button onclick="window.goToPage('dashboard')" class="mobile-nav-btn">
-            <span class="nav-icon">⚡</span>
-            <span>Today</span>
-        </button>
-        <button onclick="window.goToPage('habits-library')" class="mobile-nav-btn">
-            <span class="nav-icon">🔁</span>
-            <span>Habits</span>
-        </button>
-        <button onclick="window.goToPage('timeline')" class="mobile-nav-btn">
-            <span class="nav-icon">📅</span>
-            <span>Planner</span>
-        </button>
-        <button onclick="window.goToPage('calendar')" class="mobile-nav-btn active">
-            <span class="nav-icon">🗓️</span>
-            <span>Calendar</span>
-        </button>
-        <button onclick="window.goToPage('goals')" class="mobile-nav-btn">
-            <span class="nav-icon">🎯</span>
-            <span>Goals</span>
-        </button>
-        <button onclick="window.goToPage('analytics')" class="mobile-nav-btn">
-            <span class="nav-icon">📊</span>
-            <span>Analytics</span>
-        </button>
-    </nav>
-</div>
-
-<!-- Modal: Day Inspector Details Drawer -->
-<div id="day-inspector-modal" class="dailyos-modal-overlay" style="display: none;" onclick="if(event.target === this) window.closeDayInspector()">
-    <div class="dailyos-modal" style="max-width: 580px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <div>
-                <span class="badge badge-lime" id="inspector-date-badge">Wednesday, Sep 23, 2026</span>
-                <h2 id="inspector-title" style="font-size: 20px; font-weight: 800; color: #ffffff; margin: 4px 0 0 0;">Day Review & Activity</h2>
-            </div>
-            <button onclick="window.closeDayInspector()" style="background: transparent; border: none; color: var(--text-tertiary); font-size: 20px; cursor: pointer;">✕</button>
-        </div>
-
-        <!-- Day Stats Pills -->
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
-            <div style="background: #18181b; border: 1px solid #27272a; padding: 12px 14px; border-radius: 12px;">
-                <div style="font-size: 11px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase;">Completion Rate</div>
-                <div style="font-size: 20px; font-weight: 900; color: var(--primary-bright);" id="inspector-completion-pct">83%</div>
-            </div>
-            <div style="background: #18181b; border: 1px solid #27272a; padding: 12px 14px; border-radius: 12px;">
-                <div style="font-size: 11px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase;">Productivity Score</div>
-                <div style="font-size: 20px; font-weight: 900; color: #fb923c;" id="inspector-score-val">88 / 100</div>
-            </div>
-        </div>
-
-        <!-- Completed Habits on this Date -->
-        <div style="margin-bottom: 20px;">
-            <h4 style="font-size: 14px; font-weight: 700; color: #ffffff; margin: 0 0 10px 0;">Completed Routines</h4>
-            <div id="inspector-habits-list" style="display: flex; flex-direction: column; gap: 8px;">
-                <!-- Populated by JS -->
-            </div>
-        </div>
-
-        <!-- Daily Reflection Snippet -->
-        <div style="background: rgba(168, 85, 247, 0.08); border: 1px solid rgba(168, 85, 247, 0.25); border-radius: 14px; padding: 14px 16px;">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-                <span style="font-size: 12px; font-weight: 700; color: #c084fc; text-transform: uppercase;">Reflection Log</span>
-                <span id="inspector-mood-badge">😄 Awesome</span>
-            </div>
-            <div id="inspector-reflection-text" style="font-size: 13px; color: var(--text-secondary); line-height: 1.5;">Morning focus locked in. Completed 90 min deep work without distractions.</div>
-        </div>
-
-        <div style="display: flex; justify-content: flex-end; margin-top: 24px;">
-            <button onclick="window.closeDayInspector()" class="btn btn-secondary">Close Inspector</button>
         </div>
     </div>
 </div>

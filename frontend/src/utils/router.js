@@ -17,18 +17,15 @@ export class Router {
     async handleRoute(path) {
         // Map paths to HTML files
         const routeMap = {
-            '/': 'dashboard.html',
+            '/': 'landing.html',
             '/landing': 'landing.html',
             '/signup': 'signup.html',
             '/login': 'login.html',
             '/role-selection': 'role-selection.html',
             '/onboarding': 'onboarding.html',
             '/dashboard': 'dashboard.html',
-            '/today': 'dashboard.html',
             '/habits-library': 'habits-library.html',
-            '/habits': 'habits-library.html',
             '/timeline': 'timeline.html',
-            '/planner': 'timeline.html',
             '/calendar': 'calendar.html',
             '/goals': 'goals.html',
             '/analytics': 'analytics.html',
@@ -37,13 +34,14 @@ export class Router {
             '/settings': 'settings.html'
         };
 
-        const pageFile = routeMap[path] || 'dashboard.html';
+        const pageFile = routeMap[path] || 'landing.html';
         console.log(`[Router] Navigating to "${path}" -> fetching /pages/${pageFile}`);
 
         try {
             const response = await fetch(`/pages/${pageFile}`);
             if (!response.ok) throw new Error(`Page not found: ${pageFile} (status ${response.status})`);
             const html = await response.text();
+            console.log(`[Router] Successfully fetched ${pageFile} (${html.length} bytes)`);
 
             this.container.innerHTML = html;
 

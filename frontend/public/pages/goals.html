@@ -1,215 +1,153 @@
-<div class="page active dailyos-layout">
-    <!-- Desktop Sidebar -->
-    <aside class="dailyos-sidebar">
-        <div class="dailyos-logo-section" onclick="window.goToPage('dashboard')">
-            <div class="dailyos-logo-icon">⚡</div>
-            <div class="dailyos-logo-text">
-                <h2>Daily<span>OS</span></h2>
-                <p>Premium Productivity</p>
-            </div>
-        </div>
-
-        <nav class="dailyos-nav">
-            <button onclick="window.goToPage('dashboard')" class="dailyos-nav-item">
-                <span class="nav-icon">⚡</span>
-                <span>Today</span>
-                <span class="nav-badge" id="sidebar-streak-badge">🔥 14</span>
-            </button>
-            <button onclick="window.goToPage('habits-library')" class="dailyos-nav-item">
-                <span class="nav-icon">🔁</span>
-                <span>Habits</span>
-            </button>
-            <button onclick="window.goToPage('timeline')" class="dailyos-nav-item">
-                <span class="nav-icon">📅</span>
-                <span>Planner</span>
-            </button>
-            <button onclick="window.goToPage('calendar')" class="dailyos-nav-item">
-                <span class="nav-icon">🗓️</span>
-                <span>Calendar</span>
-            </button>
-            <button onclick="window.goToPage('goals')" class="dailyos-nav-item active">
-                <span class="nav-icon">🎯</span>
-                <span>Goals</span>
-            </button>
-            <button onclick="window.goToPage('analytics')" class="dailyos-nav-item">
-                <span class="nav-icon">📊</span>
-                <span>Analytics</span>
-            </button>
-            <button onclick="window.goToPage('journal')" class="dailyos-nav-item">
-                <span class="nav-icon">📝</span>
-                <span>Journal</span>
-            </button>
-            <button onclick="window.goToPage('settings')" class="dailyos-nav-item">
-                <span class="nav-icon">⚙️</span>
-                <span>Settings</span>
-            </button>
-        </nav>
-
-        <div class="dailyos-user-profile" onclick="window.goToPage('settings')">
-            <div class="dailyos-avatar" id="sidebar-avatar">AV</div>
-            <div class="dailyos-user-info">
-                <div class="dailyos-user-name" id="sidebar-name">Alex Vance</div>
-                <div class="dailyos-user-role" id="sidebar-role">Consistency: Elite</div>
-            </div>
-            <span style="color: var(--text-tertiary); font-size: 14px;">⚙️</span>
-        </div>
-    </aside>
-
-    <!-- Mobile Header -->
-    <div class="dailyos-mobile-header">
-        <div style="display: flex; align-items: center; gap: 10px;" onclick="window.goToPage('dashboard')">
-            <div class="dailyos-logo-icon" style="width: 30px; height: 30px; font-size: 16px;">⚡</div>
-            <span style="font-weight: 800; font-size: 16px;">Daily<span style="color: var(--primary-bright);">OS</span></span>
-        </div>
-        <button onclick="window.openCreateGoalModal()" class="btn btn-primary btn-sm">+ Goal</button>
-    </div>
-
-    <!-- Main Content -->
-    <main class="dailyos-main">
-        <!-- Top Bar -->
-        <header class="dailyos-topbar">
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <span class="badge badge-lime">Strategic Milestones</span>
-                <span style="color: var(--text-secondary); font-size: 13px;">Long-term Vision & Milestone Execution</span>
-            </div>
-            <button onclick="window.openCreateGoalModal()" class="btn btn-primary btn-sm">+ Define New Goal</button>
-        </header>
-
-        <div class="dailyos-content">
-            <!-- Header Section -->
-            <div class="dailyos-page-header">
-                <div class="dailyos-page-title">
-                    <h1>Strategic Goals & Milestones</h1>
-                    <p>Connect your daily habits to monumental long-term outcomes through measurable milestones.</p>
+<div class="page active" id="goals">
+    <div class="sidebar-layout">
+                <div class="sidebar">
+            <div class="sidebar-logo" onclick="app.router.navigate('/dashboard')">
+                <div class="sidebar-logo-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+                        <path d="M5 3v4"/>
+                        <path d="M19 17v4"/>
+                        <path d="M3 5h4"/>
+                        <path d="M17 19h4"/>
+                    </svg>
+                </div>
+                <div class="sidebar-logo-text">
+                    <span class="sidebar-logo-title">Streako<span>.ai</span></span>
+                    <span class="sidebar-logo-sub">PREMIUM PRODUCTIVITY</span>
                 </div>
             </div>
+            <div class="sidebar-nav">
+                <div class="nav-item " onclick="app.router.navigate('/dashboard')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
+                    <span>Today</span>
+                </div>
+                <div class="nav-item " onclick="app.router.navigate('/habits-library')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                    <span>Habits</span>
+                </div>
+                <div class="nav-item " onclick="app.router.navigate('/timeline')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <span>Planner</span>
+                </div>
+                <div class="nav-item " onclick="app.router.navigate('/calendar')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                    <span>Calendar</span>
+                </div>
+                <div class="nav-item active" onclick="app.router.navigate('/goals')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                    <span>Goals</span>
+                </div>
+                <div class="nav-item " onclick="app.router.navigate('/analytics')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
+                    <span>Analytics</span>
+                </div>
+                <div class="nav-item " onclick="app.router.navigate('/journal')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    <span>Journal</span>
+                </div>
+                <div class="nav-item " onclick="app.router.navigate('/settings')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    <span>Settings</span>
+                </div>
+            </div>
+            <div class="sidebar-profile">
+                <div class="profile-avatar" id="sidebar-avatar">AG</div>
+                <div class="profile-info" onclick="app.router.navigate('/settings')">
+                    <p id="sidebar-name">User</p>
+                    <p id="sidebar-email">user@email.com</p>
+                </div>
+                <button class="profile-action-btn" onclick="window.logout()" title="Log Out">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        <polyline points="16 17 21 12 16 7"/>
+                        <line x1="21" y1="12" x2="9" y2="12"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
 
-            <!-- Stats Bar -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 24px;">
-                <div class="dailyos-metric-card" style="padding: 14px 18px;">
-                    <div>
-                        <div class="metric-label">Active Goals</div>
-                        <div class="metric-value" style="color: #ffffff;" id="goals-count-val">3 Strategic</div>
-                        <div class="metric-sub">Across 3 categories</div>
+                    <div style="margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border-light);">
+                        <div style="font-size: 12px; font-weight: 600; margin-bottom: 8px;">Milestones</div>
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                            <div style="display: flex; gap: 8px; font-size: 12px;">
+                                <input type="checkbox" checked style="cursor: pointer;">
+                                <span style="text-decoration: line-through; color: var(--text-secondary);">Run 2K</span>
+                            </div>
+                            <div style="display: flex; gap: 8px; font-size: 12px;">
+                                <input type="checkbox" checked style="cursor: pointer;">
+                                <span style="text-decoration: line-through; color: var(--text-secondary);">Run 3K</span>
+                            </div>
+                            <div style="display: flex; gap: 8px; font-size: 12px;">
+                                <input type="checkbox" style="cursor: pointer;">
+                                <span>Run 4K</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 12px;">
+                        <div style="font-size: 12px; font-weight: 600; margin-bottom: 8px;">Linked Habits</div>
+                        <div style="display: flex; gap: 6px;">
+                            <span class="tag tag-primary" style="font-size: 11px;">⚡ Morning Workout</span>
+                            <span class="tag tag-primary" style="font-size: 11px;">⚡ Running</span>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-secondary);">
+                        📅 Due: Sept 30, 2026
                     </div>
                 </div>
-                <div class="dailyos-metric-card" style="padding: 14px 18px;">
-                    <div>
-                        <div class="metric-label">Completed Milestones</div>
-                        <div class="metric-value" style="color: var(--primary-bright);" id="milestones-completed-val">8 / 12</div>
-                        <div class="metric-sub">67% milestone execution</div>
+
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                        <span class="tag tag-warning">CAREER</span>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="habit-action-btn" onclick="window.showNotification('Coming soon!', 'info')">✏️</button>
+                            <button class="habit-action-btn" onclick="window.showNotification('Coming soon!', 'info')">🗑️</button>
+                        </div>
+                    </div>
+                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">Learn React Advanced</h3>
+                    <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">Master advanced React patterns and hooks</p>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-size: 12px; font-weight: 600;">Completion</span>
+                            <span style="font-size: 12px; color: var(--primary);">70%</span>
+                        </div>
+                        <div style="width: 100%; height: 6px; background: rgba(47, 143, 255, 0.1); border-radius: 3px; overflow: hidden;">
+                            <div style="width: 70%; height: 100%; background: var(--primary);"></div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border-light);">
+                        <div style="font-size: 12px; font-weight: 600; margin-bottom: 8px;">Milestones</div>
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                            <div style="display: flex; gap: 8px; font-size: 12px;">
+                                <input type="checkbox" checked style="cursor: pointer;">
+                                <span style="text-decoration: line-through; color: var(--text-secondary);">Complete hooks course</span>
+                            </div>
+                            <div style="display: flex; gap: 8px; font-size: 12px;">
+                                <input type="checkbox" checked style="cursor: pointer;">
+                                <span style="text-decoration: line-through; color: var(--text-secondary);">Build 3 projects</span>
+                            </div>
+                            <div style="display: flex; gap: 8px; font-size: 12px;">
+                                <input type="checkbox" style="cursor: pointer;">
+                                <span>Deploy to production</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 12px;">
+                        <div style="font-size: 12px; font-weight: 600; margin-bottom: 8px;">Linked Habits</div>
+                        <div style="display: flex; gap: 6px;">
+                            <span class="tag tag-primary" style="font-size: 11px;">⚡ Reading</span>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-secondary);">
+                        📅 Due: Oct 31, 2026
                     </div>
                 </div>
-                <div class="dailyos-metric-card" style="padding: 14px 18px;">
-                    <div>
-                        <div class="metric-label">Average Progress</div>
-                        <div class="metric-value" style="color: #22d3ee;" id="goals-avg-progress-val">68%</div>
-                        <div class="metric-sub">On target for Q4</div>
-                    </div>
-                </div>
-                <div class="dailyos-metric-card" style="padding: 14px 18px;">
-                    <div>
-                        <div class="metric-label">Linked Routines</div>
-                        <div class="metric-value" style="color: #fb923c;">5 Habits</div>
-                        <div class="metric-sub">Feeding goal execution</div>
-                    </div>
-                </div>
             </div>
-
-            <!-- Filter chips -->
-            <div style="display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap;" id="goal-category-filters">
-                <button class="btn btn-sm btn-secondary" onclick="window.filterGoalsList('all', this)" style="background: rgba(132, 204, 22, 0.12); color: var(--primary-bright); border-color: rgba(132, 204, 22, 0.3);">All Goals</button>
-                <button class="btn btn-sm btn-secondary" onclick="window.filterGoalsList('Fitness', this)">Fitness</button>
-                <button class="btn btn-sm btn-secondary" onclick="window.filterGoalsList('Career', this)">Career</button>
-                <button class="btn btn-sm btn-secondary" onclick="window.filterGoalsList('Learning', this)">Learning</button>
-                <button class="btn btn-sm btn-secondary" onclick="window.filterGoalsList('Personal', this)">Personal</button>
-            </div>
-
-            <!-- Goals Container -->
-            <div id="goals-list-container" style="display: flex; flex-direction: column; gap: 20px;">
-                <!-- Populated dynamically by JS -->
-            </div>
-        </div>
-    </main>
-
-    <!-- Mobile Bottom Navigation -->
-    <nav class="dailyos-mobile-nav">
-        <button onclick="window.goToPage('dashboard')" class="mobile-nav-btn">
-            <span class="nav-icon">⚡</span>
-            <span>Today</span>
-        </button>
-        <button onclick="window.goToPage('habits-library')" class="mobile-nav-btn">
-            <span class="nav-icon">🔁</span>
-            <span>Habits</span>
-        </button>
-        <button onclick="window.goToPage('timeline')" class="mobile-nav-btn">
-            <span class="nav-icon">📅</span>
-            <span>Planner</span>
-        </button>
-        <button onclick="window.goToPage('calendar')" class="mobile-nav-btn">
-            <span class="nav-icon">🗓️</span>
-            <span>Calendar</span>
-        </button>
-        <button onclick="window.goToPage('goals')" class="mobile-nav-btn active">
-            <span class="nav-icon">🎯</span>
-            <span>Goals</span>
-        </button>
-        <button onclick="window.goToPage('analytics')" class="mobile-nav-btn">
-            <span class="nav-icon">📊</span>
-            <span>Analytics</span>
-        </button>
-    </nav>
-</div>
-
-<!-- Modal: Create / Edit Goal -->
-<div id="goal-modal-overlay" class="dailyos-modal-overlay" style="display: none;" onclick="if(event.target === this) window.closeGoalModal()">
-    <div class="dailyos-modal" style="max-width: 580px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h2 id="goal-modal-title" style="font-size: 20px; font-weight: 800; color: #ffffff; margin: 0;">Define Strategic Goal</h2>
-            <button onclick="window.closeGoalModal()" style="background: transparent; border: none; color: var(--text-tertiary); font-size: 20px; cursor: pointer;">✕</button>
-        </div>
-
-        <div class="form-group">
-            <label class="form-label">Goal Title</label>
-            <input type="text" id="goal-title-input" class="form-control" placeholder="e.g. Master Athletic Fitness & Run 10K" autocomplete="off" />
-        </div>
-
-        <div class="form-group">
-            <label class="form-label">Description / Desired Outcome</label>
-            <textarea id="goal-desc-input" class="form-control" placeholder="Why does this goal matter and what is the target state?"></textarea>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
-            <div class="form-group">
-                <label class="form-label">Category</label>
-                <select id="goal-category-input" class="form-control">
-                    <option value="Fitness">Fitness</option>
-                    <option value="Career">Career</option>
-                    <option value="Learning">Learning</option>
-                    <option value="Personal">Personal</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Target Deadline</label>
-                <input type="date" id="goal-deadline-input" class="form-control" />
-            </div>
-        </div>
-
-        <!-- Milestones Builder -->
-        <div class="form-group">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <label class="form-label" style="margin: 0;">Actionable Milestones</label>
-                <button type="button" onclick="window.addGoalMilestoneInput()" class="btn btn-ghost btn-sm" style="padding: 2px 8px; font-size: 11px; color: var(--primary-bright);">+ Add Milestone</button>
-            </div>
-            <div id="goal-milestones-builder" style="display: flex; flex-direction: column; gap: 8px;">
-                <!-- Dynamically added -->
-            </div>
-        </div>
-
-        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px;">
-            <button onclick="window.closeGoalModal()" class="btn btn-secondary">Cancel</button>
-            <button onclick="window.saveGoal()" class="btn btn-primary">Save Goal</button>
         </div>
     </div>
 </div>

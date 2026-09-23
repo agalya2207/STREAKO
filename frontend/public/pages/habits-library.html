@@ -1,237 +1,116 @@
-<div class="page active dailyos-layout">
-    <!-- Desktop Sidebar -->
-    <aside class="dailyos-sidebar">
-        <div class="dailyos-logo-section" onclick="window.goToPage('dashboard')">
-            <div class="dailyos-logo-icon">⚡</div>
-            <div class="dailyos-logo-text">
-                <h2>Daily<span>OS</span></h2>
-                <p>Premium Productivity</p>
+<div class="page active" id="habits-library">
+    <div class="sidebar-layout">
+                <div class="sidebar">
+            <div class="sidebar-logo" onclick="app.router.navigate('/dashboard')">
+                <div class="sidebar-logo-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+                        <path d="M5 3v4"/>
+                        <path d="M19 17v4"/>
+                        <path d="M3 5h4"/>
+                        <path d="M17 19h4"/>
+                    </svg>
+                </div>
+                <div class="sidebar-logo-text">
+                    <span class="sidebar-logo-title">Streako<span>.ai</span></span>
+                    <span class="sidebar-logo-sub">PREMIUM PRODUCTIVITY</span>
+                </div>
             </div>
-        </div>
-
-        <nav class="dailyos-nav">
-            <button onclick="window.goToPage('dashboard')" class="dailyos-nav-item">
-                <span class="nav-icon">⚡</span>
-                <span>Today</span>
-                <span class="nav-badge" id="sidebar-streak-badge">🔥 14</span>
-            </button>
-            <button onclick="window.goToPage('habits-library')" class="dailyos-nav-item active">
-                <span class="nav-icon">🔁</span>
-                <span>Habits</span>
-            </button>
-            <button onclick="window.goToPage('timeline')" class="dailyos-nav-item">
-                <span class="nav-icon">📅</span>
-                <span>Planner</span>
-            </button>
-            <button onclick="window.goToPage('calendar')" class="dailyos-nav-item">
-                <span class="nav-icon">🗓️</span>
-                <span>Calendar</span>
-            </button>
-            <button onclick="window.goToPage('goals')" class="dailyos-nav-item">
-                <span class="nav-icon">🎯</span>
-                <span>Goals</span>
-            </button>
-            <button onclick="window.goToPage('analytics')" class="dailyos-nav-item">
-                <span class="nav-icon">📊</span>
-                <span>Analytics</span>
-            </button>
-            <button onclick="window.goToPage('journal')" class="dailyos-nav-item">
-                <span class="nav-icon">📝</span>
-                <span>Journal</span>
-            </button>
-            <button onclick="window.goToPage('settings')" class="dailyos-nav-item">
-                <span class="nav-icon">⚙️</span>
-                <span>Settings</span>
-            </button>
-        </nav>
-
-        <div class="dailyos-user-profile" onclick="window.goToPage('settings')">
-            <div class="dailyos-avatar" id="sidebar-avatar">AV</div>
-            <div class="dailyos-user-info">
-                <div class="dailyos-user-name" id="sidebar-name">Alex Vance</div>
-                <div class="dailyos-user-role" id="sidebar-role">Consistency: Elite</div>
+            <div class="sidebar-nav">
+                <div class="nav-item " onclick="app.router.navigate('/dashboard')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
+                    <span>Today</span>
+                </div>
+                <div class="nav-item active" onclick="app.router.navigate('/habits-library')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                    <span>Habits</span>
+                </div>
+                <div class="nav-item " onclick="app.router.navigate('/timeline')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <span>Planner</span>
+                </div>
+                <div class="nav-item " onclick="app.router.navigate('/calendar')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                    <span>Calendar</span>
+                </div>
+                <div class="nav-item " onclick="app.router.navigate('/goals')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                    <span>Goals</span>
+                </div>
+                <div class="nav-item " onclick="app.router.navigate('/analytics')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
+                    <span>Analytics</span>
+                </div>
+                <div class="nav-item " onclick="app.router.navigate('/journal')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    <span>Journal</span>
+                </div>
+                <div class="nav-item " onclick="app.router.navigate('/settings')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    <span>Settings</span>
+                </div>
             </div>
-            <span style="color: var(--text-tertiary); font-size: 14px;">⚙️</span>
-        </div>
-    </aside>
+            <div class="sidebar-profile">
+                <div class="profile-avatar" id="sidebar-avatar">AG</div>
+                <div class="profile-info" onclick="app.router.navigate('/settings')">
+                    <p id="sidebar-name">User</p>
+                    <p id="sidebar-email">user@email.com</p>
+                </div>
+                <button class="profile-action-btn" onclick="window.logout()" title="Log Out">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        <polyline points="16 17 21 12 16 7"/>
+                        <line x1="21" y1="12" x2="9" y2="12"/>
+                    </svg>
+                </button>
+            </div>
+        </div><!-- /#habit-modal-body -->
 
-    <!-- Mobile Header -->
-    <div class="dailyos-mobile-header">
-        <div style="display: flex; align-items: center; gap: 10px;" onclick="window.goToPage('dashboard')">
-            <div class="dailyos-logo-icon" style="width: 30px; height: 30px; font-size: 16px;">⚡</div>
-            <span style="font-weight: 800; font-size: 16px;">Daily<span style="color: var(--primary-bright);">OS</span></span>
-        </div>
-        <button onclick="window.openCreateHabitModal()" class="btn btn-primary btn-sm">+ New Routine</button>
+    <!-- ── FOOTER (pinned, never scrolls) ── -->
+    <div id="habit-modal-footer" style="
+        flex-shrink: 0;
+        padding: 14px 20px;
+        border-top: 1px solid rgba(255,255,255,0.09);
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        background: #1a1e2b;
+    ">
+      <button
+        onclick="window.closeHabitModal()"
+        style="background: transparent; border:1px solid #4a5568; color:#a0aec0; padding:8px 20px; border-radius:8px; cursor:pointer; font-size:14px; font-weight:500; transition: all 0.2s;"
+        onmouseover="this.style.background='rgba(255,255,255,0.06)'"
+        onmouseout="this.style.background='transparent'"
+      >Cancel</button>
+      <button
+        id="create-habit-btn"
+        onclick="window.createHabit()"
+        style="background: linear-gradient(135deg, #4F46E5, #7C3AED); border:none; color:#fff; padding:8px 20px; border-radius:8px; cursor:pointer; font-size:14px; font-weight:700; transition: opacity 0.2s;"
+        onmouseover="this.style.opacity='0.88'"
+        onmouseout="this.style.opacity='1'"
+      >Create Routine</button>
     </div>
 
-    <!-- Main Content -->
-    <main class="dailyos-main">
-        <!-- Top Bar -->
-        <header class="dailyos-topbar">
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <span class="badge badge-lime">Routine Hub</span>
-                <span style="color: var(--text-secondary); font-size: 13px;">Manage and configure your daily routines</span>
-            </div>
-            <button onclick="window.openCreateHabitModal()" class="btn btn-primary btn-sm">+ Define New Routine</button>
-        </header>
+  </div><!-- /#habit-modal -->
+</div><!-- /#habit-modal-overlay -->
 
-        <div class="dailyos-content">
-            <!-- Header Section -->
-            <div class="dailyos-page-header">
-                <div class="dailyos-page-title">
-                    <h1>Habit Management</h1>
-                    <p>Build lifelong consistency through structured routines, time blocking, and streak tracking.</p>
-                </div>
+<button class="btn btn-primary" onclick="window.openCreateHabitModal()">+ Create Habit</button>
+            <div id="habit-modal-container"></div>
             </div>
 
-            <!-- Stats Bar -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 24px;">
-                <div class="dailyos-metric-card" style="padding: 14px 18px;">
-                    <div>
-                        <div class="metric-label">Total Routines</div>
-                        <div class="metric-value" id="habits-total-count">6 Active</div>
-                    </div>
-                </div>
-                <div class="dailyos-metric-card" style="padding: 14px 18px;">
-                    <div>
-                        <div class="metric-label">Today's Completion</div>
-                        <div class="metric-value" style="color: var(--primary-bright);" id="habits-today-pct">67%</div>
-                    </div>
-                </div>
-                <div class="dailyos-metric-card" style="padding: 14px 18px;">
-                    <div>
-                        <div class="metric-label">Average Streak</div>
-                        <div class="metric-value" style="color: #fb923c;" id="habits-avg-streak">11.8 Days</div>
-                    </div>
-                </div>
-                <div class="dailyos-metric-card" style="padding: 14px 18px;">
-                    <div>
-                        <div class="metric-label">Consistency Level</div>
-                        <div class="metric-value" style="color: #22d3ee;">Top 5%</div>
-                    </div>
-                </div>
+            <div style="display: flex; gap: 12px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 8px;">
+                <div class="tag tag-primary" style="background: var(--primary); color: white; cursor: pointer;">All</div>
+                <div class="tag tag-primary" style="cursor: pointer;">&#x1F3CB;&#xFE0F; Fitness</div>
+                <div class="tag tag-primary" style="cursor: pointer;">&#x1F9E0; Learning</div>
+                <div class="tag tag-primary" style="cursor: pointer;">&#x1F4BC; Career</div>
+                <div class="tag tag-primary" style="cursor: pointer;">&#x1F49A; Health</div>
+                <div class="tag tag-primary" style="cursor: pointer;">&#x270D;&#xFE0F; Personal</div>
+                <div class="tag tag-primary" style="cursor: pointer;">&#x1F9D8; Mindfulness</div>
             </div>
 
-            <!-- Search & Filters -->
-            <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 24px; flex-wrap: wrap;">
-                <div style="display: flex; gap: 8px; flex-wrap: wrap;" id="habit-category-filters">
-                    <button class="btn btn-sm btn-secondary" onclick="window.filterHabitsList('all', this)" style="background: rgba(132, 204, 22, 0.12); color: var(--primary-bright); border-color: rgba(132, 204, 22, 0.3);">All Routines</button>
-                    <button class="btn btn-sm btn-secondary" onclick="window.filterHabitsList('Fitness', this)">Fitness</button>
-                    <button class="btn btn-sm btn-secondary" onclick="window.filterHabitsList('Mindfulness', this)">Mindfulness</button>
-                    <button class="btn btn-sm btn-secondary" onclick="window.filterHabitsList('Productivity', this)">Productivity</button>
-                    <button class="btn btn-sm btn-secondary" onclick="window.filterHabitsList('Health', this)">Health</button>
-                    <button class="btn btn-sm btn-secondary" onclick="window.filterHabitsList('Learning', this)">Learning</button>
-                </div>
-
-                <div style="position: relative; width: 240px;">
-                    <input type="text" id="habit-search-input" oninput="window.searchHabits(this.value)" placeholder="Search routines..." class="form-control" style="padding-left: 34px; height: 36px; font-size: 13px;" />
-                    <span style="position: absolute; left: 11px; top: 9px; color: var(--text-tertiary); font-size: 14px;">🔍</span>
-                </div>
+            <div class="habits-grid">
+                <!-- Dynamically populated by renderHabits() in main.js -->
             </div>
-
-            <!-- Habits Grid Container -->
-            <div id="habits-library-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px;">
-                <!-- Populated dynamically by JS -->
-            </div>
-        </div>
-    </main>
-
-    <!-- Mobile Bottom Navigation -->
-    <nav class="dailyos-mobile-nav">
-        <button onclick="window.goToPage('dashboard')" class="mobile-nav-btn">
-            <span class="nav-icon">⚡</span>
-            <span>Today</span>
-        </button>
-        <button onclick="window.goToPage('habits-library')" class="mobile-nav-btn active">
-            <span class="nav-icon">🔁</span>
-            <span>Habits</span>
-        </button>
-        <button onclick="window.goToPage('timeline')" class="mobile-nav-btn">
-            <span class="nav-icon">📅</span>
-            <span>Planner</span>
-        </button>
-        <button onclick="window.goToPage('calendar')" class="mobile-nav-btn">
-            <span class="nav-icon">🗓️</span>
-            <span>Calendar</span>
-        </button>
-        <button onclick="window.goToPage('goals')" class="mobile-nav-btn">
-            <span class="nav-icon">🎯</span>
-            <span>Goals</span>
-        </button>
-        <button onclick="window.goToPage('analytics')" class="mobile-nav-btn">
-            <span class="nav-icon">📊</span>
-            <span>Analytics</span>
-        </button>
-    </nav>
-</div>
-
-<!-- Reused Habit Modal from Global Script -->
-<div id="habit-modal-overlay" class="dailyos-modal-overlay" style="display: none;" onclick="if(event.target === this) window.closeHabitModal()">
-    <div class="dailyos-modal">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h2 id="habit-modal-title" style="font-size: 20px; font-weight: 800; color: #ffffff; margin: 0;">Define New Routine</h2>
-            <button onclick="window.closeHabitModal()" style="background: transparent; border: none; color: var(--text-tertiary); font-size: 20px; cursor: pointer;">✕</button>
-        </div>
-
-        <div class="form-group">
-            <label class="form-label">Habit Name</label>
-            <input type="text" id="habit-name" class="form-control" placeholder="e.g. Morning Workout, Deep Reading" autocomplete="off" />
-        </div>
-
-        <div class="form-group">
-            <label class="form-label">Description / Intention</label>
-            <input type="text" id="habit-desc" class="form-control" placeholder="e.g. 30 min strength training" />
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
-            <div class="form-group">
-                <label class="form-label">Category</label>
-                <select id="habit-category" class="form-control">
-                    <option value="Productivity">Productivity</option>
-                    <option value="Fitness">Fitness</option>
-                    <option value="Mindfulness">Mindfulness</option>
-                    <option value="Health">Health</option>
-                    <option value="Learning">Learning</option>
-                    <option value="Personal">Personal</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Daily Target (Sessions)</label>
-                <input type="number" id="habit-target" class="form-control" min="1" max="10" value="1" />
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="form-label">Time Schedule</label>
-            <div id="habit-sessions-container" style="display: flex; flex-direction: column; gap: 8px;"></div>
-        </div>
-
-        <div class="form-group">
-            <label class="form-label">Routine Icon & Color</label>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px;">
-                <button type="button" class="btn btn-secondary btn-sm icon-btn" data-icon="💪">💪</button>
-                <button type="button" class="btn btn-secondary btn-sm icon-btn" data-icon="🧘">🧘</button>
-                <button type="button" class="btn btn-secondary btn-sm icon-btn" data-icon="⚡">⚡</button>
-                <button type="button" class="btn btn-secondary btn-sm icon-btn" data-icon="💧">💧</button>
-                <button type="button" class="btn btn-secondary btn-sm icon-btn" data-icon="📚">📚</button>
-                <button type="button" class="btn btn-secondary btn-sm icon-btn" data-icon="✍️">✍️</button>
-                <button type="button" class="btn btn-secondary btn-sm icon-btn" data-icon="🌙">🌙</button>
-                <button type="button" class="btn btn-secondary btn-sm icon-btn" data-icon="🎯">🎯</button>
-            </div>
-            <div style="display: flex; gap: 10px; align-items: center;">
-                <div class="color-swatch" data-color="#84cc16" style="width: 26px; height: 26px; border-radius: 6px; background: #84cc16; cursor: pointer;"></div>
-                <div class="color-swatch" data-color="#06b6d4" style="width: 26px; height: 26px; border-radius: 6px; background: #06b6d4; cursor: pointer;"></div>
-                <div class="color-swatch" data-color="#a855f7" style="width: 26px; height: 26px; border-radius: 6px; background: #a855f7; cursor: pointer;"></div>
-                <div class="color-swatch" data-color="#3b82f6" style="width: 26px; height: 26px; border-radius: 6px; background: #3b82f6; cursor: pointer;"></div>
-                <div class="color-swatch" data-color="#f59e0b" style="width: 26px; height: 26px; border-radius: 6px; background: #f59e0b; cursor: pointer;"></div>
-                <div class="color-swatch" data-color="#f43f5e" style="width: 26px; height: 26px; border-radius: 6px; background: #f43f5e; cursor: pointer;"></div>
-            </div>
-        </div>
-
-        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px;">
-            <button onclick="window.closeHabitModal()" class="btn btn-secondary">Cancel</button>
-            <button id="create-habit-btn" onclick="window.createHabit()" class="btn btn-primary">Create Routine</button>
         </div>
     </div>
 </div>
