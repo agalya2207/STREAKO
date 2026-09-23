@@ -1,123 +1,281 @@
-<div class="page active" id="settings">
-    <div class="sidebar-layout">
-                <div class="sidebar">
-            <div class="sidebar-logo" onclick="app.router.navigate('/dashboard')">
-                <div class="sidebar-logo-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
-                        <path d="M5 3v4"/>
-                        <path d="M19 17v4"/>
-                        <path d="M3 5h4"/>
-                        <path d="M17 19h4"/>
-                    </svg>
-                </div>
-                <div class="sidebar-logo-text">
-                    <span class="sidebar-logo-title">Streako<span>.ai</span></span>
-                    <span class="sidebar-logo-sub">PREMIUM PRODUCTIVITY</span>
-                </div>
-            </div>
-            <div class="sidebar-nav">
-                <div class="nav-item " onclick="app.router.navigate('/dashboard')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
-                    <span>Today</span>
-                </div>
-                <div class="nav-item " onclick="app.router.navigate('/habits-library')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                    <span>Habits</span>
-                </div>
-                <div class="nav-item " onclick="app.router.navigate('/timeline')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                    <span>Planner</span>
-                </div>
-                <div class="nav-item " onclick="app.router.navigate('/calendar')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
-                    <span>Calendar</span>
-                </div>
-                <div class="nav-item " onclick="app.router.navigate('/goals')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-                    <span>Goals</span>
-                </div>
-                <div class="nav-item " onclick="app.router.navigate('/analytics')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
-                    <span>Analytics</span>
-                </div>
-                <div class="nav-item " onclick="app.router.navigate('/journal')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-                    <span>Journal</span>
-                </div>
-                <div class="nav-item active" onclick="app.router.navigate('/settings')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                    <span>Settings</span>
-                </div>
-            </div>
-            <div class="sidebar-profile">
-                <div class="profile-avatar" id="sidebar-avatar">AG</div>
-                <div class="profile-info" onclick="app.router.navigate('/settings')">
-                    <p id="sidebar-name">User</p>
-                    <p id="sidebar-email">user@email.com</p>
-                </div>
-                <button class="profile-action-btn" onclick="window.logout()" title="Log Out">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                        <polyline points="16 17 21 12 16 7"/>
-                        <line x1="21" y1="12" x2="9" y2="12"/>
-                    </svg>
-                </button>
+<div class="page active dailyos-layout">
+    <!-- Desktop Sidebar -->
+    <aside class="dailyos-sidebar">
+        <div class="dailyos-logo-section" onclick="window.goToPage('dashboard')">
+            <div class="dailyos-logo-icon">⚡</div>
+            <div class="dailyos-logo-text">
+                <h2>Daily<span>OS</span></h2>
+                <p>Premium Productivity</p>
             </div>
         </div>
 
-                <!-- NOTIFICATIONS -->
-                <div class="card">
-                    <h2 style="font-size: 16px; font-weight: 600; margin-bottom: 20px;">Notification & Reminders</h2>
-                    
-                    <div style="margin-bottom: 20px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                            <span>Morning Intentions Planning</span>
-                            <input type="checkbox" checked style="width: 20px; height: 20px; cursor: pointer;">
-                        </div>
-                        <input type="time" class="input-field" value="06:00">
-                    </div>
+        <nav class="dailyos-nav">
+            <button onclick="window.goToPage('dashboard')" class="dailyos-nav-item">
+                <span class="nav-icon">⚡</span>
+                <span>Today</span>
+                <span class="nav-badge" id="sidebar-streak-badge">🔥 14</span>
+            </button>
+            <button onclick="window.goToPage('habits-library')" class="dailyos-nav-item">
+                <span class="nav-icon">🔁</span>
+                <span>Habits</span>
+            </button>
+            <button onclick="window.goToPage('timeline')" class="dailyos-nav-item">
+                <span class="nav-icon">📅</span>
+                <span>Planner</span>
+            </button>
+            <button onclick="window.goToPage('calendar')" class="dailyos-nav-item">
+                <span class="nav-icon">🗓️</span>
+                <span>Calendar</span>
+            </button>
+            <button onclick="window.goToPage('goals')" class="dailyos-nav-item">
+                <span class="nav-icon">🎯</span>
+                <span>Goals</span>
+            </button>
+            <button onclick="window.goToPage('analytics')" class="dailyos-nav-item">
+                <span class="nav-icon">📊</span>
+                <span>Analytics</span>
+            </button>
+            <button onclick="window.goToPage('journal')" class="dailyos-nav-item">
+                <span class="nav-icon">📝</span>
+                <span>Journal</span>
+            </button>
+            <button onclick="window.goToPage('settings')" class="dailyos-nav-item active">
+                <span class="nav-icon">⚙️</span>
+                <span>Settings</span>
+            </button>
+        </nav>
 
-                    <div style="margin-bottom: 20px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                            <span>Habit Completion Reminder</span>
-                            <input type="checkbox" checked style="width: 20px; height: 20px; cursor: pointer;">
-                        </div>
-                        <input type="time" class="input-field" value="09:00">
-                    </div>
-
-                    <div style="margin-bottom: 20px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span>Evening Reflection Reminder</span>
-                            <input type="checkbox" checked style="width: 20px; height: 20px; cursor: pointer;">
-                        </div>
-                        <input type="time" class="input-field" value="21:00">
-                    </div>
-
-                    <div>
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span>Streak Break Alerts</span>
-                            <input type="checkbox" checked style="width: 20px; height: 20px; cursor: pointer;">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- MENTOR SETTINGS -->
-                <div class="card">
-                    <h2 style="font-size: 16px; font-weight: 600; margin-bottom: 20px;">Mentors & Students</h2>
-                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 16px;">Manage your connections with mentors and students.</p>
-                    
-                    <div style="padding: 12px; background: rgba(47, 143, 255, 0.1); border-radius: 10px; display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <div style="font-size: 13px; font-weight: 600;">Sarah Johnson (Mentor)</div>
-                            <div style="font-size: 11px; color: var(--text-secondary);">sarah@email.com</div>
-                        </div>
-                        <button class="btn-ghost" style="padding: 4px 12px; font-size: 12px;" onclick="window.showNotification('Coming soon!', 'info')">✕</button>
-                    </div>
-                </div>
-
-                <button class="btn btn-primary" style="width: 200px;" onclick="window.showNotification('Coming soon!', 'info')">Save Changes</button>
+        <div class="dailyos-user-profile" onclick="window.goToPage('settings')">
+            <div class="dailyos-avatar" id="sidebar-avatar">AV</div>
+            <div class="dailyos-user-info">
+                <div class="dailyos-user-name" id="sidebar-name">Alex Vance</div>
+                <div class="dailyos-user-role" id="sidebar-role">Consistency: Elite</div>
             </div>
+            <span style="color: var(--text-tertiary); font-size: 14px;">⚙️</span>
         </div>
+    </aside>
+
+    <!-- Mobile Header -->
+    <div class="dailyos-mobile-header">
+        <div style="display: flex; align-items: center; gap: 10px;" onclick="window.goToPage('dashboard')">
+            <div class="dailyos-logo-icon" style="width: 30px; height: 30px; font-size: 16px;">⚡</div>
+            <span style="font-weight: 800; font-size: 16px;">Daily<span style="color: var(--primary-bright);">OS</span></span>
+        </div>
+        <button onclick="window.saveSettingsForm()" class="btn btn-primary btn-sm">Save</button>
     </div>
+
+    <!-- Main Content -->
+    <main class="dailyos-main">
+        <!-- Top Bar -->
+        <header class="dailyos-topbar">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <span class="badge badge-gray">System Preferences</span>
+                <span style="color: var(--text-secondary); font-size: 13px;">Manage profile, theme appearance, notifications, and data backups</span>
+            </div>
+            <button onclick="window.saveSettingsForm()" class="btn btn-primary btn-sm">Save Preferences</button>
+        </header>
+
+        <div class="dailyos-content" style="max-width: 860px;">
+            <!-- Header Section -->
+            <div class="dailyos-page-header">
+                <div class="dailyos-page-title">
+                    <h1>System Settings</h1>
+                    <p>Configure profile, timezone reminders, theme preferences, and data backups.</p>
+                </div>
+            </div>
+
+            <form id="settings-form" onsubmit="event.preventDefault(); window.saveSettingsForm();" style="display: flex; flex-direction: column; gap: 24px;">
+                <!-- 1. Profile Details Card -->
+                <div class="dailyos-card">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                        <span style="font-size: 18px; color: var(--primary-bright);">👤</span>
+                        <h3 style="font-size: 16px; font-weight: 800; color: #ffffff; margin: 0;">Profile Details</h3>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div class="form-group">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" id="settings-name" class="form-control" value="Alex Vance" required />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" id="settings-email" class="form-control" value="alex.vance@dailyos.app" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Role / Daily Focus Tagline</label>
+                        <input type="text" id="settings-role" class="form-control" value="Product Designer & Athlete" />
+                    </div>
+                </div>
+
+                <!-- 2. Appearance & Accent Color -->
+                <div class="dailyos-card">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                        <span style="font-size: 18px; color: var(--primary-bright);">🎨</span>
+                        <h3 style="font-size: 16px; font-weight: 800; color: #ffffff; margin: 0;">Appearance & Themes</h3>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Color Theme</label>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+                            <label style="border: 1px solid var(--primary-border); background: rgba(132, 204, 22, 0.08); padding: 14px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 10px;">
+                                <input type="radio" name="appearance_theme" value="obsidian" checked style="accent-color: var(--primary);" />
+                                <div>
+                                    <div style="font-size: 13px; font-weight: 700; color: #ffffff;">Dark Obsidian</div>
+                                    <div style="font-size: 11px; color: var(--text-tertiary);">Deep slate aesthetic</div>
+                                </div>
+                            </label>
+                            <label style="border: 1px solid #27272a; background: #141417; padding: 14px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 10px;">
+                                <input type="radio" name="appearance_theme" value="midnight" style="accent-color: var(--primary);" />
+                                <div>
+                                    <div style="font-size: 13px; font-weight: 700; color: #ffffff;">Midnight Blue</div>
+                                    <div style="font-size: 11px; color: var(--text-tertiary);">Subtle navy tones</div>
+                                </div>
+                            </label>
+                            <label style="border: 1px solid #27272a; background: #141417; padding: 14px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 10px;">
+                                <input type="radio" name="appearance_theme" value="oled" style="accent-color: var(--primary);" />
+                                <div>
+                                    <div style="font-size: 13px; font-weight: 700; color: #ffffff;">OLED Black</div>
+                                    <div style="font-size: 11px; color: var(--text-tertiary);">Pure pitch black</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 14px;">
+                        <label class="form-label">Brand Accent Color</label>
+                        <div style="display: flex; gap: 14px; align-items: center;">
+                            <div onclick="window.setAccentColor('lime')" style="width: 34px; height: 34px; border-radius: 8px; background: #84cc16; cursor: pointer; box-shadow: 0 0 10px rgba(132, 204, 22, 0.4); border: 2px solid #ffffff;"></div>
+                            <div onclick="window.setAccentColor('cyan')" style="width: 34px; height: 34px; border-radius: 8px; background: #06b6d4; cursor: pointer;"></div>
+                            <div onclick="window.setAccentColor('purple')" style="width: 34px; height: 34px; border-radius: 8px; background: #a855f7; cursor: pointer;"></div>
+                            <div onclick="window.setAccentColor('amber')" style="width: 34px; height: 34px; border-radius: 8px; background: #f59e0b; cursor: pointer;"></div>
+                            <div onclick="window.setAccentColor('rose')" style="width: 34px; height: 34px; border-radius: 8px; background: #f43f5e; cursor: pointer;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Regional & Preferences -->
+                <div class="dailyos-card">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                        <span style="font-size: 18px; color: var(--primary-bright);">🌐</span>
+                        <h3 style="font-size: 16px; font-weight: 800; color: #ffffff; margin: 0;">Regional & Time Preferences</h3>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div class="form-group">
+                            <label class="form-label">Timezone</label>
+                            <select id="settings-timezone" class="form-control">
+                                <option value="Asia/Kolkata">UTC+05:30 (India Standard Time)</option>
+                                <option value="America/New_York">UTC-05:00 (Eastern Time)</option>
+                                <option value="America/Los_Angeles">UTC-08:00 (Pacific Time)</option>
+                                <option value="Europe/London">UTC+00:00 (London GMT)</option>
+                                <option value="Asia/Singapore">UTC+08:00 (Singapore / HK)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">First Day of the Week</label>
+                            <select id="settings-weekstart" class="form-control">
+                                <option value="Monday" selected>Monday</option>
+                                <option value="Sunday">Sunday</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Smart Reminders -->
+                <div class="dailyos-card">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                        <span style="font-size: 18px; color: var(--primary-bright);">🔔</span>
+                        <h3 style="font-size: 16px; font-weight: 800; color: #ffffff; margin: 0;">Reminders & Alerts</h3>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 14px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: #141417; padding: 12px 16px; border-radius: 12px; border: 1px solid #27272a;">
+                            <div>
+                                <div style="font-size: 14px; font-weight: 700; color: #ffffff;">🌅 Morning Intention Notification</div>
+                                <div style="font-size: 12px; color: var(--text-tertiary);">Prompt to lock in top 3 priorities at 07:30 AM</div>
+                            </div>
+                            <input type="checkbox" id="settings-notify-morning" checked style="width: 20px; height: 20px; accent-color: var(--primary);" />
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: #141417; padding: 12px 16px; border-radius: 12px; border: 1px solid #27272a;">
+                            <div>
+                                <div style="font-size: 14px; font-weight: 700; color: #ffffff;">🌙 Evening Reflection Review</div>
+                                <div style="font-size: 12px; color: var(--text-tertiary);">Prompt to review daily wins and gratitude at 09:30 PM</div>
+                            </div>
+                            <input type="checkbox" id="settings-notify-evening" checked style="width: 20px; height: 20px; accent-color: var(--primary);" />
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: #141417; padding: 12px 16px; border-radius: 12px; border: 1px solid #27272a;">
+                            <div>
+                                <div style="font-size: 14px; font-weight: 700; color: #ffffff;">🛡️ Streak Protection Alert</div>
+                                <div style="font-size: 12px; color: var(--text-tertiary);">Alert before midnight if habits are uncompleted</div>
+                            </div>
+                            <input type="checkbox" id="settings-notify-streak" checked style="width: 20px; height: 20px; accent-color: var(--primary);" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Data Management & Backups -->
+                <div class="dailyos-card">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                        <span style="font-size: 18px; color: var(--primary-bright);">💾</span>
+                        <h3 style="font-size: 16px; font-weight: 800; color: #ffffff; margin: 0;">Data Management & Backups</h3>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                        <button type="button" onclick="window.exportDailyOSData()" class="btn btn-secondary" style="padding: 14px;">
+                            <span>📥 Export Full JSON Backup</span>
+                        </button>
+
+                        <button type="button" onclick="document.getElementById('import-file-input').click()" class="btn btn-secondary" style="padding: 14px;">
+                            <span>📤 Import Data Backup</span>
+                        </button>
+                        <input type="file" id="import-file-input" style="display: none;" accept=".json" onchange="window.importDailyOSData(event)" />
+                    </div>
+
+                    <div style="display: flex; gap: 14px; margin-top: 14px;">
+                        <button type="button" onclick="window.resetDailyOSDemoData()" class="btn btn-ghost btn-sm" style="color: var(--primary-bright);">🔄 Reload Demo Dataset</button>
+                        <button type="button" onclick="window.clearAllDailyOSData()" class="btn btn-danger btn-sm">🗑️ Clear All User Data</button>
+                    </div>
+                </div>
+
+                <!-- Save & Logout -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                    <button type="button" onclick="window.logout()" class="btn btn-danger">Sign Out 🚪</button>
+                    <button type="submit" class="btn btn-primary btn-lg">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="dailyos-mobile-nav">
+        <button onclick="window.goToPage('dashboard')" class="mobile-nav-btn">
+            <span class="nav-icon">⚡</span>
+            <span>Today</span>
+        </button>
+        <button onclick="window.goToPage('habits-library')" class="mobile-nav-btn">
+            <span class="nav-icon">🔁</span>
+            <span>Habits</span>
+        </button>
+        <button onclick="window.goToPage('timeline')" class="mobile-nav-btn">
+            <span class="nav-icon">📅</span>
+            <span>Planner</span>
+        </button>
+        <button onclick="window.goToPage('calendar')" class="mobile-nav-btn">
+            <span class="nav-icon">🗓️</span>
+            <span>Calendar</span>
+        </button>
+        <button onclick="window.goToPage('goals')" class="mobile-nav-btn">
+            <span class="nav-icon">🎯</span>
+            <span>Goals</span>
+        </button>
+        <button onclick="window.goToPage('analytics')" class="mobile-nav-btn">
+            <span class="nav-icon">📊</span>
+            <span>Analytics</span>
+        </button>
+    </nav>
 </div>

@@ -1,140 +1,256 @@
-<div class="page active" id="timeline">
-    <div class="sidebar-layout">
-                <div class="sidebar">
-            <div class="sidebar-logo" onclick="app.router.navigate('/dashboard')">
-                <div class="sidebar-logo-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
-                        <path d="M5 3v4"/>
-                        <path d="M19 17v4"/>
-                        <path d="M3 5h4"/>
-                        <path d="M17 19h4"/>
-                    </svg>
-                </div>
-                <div class="sidebar-logo-text">
-                    <span class="sidebar-logo-title">Streako<span>.ai</span></span>
-                    <span class="sidebar-logo-sub">PREMIUM PRODUCTIVITY</span>
-                </div>
-            </div>
-            <div class="sidebar-nav">
-                <div class="nav-item " onclick="app.router.navigate('/dashboard')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
-                    <span>Today</span>
-                </div>
-                <div class="nav-item " onclick="app.router.navigate('/habits-library')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                    <span>Habits</span>
-                </div>
-                <div class="nav-item active" onclick="app.router.navigate('/timeline')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                    <span>Planner</span>
-                </div>
-                <div class="nav-item " onclick="app.router.navigate('/calendar')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
-                    <span>Calendar</span>
-                </div>
-                <div class="nav-item " onclick="app.router.navigate('/goals')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-                    <span>Goals</span>
-                </div>
-                <div class="nav-item " onclick="app.router.navigate('/analytics')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
-                    <span>Analytics</span>
-                </div>
-                <div class="nav-item " onclick="app.router.navigate('/journal')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-                    <span>Journal</span>
-                </div>
-                <div class="nav-item " onclick="app.router.navigate('/settings')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                    <span>Settings</span>
-                </div>
-            </div>
-            <div class="sidebar-profile">
-                <div class="profile-avatar" id="sidebar-avatar">AG</div>
-                <div class="profile-info" onclick="app.router.navigate('/settings')">
-                    <p id="sidebar-name">User</p>
-                    <p id="sidebar-email">user@email.com</p>
-                </div>
-                <button class="profile-action-btn" onclick="window.logout()" title="Log Out">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                        <polyline points="16 17 21 12 16 7"/>
-                        <line x1="21" y1="12" x2="9" y2="12"/>
-                    </svg>
-                </button>
+<div class="page active dailyos-layout">
+    <!-- Desktop Sidebar -->
+    <aside class="dailyos-sidebar">
+        <div class="dailyos-logo-section" onclick="window.goToPage('dashboard')">
+            <div class="dailyos-logo-icon">⚡</div>
+            <div class="dailyos-logo-text">
+                <h2>Daily<span>OS</span></h2>
+                <p>Premium Productivity</p>
             </div>
         </div>
-                        </div>
 
-                        <div style="padding: 16px; background: var(--bg-card); border-radius: 12px; border-left: 4px solid var(--accent-orange);">
-                            <div style="display: flex; gap: 12px; align-items: start;">
-                                <input type="checkbox" style="cursor: pointer; margin-top: 4px;">
-                                <div style="flex: 1;">
-                                    <div style="font-weight: 600; margin-bottom: 4px;">Work on project X</div>
-                                    <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">Dashboard design review</div>
-                                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                                        <span class="tag tag-warning">In Progress</span>
-                                        <span class="tag tag-primary">HIGH</span>
-                                        <span class="tag tag-warning">TOP 3</span>
-                                        <span style="font-size: 11px; color: var(--text-secondary);">⏱️ 2h 30m</span>
-                                    </div>
-                                </div>
+        <nav class="dailyos-nav">
+            <button onclick="window.goToPage('dashboard')" class="dailyos-nav-item">
+                <span class="nav-icon">⚡</span>
+                <span>Today</span>
+                <span class="nav-badge" id="sidebar-streak-badge">🔥 14</span>
+            </button>
+            <button onclick="window.goToPage('habits-library')" class="dailyos-nav-item">
+                <span class="nav-icon">🔁</span>
+                <span>Habits</span>
+            </button>
+            <button onclick="window.goToPage('timeline')" class="dailyos-nav-item active">
+                <span class="nav-icon">📅</span>
+                <span>Planner</span>
+            </button>
+            <button onclick="window.goToPage('calendar')" class="dailyos-nav-item">
+                <span class="nav-icon">🗓️</span>
+                <span>Calendar</span>
+            </button>
+            <button onclick="window.goToPage('goals')" class="dailyos-nav-item">
+                <span class="nav-icon">🎯</span>
+                <span>Goals</span>
+            </button>
+            <button onclick="window.goToPage('analytics')" class="dailyos-nav-item">
+                <span class="nav-icon">📊</span>
+                <span>Analytics</span>
+            </button>
+            <button onclick="window.goToPage('journal')" class="dailyos-nav-item">
+                <span class="nav-icon">📝</span>
+                <span>Journal</span>
+            </button>
+            <button onclick="window.goToPage('settings')" class="dailyos-nav-item">
+                <span class="nav-icon">⚙️</span>
+                <span>Settings</span>
+            </button>
+        </nav>
+
+        <div class="dailyos-user-profile" onclick="window.goToPage('settings')">
+            <div class="dailyos-avatar" id="sidebar-avatar">AV</div>
+            <div class="dailyos-user-info">
+                <div class="dailyos-user-name" id="sidebar-name">Alex Vance</div>
+                <div class="dailyos-user-role" id="sidebar-role">Consistency: Elite</div>
+            </div>
+            <span style="color: var(--text-tertiary); font-size: 14px;">⚙️</span>
+        </div>
+    </aside>
+
+    <!-- Mobile Header -->
+    <div class="dailyos-mobile-header">
+        <div style="display: flex; align-items: center; gap: 10px;" onclick="window.goToPage('dashboard')">
+            <div class="dailyos-logo-icon" style="width: 30px; height: 30px; font-size: 16px;">⚡</div>
+            <span style="font-weight: 800; font-size: 16px;">Daily<span style="color: var(--primary-bright);">OS</span></span>
+        </div>
+        <button onclick="window.openCreateTaskModal()" class="btn btn-primary btn-sm">+ Task</button>
+    </div>
+
+    <!-- Main Content -->
+    <main class="dailyos-main">
+        <!-- Top Bar -->
+        <header class="dailyos-topbar">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <span class="badge badge-lime">Daily Planner</span>
+                <span style="color: var(--text-secondary); font-size: 13px;">Time-blocking & Deep Work Sprints</span>
+            </div>
+            <button onclick="window.openCreateTaskModal()" class="btn btn-primary btn-sm">+ Add Planned Task</button>
+        </header>
+
+        <div class="dailyos-content">
+            <!-- Header Section with Date Navigator -->
+            <div class="dailyos-page-header">
+                <div class="dailyos-page-title">
+                    <h1>Time-Blocked Planner</h1>
+                    <p>Design your daily timeline, isolate high-leverage priorities, and execute with deep focus.</p>
+                </div>
+
+                <!-- Date Navigator Bar -->
+                <div style="display: flex; align-items: center; gap: 10px; background: #121214; border: 1px solid #27272a; padding: 6px 12px; border-radius: 12px;">
+                    <button onclick="window.changePlannerDate(-1)" class="btn btn-ghost btn-sm">◀ Prev</button>
+                    <span id="planner-current-date-label" style="font-weight: 700; font-size: 14px; color: #ffffff; min-width: 140px; text-align: center;">Today, Sep 23</span>
+                    <button onclick="window.changePlannerDate(1)" class="btn btn-ghost btn-sm">Next ▶</button>
+                    <button onclick="window.setPlannerToday()" class="btn btn-accent-glow btn-sm">Today</button>
+                </div>
+            </div>
+
+            <!-- 2-Column Planner Grid -->
+            <div style="display: grid; grid-template-columns: 360px 1fr; gap: 24px; align-items: start;" class="planner-main-grid">
+                <!-- Left Column: Focus Timer & Top 3 Priorities & Task List -->
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    <!-- Focus Pomodoro Timer Widget -->
+                    <div class="dailyos-card" style="background: linear-gradient(135deg, rgba(132, 204, 22, 0.06) 0%, rgba(18, 18, 20, 0.9) 100%); border-color: rgba(132, 204, 22, 0.25);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="font-size: 16px;">⏱️</span>
+                                <span style="font-size: 14px; font-weight: 700; color: #ffffff;">Deep Work Focus Timer</span>
+                            </div>
+                            <div style="display: flex; gap: 6px;">
+                                <button onclick="window.setTimerMode(25)" class="btn btn-ghost btn-sm timer-mode-btn active" style="padding: 3px 8px; font-size: 11px;">25m</button>
+                                <button onclick="window.setTimerMode(50)" class="btn btn-ghost btn-sm timer-mode-btn" style="padding: 3px 8px; font-size: 11px;">50m</button>
+                                <button onclick="window.setTimerMode(5)" class="btn btn-ghost btn-sm timer-mode-btn" style="padding: 3px 8px; font-size: 11px;">Break</button>
                             </div>
                         </div>
 
-                        <div style="padding: 16px; background: var(--bg-card); border-radius: 12px; border-left: 4px solid var(--accent-green);">
-                            <div style="display: flex; gap: 12px; align-items: start;">
-                                <input type="checkbox" style="cursor: pointer; margin-top: 4px;">
-                                <div style="flex: 1;">
-                                    <div style="font-weight: 600; margin-bottom: 4px;">Read 20 pages</div>
-                                    <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">Atomic Habits - Part 2</div>
-                                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                                        <span class="tag" style="background: rgba(160, 160, 176, 0.2); color: var(--text-secondary);">Not Started</span>
-                                        <span class="tag tag-primary">MEDIUM</span>
-                                        <span style="font-size: 11px; color: var(--text-secondary);">⏱️ 45 min</span>
-                                    </div>
-                                </div>
-                            </div>
+                        <!-- Timer Display -->
+                        <div style="text-align: center; padding: 16px 0;">
+                            <div id="focus-timer-display" style="font-size: 46px; font-weight: 900; letter-spacing: 0.04em; color: var(--primary-bright); font-family: var(--font-mono); line-height: 1;">25:00</div>
+                            <div style="font-size: 12px; color: var(--text-tertiary); margin-top: 6px;" id="focus-timer-session-label">Session #3 • Sprint in progress</div>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; justify-content: center; margin-top: 8px;">
+                            <button id="timer-toggle-btn" onclick="window.toggleFocusTimer()" class="btn btn-primary btn-sm" style="min-width: 100px;">▶ Start Sprint</button>
+                            <button onclick="window.resetFocusTimer()" class="btn btn-secondary btn-sm">Reset</button>
+                        </div>
+                    </div>
+
+                    <!-- Top 3 Priorities -->
+                    <div class="dailyos-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                            <h3 style="font-size: 15px; font-weight: 700; color: #ffffff; margin: 0;">Top 3 Day Anchors</h3>
+                            <button onclick="window.startAddingPriority()" class="btn btn-ghost btn-sm" style="color: var(--primary-bright);">+ Add</button>
+                        </div>
+                        <div id="priorities-container" style="display: flex; flex-direction: column; gap: 10px;">
+                            <!-- Handled by global priorities logic -->
+                        </div>
+                    </div>
+
+                    <!-- Task Quick List -->
+                    <div class="dailyos-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                            <h3 style="font-size: 15px; font-weight: 700; color: #ffffff; margin: 0;">Planned Tasks</h3>
+                            <button onclick="window.openCreateTaskModal()" class="btn btn-ghost btn-sm" style="color: var(--primary-bright);">+ Add Task</button>
+                        </div>
+                        <div id="planner-task-list-container" style="display: flex; flex-direction: column; gap: 8px;">
+                            <!-- Populated by JS -->
                         </div>
                     </div>
                 </div>
 
-                <div>
-                    <h3 style="margin-bottom: 16px;">Time Blocking Planner</h3>
-                    <div style="display: flex; flex-direction: column; gap: 8px;">
-                        <div style="padding: 12px; background: var(--bg-card); border-left: 4px solid var(--primary); border-radius: 8px;">
-                            <div style="font-size: 12px; color: var(--text-secondary);">5:00 AM</div>
-                            <div style="font-weight: 600; font-size: 13px;">🧘 Meditation</div>
+                <!-- Right Column: 24-Hour Time-Blocking Grid -->
+                <div class="dailyos-card" style="padding: 24px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <div>
+                            <h3 style="font-size: 17px; font-weight: 800; color: #ffffff; margin: 0;">Hourly Timeline</h3>
+                            <p style="font-size: 13px; color: var(--text-secondary); margin: 2px 0 0 0;">Click on any hour slot to schedule a deep work block</p>
                         </div>
-                        <div style="padding: 12px; background: var(--bg-card); border-left: 4px solid var(--primary); border-radius: 8px;">
-                            <div style="font-size: 12px; color: var(--text-secondary);">5:20 AM - 6:00 AM</div>
-                            <div style="font-weight: 600; font-size: 13px;">💪 Workout</div>
-                            <span class="tag tag-primary" style="margin-top: 4px;">Fitness</span>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <span class="badge badge-purple">Career</span>
+                            <span class="badge badge-lime">Productivity</span>
+                            <span class="badge badge-orange">Fitness</span>
                         </div>
-                        <div style="padding: 12px; background: var(--bg-card); border-left: 4px solid var(--accent-orange); border-radius: 8px;">
-                            <div style="font-size: 12px; color: var(--text-secondary);">9:00 AM - 5:00 PM</div>
-                            <div style="font-weight: 600; font-size: 13px;">💼 Work</div>
-                            <span class="tag tag-warning" style="margin-top: 4px;">Career</span>
-                        </div>
-                        <div style="padding: 12px; background: var(--bg-card); border-left: 4px solid var(--accent-green); border-radius: 8px;">
-                            <div style="font-size: 12px; color: var(--text-secondary);">7:00 PM - 7:30 PM</div>
-                            <div style="font-weight: 600; font-size: 13px;">🧘 Yoga</div>
-                            <span class="tag tag-success" style="margin-top: 4px;">Health</span>
-                        </div>
-                        <div style="padding: 12px; background: var(--bg-card); border-left: 4px solid var(--accent-green); border-radius: 8px;">
-                            <div style="font-size: 12px; color: var(--text-secondary);">8:00 PM - 8:30 PM</div>
-                            <div style="font-weight: 600; font-size: 13px;">📚 Reading</div>
-                            <span class="tag tag-success" style="margin-top: 4px;">Learning</span>
-                        </div>
-                        <div style="padding: 12px; background: var(--bg-card); border-left: 4px solid var(--accent-red); border-radius: 8px;">
-                            <div style="font-size: 12px; color: var(--text-secondary);">9:00 PM - 10:00 PM</div>
-                            <div style="font-weight: 600; font-size: 13px;">✍️ Journal</div>
-                            <span class="tag tag-danger" style="margin-top: 4px;">Personal</span>
-                        </div>
+                    </div>
+
+                    <!-- Time Grid (06:00 to 23:00) -->
+                    <div id="planner-hourly-grid" style="display: flex; flex-direction: column; gap: 6px;">
+                        <!-- Populated by JS -->
                     </div>
                 </div>
             </div>
+        </div>
+    </main>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="dailyos-mobile-nav">
+        <button onclick="window.goToPage('dashboard')" class="mobile-nav-btn">
+            <span class="nav-icon">⚡</span>
+            <span>Today</span>
+        </button>
+        <button onclick="window.goToPage('habits-library')" class="mobile-nav-btn">
+            <span class="nav-icon">🔁</span>
+            <span>Habits</span>
+        </button>
+        <button onclick="window.goToPage('timeline')" class="mobile-nav-btn active">
+            <span class="nav-icon">📅</span>
+            <span>Planner</span>
+        </button>
+        <button onclick="window.goToPage('calendar')" class="mobile-nav-btn">
+            <span class="nav-icon">🗓️</span>
+            <span>Calendar</span>
+        </button>
+        <button onclick="window.goToPage('goals')" class="mobile-nav-btn">
+            <span class="nav-icon">🎯</span>
+            <span>Goals</span>
+        </button>
+        <button onclick="window.goToPage('analytics')" class="mobile-nav-btn">
+            <span class="nav-icon">📊</span>
+            <span>Analytics</span>
+        </button>
+    </nav>
+</div>
+
+<!-- Modal: Quick Create Planner Task -->
+<div id="task-modal-overlay" class="dailyos-modal-overlay" style="display: none;" onclick="if(event.target === this) window.closeTaskModal()">
+    <div class="dailyos-modal">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 id="task-modal-title" style="font-size: 20px; font-weight: 800; color: #ffffff; margin: 0;">Add Planner Task</h2>
+            <button onclick="window.closeTaskModal()" style="background: transparent; border: none; color: var(--text-tertiary); font-size: 20px; cursor: pointer;">✕</button>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Task Title</label>
+            <input type="text" id="task-title-input" class="form-control" placeholder="e.g. Deep Work: Refactor Authentication Service" />
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Notes / Checklist</label>
+            <textarea id="task-notes-input" class="form-control" placeholder="Details or context..."></textarea>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div class="form-group">
+                <label class="form-label">Time Slot</label>
+                <input type="time" id="task-time-input" class="form-control" value="09:00" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Duration (Minutes)</label>
+                <input type="number" id="task-duration-input" class="form-control" value="45" min="15" step="15" />
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div class="form-group">
+                <label class="form-label">Category</label>
+                <select id="task-category-input" class="form-control">
+                    <option value="Productivity">Productivity</option>
+                    <option value="Career">Career</option>
+                    <option value="Fitness">Fitness</option>
+                    <option value="Personal">Personal</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Priority</label>
+                <select id="task-priority-input" class="form-control">
+                    <option value="high">High Priority (Top 3)</option>
+                    <option value="medium" selected>Medium Priority</option>
+                    <option value="low">Low Priority</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px;">
+            <button onclick="window.closeTaskModal()" class="btn btn-secondary">Cancel</button>
+            <button onclick="window.savePlannerTask()" class="btn btn-primary">Save Task</button>
         </div>
     </div>
 </div>
