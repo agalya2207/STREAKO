@@ -16,6 +16,7 @@ router.get('/health', async (req, res) => {
     version: '2.0.1',
     timestamp: new Date().toISOString(),
     database: dbConnected ? 'connected' : 'degraded',
+  });
 });
 
 

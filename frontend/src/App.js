@@ -797,7 +797,13 @@ class App {
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ email, password }),
                             });
-                            const data = await response.json();
+                            const responseText = await response.text();
+                            let data = {};
+                            try {
+                                data = JSON.parse(responseText);
+                            } catch (jsonErr) {
+                                data = { error: 'Server error. Please try again.' };
+                            }
                             if (!response.ok) throw new Error(data.error || 'Login failed');
                             
                             if (data.session && data.session.access_token) {
@@ -885,7 +891,13 @@ class App {
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ email, password, fullName }),
                             });
-                            const data = await response.json();
+                            const responseText = await response.text();
+                            let data = {};
+                            try {
+                                data = JSON.parse(responseText);
+                            } catch (jsonErr) {
+                                data = { error: 'Server error. Please try again.' };
+                            }
                             if (!response.ok) throw new Error(data.error || 'Signup failed');
                             
                             // Save session tokens so user is immediately logged in
