@@ -800,11 +800,18 @@ class App {
                             const data = await response.json();
                             if (!response.ok) throw new Error(data.error || 'Login failed');
                             
-                            localStorage.setItem('access_token', data.session.access_token);
-                            localStorage.setItem('refresh_token', data.session.refresh_token);
-                            localStorage.setItem('user_id', data.user.id);
-                            localStorage.setItem('user_email', data.user.email);
-                            localStorage.setItem('expires_at', data.session.expires_at);
+                            if (data.session && data.session.access_token) {
+                                localStorage.setItem('access_token', data.session.access_token);
+                                localStorage.setItem('streako_auth_token', data.session.access_token);
+                                if (data.session.refresh_token) localStorage.setItem('refresh_token', data.session.refresh_token);
+                                if (data.session.expires_at) localStorage.setItem('expires_at', data.session.expires_at);
+                            }
+                            if (data.user) {
+                                localStorage.setItem('user', JSON.stringify(data.user));
+                                localStorage.setItem('streako_user', JSON.stringify(data.user));
+                                if (data.user.id) localStorage.setItem('user_id', data.user.id);
+                                if (data.user.email) localStorage.setItem('user_email', data.user.email);
+                            }
                             
                             errorDiv.style.display = 'none';
                             loginBtn.textContent = '✓ Login successful';
@@ -881,16 +888,30 @@ class App {
                             const data = await response.json();
                             if (!response.ok) throw new Error(data.error || 'Signup failed');
                             
-                            successDiv.textContent = '✓ Account created!';
+                            // Save session tokens so user is immediately logged in
+                            if (data.session && data.session.access_token) {
+                                localStorage.setItem('access_token', data.session.access_token);
+                                localStorage.setItem('streako_auth_token', data.session.access_token);
+                                if (data.session.refresh_token) localStorage.setItem('refresh_token', data.session.refresh_token);
+                                if (data.session.expires_at) localStorage.setItem('expires_at', data.session.expires_at);
+                            }
+                            if (data.user) {
+                                localStorage.setItem('user', JSON.stringify(data.user));
+                                localStorage.setItem('streako_user', JSON.stringify(data.user));
+                                if (data.user.id) localStorage.setItem('user_id', data.user.id);
+                                if (data.user.email) localStorage.setItem('user_email', data.user.email);
+                            }
+
+                            successDiv.textContent = '✓ Account created! Redirecting...';
                             successDiv.style.display = 'block';
-                            signupBtn.textContent = 'Account Created';
+                            signupBtn.textContent = '✓ Account Created';
                             document.getElementById('signup-form').reset();
                             
                             // Immediately redirect to dashboard as requested
                             setTimeout(() => {
                                 if (window.app && window.app.router) window.app.router.navigate('/dashboard');
                                 else window.location.href = '/dashboard';
-                            }, 1000);
+                            }, 500);
                         } catch (error) {
                             console.error('Signup error:', error);
                             errorDiv.textContent = error.message || 'Signup failed. Please try again.';

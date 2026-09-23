@@ -14,43 +14,93 @@ const signup = async (req, res, next) => {
       return res.status(400).json({ error: 'Password must be at least 6 characters' });
     }
 
-    // Create user in Supabase Auth
-    const { data, error } = await supabaseAuthClient.auth.signUp({
-      email,
-      password,
-    });
+    let user = null;
 
-    if (error) {
-      return res.status(400).json({ error: error.message });
+    // Try admin create first to automatically confirm email so user can immediately use app
+    try {
+      const adminResult = await supabase.auth.admin.createUser({
+        email,
+        password,
+        email_confirm: true,
+        user_metadata: { full_name: fullName || '' }
+      });
+
+      if (adminResult.error) {
+        const msg = adminResult.error.message || '';
+        if (msg.toLowerCase().includes('already') || msg.toLowerCase().includes('exists')) {
+          return res.status(400).json({ error: 'A user with this email already exists' });
+        }
+        // Fallback to standard signUp
+        const fallbackResult = await supabaseAuthClient.auth.signUp({
+          email,
+          password,
+        });
+        if (fallbackResult.error) {
+          return res.status(400).json({ error: fallbackResult.error.message });
+        }
+        user = fallbackResult.data.user;
+      } else {
+        user = adminResult.data.user;
+      }
+    } catch (e) {
+      console.warn('Admin createUser error, falling back to regular signUp:', e.message);
+      const fallbackResult = await supabaseAuthClient.auth.signUp({
+        email,
+        password,
+      });
+      if (fallbackResult.error) {
+        return res.status(400).json({ error: fallbackResult.error.message });
+      }
+      user = fallbackResult.data.user;
     }
 
-    // Create a profile row for this user (using service_role client to bypass RLS)
-    if (data.user) {
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .insert([
-          {
-            id: data.user.id,
-            email: data.user.email,
-            full_name: fullName || '',
-          },
-        ]);
-
-      if (profileError) {
+    // Create / upsert profile row for this user
+    if (user) {
+      try {
+        await supabase
+          .from('profiles')
+          .upsert([
+            {
+              id: user.id,
+              email: user.email,
+              full_name: fullName || '',
+            },
+          ]);
+      } catch (profileError) {
         console.error('Profile creation error:', profileError);
-        // Don't fail the whole signup if profile creation has an issue
       }
     }
 
+    // Automatically establish a session so the user can go straight to the dashboard
+    let session = null;
+    try {
+      const signInResult = await supabaseAuthClient.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (signInResult.data && signInResult.data.session) {
+        session = signInResult.data.session;
+      }
+    } catch (loginErr) {
+      console.warn('Auto-login session warning:', loginErr.message);
+    }
+
     res.status(201).json({
-      message: 'Signup successful! Please check your email to verify your account.',
+      message: 'Signup successful!',
       user: {
-        id: data.user?.id,
-        email: data.user?.email,
+        id: user?.id,
+        email: user?.email,
+        fullName: fullName || '',
       },
+      session: session ? {
+        access_token: session.access_token,
+        refresh_token: session.refresh_token,
+        expires_at: session.expires_at,
+      } : null,
     });
   } catch (err) {
-    next(err);
+    console.error('Signup caught error:', err);
+    res.status(400).json({ error: err.message || 'Signup failed' });
   }
 };
 
@@ -63,10 +113,29 @@ const login = async (req, res, next) => {
       return res.status(400).json({ error: 'Email and password are required' });
     }
 
-    const { data, error } = await supabaseAuthClient.auth.signInWithPassword({
+    let { data, error } = await supabaseAuthClient.auth.signInWithPassword({
       email,
       password,
     });
+
+    // If email is not confirmed, auto-confirm it using admin API and retry
+    if (error && (error.message?.includes('Email not confirmed') || error.code === 'email_not_confirmed')) {
+      try {
+        const { data: usersData } = await supabase.auth.admin.listUsers();
+        const found = usersData?.users?.find((u) => u.email === email);
+        if (found) {
+          await supabase.auth.admin.updateUserById(found.id, { email_confirm: true });
+          const retry = await supabaseAuthClient.auth.signInWithPassword({
+            email,
+            password,
+          });
+          data = retry.data;
+          error = retry.error;
+        }
+      } catch (confirmErr) {
+        console.warn('Auto-confirm retry warning:', confirmErr.message);
+      }
+    }
 
     if (error) {
       return res.status(401).json({ error: error.message });
@@ -85,7 +154,8 @@ const login = async (req, res, next) => {
       },
     });
   } catch (err) {
-    next(err);
+    console.error('Login caught error:', err);
+    res.status(400).json({ error: err.message || 'Login failed' });
   }
 };
 
