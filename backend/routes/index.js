@@ -19,6 +19,16 @@ router.get('/health', async (req, res) => {
   });
 });
 
+router.get('/debug-fetch', async (req, res) => {
+  try {
+    const r = await fetch('https://tdnkoixpqmmakliiqfqe.supabase.co/auth/v1/health');
+    const text = await r.text();
+    res.json({ ok: true, status: r.status, body: text });
+  } catch (err) {
+    res.json({ ok: false, error: err.message, cause: err.cause ? { message: err.cause.message, code: err.cause.code } : null });
+  }
+});
+
 // Mount modular sub-routers
 router.use('/auth', authRoutes);
 router.use('/habits', habitsRoutes);
