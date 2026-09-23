@@ -20,13 +20,34 @@ router.get('/health', async (req, res) => {
 });
 
 router.get('/debug-fetch', async (req, res) => {
+  const results = {};
   try {
     const r = await fetch('https://tdnkoixpqmmakliiqfqe.supabase.co/auth/v1/health');
-    const text = await r.text();
-    res.json({ ok: true, status: r.status, body: text });
-  } catch (err) {
-    res.json({ ok: false, error: err.message, cause: err.cause ? { message: err.cause.message, code: err.cause.code } : null });
+    results.health = { status: r.status };
+  } catch (e) {
+    results.health = { error: e.message, cause: e.cause ? { message: e.cause.message, code: e.cause.code } : null };
   }
+
+  try {
+    const supabase = require('../config/supabase');
+    const dbTest = await supabase.from('profiles').select('id').limit(1);
+    results.db = dbTest;
+  } catch (e) {
+    results.db = { error: e.message, cause: e.cause ? { message: e.cause.message, code: e.cause.code } : null };
+  }
+
+  try {
+    const supabaseAuthClient = require('../config/supabaseAuthClient');
+    const authTest = await supabaseAuthClient.auth.signUp({
+      email: 'test_probe_' + Date.now() + '@probe.com',
+      password: 'ProbePassword123!'
+    });
+    results.auth = authTest;
+  } catch (e) {
+    results.auth = { error: e.message, cause: e.cause ? { message: e.cause.message, code: e.cause.code } : null };
+  }
+
+  res.json(results);
 });
 
 // Mount modular sub-routers
