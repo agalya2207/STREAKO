@@ -8,6 +8,10 @@
     {
       "src": "frontend/public/**/*",
       "use": "@vercel/static"
+    },
+    {
+      "src": "frontend/src/**/*",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
