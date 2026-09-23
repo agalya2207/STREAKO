@@ -786,12 +786,6 @@ class App {
             const path = e.detail.path;
             
             if (path === '/login') {
-                const token = localStorage.getItem('access_token');
-                if (token && document.getElementById('login')) {
-                    if (window.app && window.app.router) {
-                        window.app.router.navigate('/dashboard');
-                    }
-                }
                 const loginForm = document.getElementById('login-form');
                 if (loginForm) {
                     loginForm.addEventListener('submit', async (e) => {
@@ -855,12 +849,6 @@ class App {
             }
 
             if (path === '/signup') {
-                const token = localStorage.getItem('access_token');
-                if (token && document.getElementById('signup')) {
-                    if (window.app && window.app.router) {
-                        window.app.router.navigate('/dashboard');
-                    }
-                }
                 const signupForm = document.getElementById('signup-form');
                 if (signupForm) {
                     signupForm.addEventListener('submit', async (e) => {
@@ -1032,17 +1020,13 @@ class App {
         const currentPath = window.location.pathname === '/' ? '/landing' : window.location.pathname;
         const token = localStorage.getItem('access_token');
         const protectedRoutes = ['/dashboard', '/habits-library', '/timeline', '/calendar', '/goals', '/analytics', '/journal', '/settings', '/mentor-dashboard'];
-        const authRoutes = ['/login', '/signup', '/landing', '/'];
 
-        if (token && authRoutes.includes(currentPath)) {
-            // Already logged in — go straight to dashboard
-            window.history.replaceState({}, '', '/dashboard');
-            this.router.handleRoute('/dashboard');
-        } else if (!token && protectedRoutes.includes(currentPath)) {
-            // Not logged in — redirect to login
+        if (!token && protectedRoutes.includes(currentPath)) {
+            // Not logged in — redirect protected pages to login
             window.history.replaceState({}, '', '/login');
             this.router.handleRoute('/login');
         } else {
+            // Open the requested route (/login, /signup, /landing, /dashboard, etc.)
             this.router.handleRoute(currentPath);
         }
     }
