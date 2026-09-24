@@ -1,49 +1,586 @@
 <div class="page active" id="dashboard">
     <style>
-      /* Mobile Header: hidden on desktop by default */
+      /* Scoped specifically to #dashboard to never affect any other page, theme, color, or font */
+      #dashboard {
+        background-color: #0b0c10 !important;
+        color: #e2e8f0;
+        min-height: 100vh;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      }
+
+      #dashboard .sidebar-layout {
+        background: #0b0c10;
+        min-height: 100vh;
+        display: flex;
+        overflow: hidden;
+      }
+
+      /* Sidebar matching screenshot */
+      #dashboard .sidebar {
+        width: 248px;
+        min-width: 248px;
+        background: #0d0f14;
+        border-right: 1px solid rgba(255, 255, 255, 0.06);
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        max-height: 100vh;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        box-sizing: border-box;
+      }
+
+      #dashboard .sidebar-logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        height: 68px;
+        min-height: 68px;
+        padding: 0 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        cursor: pointer;
+        box-sizing: border-box;
+        background: #0d0f14;
+      }
+
+      #dashboard .sidebar-logo-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+        flex-shrink: 0;
+      }
+
+      #dashboard .sidebar-logo-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.2;
+      }
+
+      #dashboard .sidebar-logo-title {
+        font-size: 17px;
+        font-weight: 700;
+        color: #ffffff;
+        letter-spacing: -0.2px;
+      }
+
+      #dashboard .sidebar-logo-sub {
+        font-size: 8px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.4px;
+        color: #64748b;
+        margin-top: 2px;
+      }
+
+      #dashboard .sidebar-nav {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding: 16px 12px;
+        overflow-y: auto;
+      }
+
+      #dashboard .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 14px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        color: #94a3b8;
+        font-size: 13.5px;
+        font-weight: 500;
+        border: 1px solid transparent;
+        text-decoration: none;
+      }
+
+      #dashboard .nav-item svg {
+        width: 18px;
+        height: 18px;
+        stroke-width: 2;
+        color: #64748b;
+        transition: color 0.2s;
+        flex-shrink: 0;
+      }
+
+      #dashboard .nav-item:hover {
+        background: rgba(255, 255, 255, 0.04);
+        color: #f1f5f9;
+      }
+
+      #dashboard .nav-item:hover svg {
+        color: #cbd5e1;
+      }
+
+      #dashboard .nav-item.active {
+        background: rgba(99, 102, 241, 0.12);
+        color: #a5b4fc;
+        font-weight: 600;
+        border: 1px solid rgba(99, 102, 241, 0.28);
+      }
+
+      #dashboard .nav-item.active svg {
+        color: #818cf8;
+      }
+
+      #dashboard .sidebar-profile {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 16px;
+        background: #090a0e;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        margin-top: auto;
+        flex-shrink: 0;
+      }
+
+      #dashboard .profile-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        font-size: 13px;
+        flex-shrink: 0;
+        overflow: hidden;
+      }
+
+      #dashboard .profile-info {
+        flex: 1;
+        min-width: 0;
+        cursor: pointer;
+      }
+
+      #dashboard .profile-info p:first-child {
+        color: #ffffff;
+        font-weight: 600;
+        font-size: 13px;
+        margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      #dashboard .profile-info p:last-child {
+        color: #64748b;
+        font-size: 11px;
+        margin: 2px 0 0 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      #dashboard .profile-action-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #64748b;
+        padding: 6px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+      }
+
+      #dashboard .profile-action-btn:hover {
+        color: #e2e8f0;
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      /* Main Content Area */
+      #dashboard .main-content {
+        flex: 1;
+        padding: 28px 36px 48px 36px;
+        background: #0a0b0f !important;
+        overflow-y: auto;
+        height: 100vh;
+        box-sizing: border-box;
+      }
+
+      /* Header */
+      #dashboard .today-header {
+        margin-bottom: 24px;
+      }
+
+      #dashboard .today-greeting {
+        font-size: 28px;
+        font-weight: 700;
+        color: #ffffff !important;
+        background: none !important;
+        -webkit-text-fill-color: #ffffff !important;
+        text-shadow: none !important;
+        margin: 0 0 4px 0;
+        letter-spacing: -0.4px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      #dashboard .today-date {
+        font-size: 13.5px;
+        color: #8892b0;
+        margin: 0;
+        font-weight: 400;
+      }
+
+      /* Top 4 Summary Cards */
+      #dashboard .today-metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+
+      #dashboard .metric-card {
+        background: #111317;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 12px;
+        padding: 16px 18px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        box-sizing: border-box;
+        transition: transform 0.2s ease, border-color 0.2s ease;
+      }
+
+      #dashboard .metric-card:hover {
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+
+      #dashboard .metric-icon-box {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      #dashboard .metric-donut-wrap {
+        position: relative;
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      #dashboard .metric-donut-text {
+        position: absolute;
+        font-size: 11px;
+        font-weight: 700;
+        color: #ffffff;
+      }
+
+      #dashboard .metric-info {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+
+      #dashboard .metric-label {
+        font-size: 10.5px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        color: #64748b;
+        margin-bottom: 2px;
+      }
+
+      #dashboard .metric-val {
+        font-size: 18px;
+        font-weight: 700;
+        color: #ffffff;
+        line-height: 1.2;
+        margin-bottom: 2px;
+      }
+
+      #dashboard .metric-sub {
+        font-size: 11.5px;
+        color: #64748b;
+        white-space: nowrap;
+      }
+
+      /* Daily Insight Banner */
+      #dashboard .today-insight-banner {
+        background: #111317;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 12px;
+        padding: 14px 20px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 24px;
+      }
+
+      #dashboard .insight-icon {
+        font-size: 20px;
+        color: #818cf8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      #dashboard .insight-content {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      #dashboard .insight-title {
+        font-size: 10.5px;
+        font-weight: 800;
+        letter-spacing: 0.8px;
+        color: #818cf8;
+        text-transform: uppercase;
+      }
+
+      #dashboard .insight-text {
+        font-size: 13.5px;
+        color: #cbd5e1;
+        line-height: 1.4;
+      }
+
+      /* Two Column Grid */
+      #dashboard .today-grid {
+        display: grid;
+        grid-template-columns: 1.55fr 1fr;
+        gap: 20px;
+      }
+
+      #dashboard .today-col {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      #dashboard .today-panel {
+        background: #111317;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 14px;
+        padding: 22px 24px;
+        box-sizing: border-box;
+      }
+
+      #dashboard .today-panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      #dashboard .today-panel-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #ffffff;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      #dashboard .today-action-btn {
+        background: none;
+        border: none;
+        color: #818cf8;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 0;
+        transition: opacity 0.2s;
+        text-decoration: none;
+      }
+
+      #dashboard .today-action-btn:hover {
+        opacity: 0.8;
+      }
+
+      /* Empty states */
+      #dashboard .empty-state-box {
+        text-align: center;
+        padding: 38px 0;
+      }
+
+      #dashboard .empty-state-text {
+        color: #64748b;
+        font-size: 13.5px;
+        margin: 0 0 16px 0;
+      }
+
+      #dashboard .btn-subtle-create {
+        background: #16181f;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: #f1f5f9;
+        padding: 8px 18px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s ease;
+      }
+
+      #dashboard .btn-subtle-create:hover {
+        background: #1f232e;
+        border-color: rgba(255, 255, 255, 0.22);
+      }
+
+      /* Routine checklist cards */
+      #dashboard .routine-checklist-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      #dashboard .routine-item {
+        background: #0c0d11;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        padding: 13px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.25s ease;
+      }
+
+      #dashboard .routine-item:hover {
+        border-color: rgba(255, 255, 255, 0.1);
+        background: #0e1016;
+      }
+
+      #dashboard .routine-item.completed {
+        opacity: 0.5;
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      #dashboard .routine-item.completed .routine-name {
+        text-decoration: line-through;
+        color: #64748b !important;
+      }
+
+      #dashboard .custom-check {
+        width: 20px;
+        height: 20px;
+        border-radius: 6px;
+        border: 1.5px solid rgba(255, 255, 255, 0.25);
+        background: rgba(255, 255, 255, 0.03);
+        cursor: pointer;
+        accent-color: #6366f1;
+        margin: 0;
+        flex-shrink: 0;
+      }
+
+      #dashboard .routine-target-badge {
+        font-size: 11.5px;
+        color: #94a3b8;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-weight: 500;
+        white-space: nowrap;
+      }
+
+      /* Reflection blocks */
+      #dashboard .reflection-block {
+        background: #0c0d11;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        padding: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 12px;
+      }
+
+      #dashboard .reflection-block:last-child {
+        margin-bottom: 0;
+      }
+
+      #dashboard .reflection-btn {
+        background: #4f46e5;
+        color: #ffffff;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 12.5px;
+        font-weight: 600;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background 0.2s;
+      }
+
+      #dashboard .reflection-btn:hover {
+        background: #4338ca;
+      }
+
+      #dashboard .reflection-btn.done {
+        background: rgba(255, 255, 255, 0.08);
+        color: #94a3b8;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      /* Modal styles for reflection */
+      #dashboard-reflection-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(4px);
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #dashboard-reflection-modal .modal-card {
+        background: #111317;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 14px;
+        width: 90%;
+        max-width: 500px;
+        padding: 24px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      }
+
+      /* Mobile responsiveness */
       .mobile-header {
         display: none;
       }
 
-      /* Dark blue gradient for greeting */
-      #dashboard-greeting {
-        background: linear-gradient(135deg, #60a5fa 0%, #2563eb 45%, #1e40af 100%) !important;
-        -webkit-background-clip: text !important;
-        -webkit-text-fill-color: transparent !important;
-        color: #1e40af !important;
-        font-weight: 800 !important;
-        text-shadow: 0 0 30px rgba(37, 99, 235, 0.35);
+      @media (max-width: 992px) {
+        #dashboard .today-metrics-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        #dashboard .today-grid {
+          grid-template-columns: 1fr;
+        }
       }
 
-      .hamburger-btn {
-        background: none;
-        border: none;
-        color: white;
-        font-size: 24px;
-        cursor: pointer;
-        padding: 0;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 4px;
-        transition: background 0.2s;
-      }
-
-      .hamburger-btn:hover {
-        background: rgba(255, 255, 255, 0.1);
-      }
-
-      .mobile-header-title {
-        color: white;
-        font-weight: 600;
-        font-size: 18px;
-        flex: 1;
-        text-align: center;
-      }
-
-      /* Only show mobile header on mobile viewports (< 768px) */
       @media (max-width: 767px) {
         .mobile-header {
           display: flex;
@@ -52,8 +589,8 @@
           left: 0;
           width: 100%;
           height: 60px;
-          background: linear-gradient(135deg, #001428 0%, #0a2540 100%);
-          border-bottom: 1px solid rgba(0, 217, 255, 0.2);
+          background: #0d0f14;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
           z-index: 1000;
           padding: 10px 20px;
           box-sizing: border-box;
@@ -61,161 +598,296 @@
           justify-content: space-between;
         }
 
-        .sidebar-layout {
+        #dashboard .sidebar-layout {
           padding-top: 60px;
         }
 
-        .sidebar {
+        #dashboard .sidebar {
           position: fixed;
-          left: 0;
+          left: -260px;
           top: 60px;
           height: calc(100vh - 60px);
           z-index: 999;
-          box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
-          background: #001428;
+          transition: left 0.3s ease;
+          box-shadow: 4px 0 20px rgba(0, 0, 0, 0.6);
         }
 
-        .overlay {
-          display: none;
-          position: fixed;
-          top: 0;
+        #dashboard .sidebar.open {
           left: 0;
-          width: 100%;
-          height: 100%;
-          background: rgba(0, 0, 0, 0.6);
-          z-index: 998;
         }
 
-        .overlay.show {
-          display: block;
+        #dashboard .main-content {
+          padding: 20px 16px 40px 16px;
         }
-      }
 
-      /* Desktop: ensure mobile header is strictly hidden and main content has clean padding */
-      @media (min-width: 768px) {
-        .mobile-header {
-          display: none !important;
+        #dashboard .today-metrics-grid {
+          grid-template-columns: 1fr;
         }
       }
     </style>
 
-    <!-- Mobile Header (only visible on mobile screens < 768px) -->
+    <!-- Mobile Header (screens < 768px) -->
     <header class="mobile-header">
-      <button class="hamburger-btn" id="hamburger-toggle" aria-label="Toggle navigation" onclick="window.showNotification('Coming soon!', 'info')">
+      <button class="hamburger-btn" id="hamburger-toggle" aria-label="Toggle navigation" style="background: none; border: none; color: white; font-size: 22px; cursor: pointer;">
         ☰
       </button>
-      <div class="mobile-header-title">Dashboard</div>
-      <div style="width: 40px;"></div>
+      <div style="color: white; font-weight: 600; font-size: 17px;">DailyOS</div>
+      <div style="width: 32px;"></div>
     </header>
 
-    <!-- Mobile Overlay -->
-    <div class="overlay" id="sidebar-overlay"></div>
+    <div class="overlay" id="sidebar-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 998;"></div>
 
     <div class="sidebar-layout">
-                <div class="sidebar">
+        <!-- Sidebar -->
+        <div class="sidebar">
             <div class="sidebar-logo" onclick="app.router.navigate('/dashboard')">
                 <div class="sidebar-logo-icon">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
-                        <path d="M5 3v4"/>
-                        <path d="M19 17v4"/>
-                        <path d="M3 5h4"/>
-                        <path d="M17 19h4"/>
                     </svg>
                 </div>
                 <div class="sidebar-logo-text">
-                    <span class="sidebar-logo-title">Streako<span>.ai</span></span>
+                    <span class="sidebar-logo-title">DailyOS</span>
                     <span class="sidebar-logo-sub">PREMIUM PRODUCTIVITY</span>
                 </div>
             </div>
+
             <div class="sidebar-nav">
                 <div class="nav-item active" onclick="app.router.navigate('/dashboard')">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
                     <span>Today</span>
                 </div>
-                <div class="nav-item " onclick="app.router.navigate('/habits-library')">
+                <div class="nav-item" onclick="app.router.navigate('/habits-library')">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                     <span>Habits</span>
                 </div>
-                <div class="nav-item " onclick="app.router.navigate('/timeline')">
+                <div class="nav-item" onclick="app.router.navigate('/timeline')">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                     <span>Planner</span>
                 </div>
-                <div class="nav-item " onclick="app.router.navigate('/calendar')">
+                <div class="nav-item" onclick="app.router.navigate('/calendar')">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
                     <span>Calendar</span>
                 </div>
-                <div class="nav-item " onclick="app.router.navigate('/goals')">
+                <div class="nav-item" onclick="app.router.navigate('/goals')">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
                     <span>Goals</span>
                 </div>
-                <div class="nav-item " onclick="app.router.navigate('/analytics')">
+                <div class="nav-item" onclick="app.router.navigate('/analytics')">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
                     <span>Analytics</span>
                 </div>
-                <div class="nav-item " onclick="app.router.navigate('/journal')">
+                <div class="nav-item" onclick="app.router.navigate('/journal')">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
                     <span>Journal</span>
                 </div>
-                <div class="nav-item " onclick="app.router.navigate('/settings')">
+                <div class="nav-item" onclick="app.router.navigate('/settings')">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
                     <span>Settings</span>
                 </div>
             </div>
+
+            <!-- Profile at bottom -->
             <div class="sidebar-profile">
-                <div class="profile-avatar" id="sidebar-avatar">AG</div>
-                <div class="profile-info" onclick="app.router.navigate('/settings')">
-                    <p id="sidebar-name">User</p>
-                    <p id="sidebar-email">user@email.com</p>
+                <div class="profile-avatar" id="sidebar-avatar">
+                    <img id="sidebar-avatar-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Jack" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.style.display='none'; document.getElementById('sidebar-avatar-txt').style.display='block';">
+                    <span id="sidebar-avatar-txt" style="display:none;">J</span>
                 </div>
-                <button class="profile-action-btn" onclick="window.logout()" title="Log Out">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                        <polyline points="16 17 21 12 16 7"/>
-                        <line x1="21" y1="12" x2="9" y2="12"/>
+                <div class="profile-info" onclick="app.router.navigate('/settings')">
+                    <p id="sidebar-name">Jack</p>
+                    <p id="sidebar-email">jack@dailyos.io</p>
+                </div>
+                <button class="profile-action-btn" onclick="app.router.navigate('/settings')" title="Settings">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
                     </svg>
                 </button>
             </div>
         </div>
 
+        <!-- Main Content -->
         <div class="main-content">
-            <div class="page-header" style="margin-top: 24px;">
-                <h1 class="header-title" id="dashboard-greeting" style="font-size: 28px;">Good Evening 👋</h1>
-                <p class="header-subtitle" id="dashboard-subtitle">3 habits left today — keep it up! 🔥</p>
+            <!-- Header greeting -->
+            <div class="today-header">
+                <h1 class="today-greeting" id="dashboard-greeting">Good Afternoon, Jack 👋</h1>
+                <p class="today-date" id="dashboard-date">Thursday, 24 September 2026</p>
             </div>
 
-            <div class="recovery-card" id="recovery-card">
-                <div style="display: flex; gap: 16px; align-items: center;">
-                    <div style="font-size: 28px;">🔄</div>
-                    <div class="recovery-text">
-                        <strong>Recovery Task Available:</strong> You missed "Meditation" yesterday. Complete 20 min today (2x) to recover your streak.
+            <!-- Top 4 Summary Cards -->
+            <div class="today-metrics-grid">
+                <!-- Card 1: Today's Progress -->
+                <div class="metric-card">
+                    <div class="metric-donut-wrap">
+                        <svg width="44" height="44" viewBox="0 0 44 44">
+                            <circle cx="22" cy="22" r="18" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="3.5" />
+                            <circle id="metric-progress-donut" cx="22" cy="22" r="18" fill="none" stroke="#6366f1" stroke-width="3.5" stroke-dasharray="113.1" stroke-dashoffset="113.1" stroke-linecap="round" transform="rotate(-90 22 22)" style="transition: stroke-dashoffset 0.4s ease;" />
+                        </svg>
+                        <span class="metric-donut-text" id="metric-progress-pct">0%</span>
+                    </div>
+                    <div class="metric-info">
+                        <span class="metric-label">TODAY'S PROGRESS</span>
+                        <span class="metric-val" id="metric-habits-val">0/9 Habits</span>
+                        <span class="metric-sub" id="metric-tasks-val">0/0 Planner Tasks</span>
                     </div>
                 </div>
-                <button class="btn btn-recovery" onclick="markRecovered()">Mark as Recovered</button>
+
+                <!-- Card 2: Daily Streak -->
+                <div class="metric-card">
+                    <div class="metric-icon-box orange">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path>
+                        </svg>
+                    </div>
+                    <div class="metric-info">
+                        <span class="metric-label">DAILY STREAK</span>
+                        <span class="metric-val"><span id="metric-streak-count" style="color: #f97316;">0</span> Days</span>
+                        <span class="metric-sub">Consistency Level: <span id="metric-streak-level" style="color: #94a3b8;">Elite</span></span>
+                    </div>
+                </div>
+
+                <!-- Card 3: Productivity Score -->
+                <div class="metric-card">
+                    <div class="metric-icon-box purple">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="8" r="6"></circle>
+                            <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path>
+                        </svg>
+                    </div>
+                    <div class="metric-info">
+                        <span class="metric-label">PRODUCTIVITY SCORE</span>
+                        <span class="metric-val" style="color: #a855f7;"><span id="metric-productivity-score">0</span> / 100</span>
+                        <span class="metric-sub">Excellent consistency</span>
+                    </div>
+                </div>
+
+                <!-- Card 4: Reflections -->
+                <div class="metric-card">
+                    <div class="metric-icon-box purple">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                        </svg>
+                    </div>
+                    <div class="metric-info">
+                        <span class="metric-label">REFLECTIONS</span>
+                        <span class="metric-sub" style="color: #ffffff; font-weight: 600; margin-bottom: 2px;">
+                            Morning: <span id="ref-status-morning" style="color: #94a3b8; font-weight: 500;">⏳ Pending</span>
+                        </span>
+                        <span class="metric-sub">
+                            Evening: <span id="ref-status-evening" style="color: #64748b;">⏳ Pending</span>
+                        </span>
+                    </div>
+                </div>
             </div>
 
-            <div style="background: rgba(0, 20, 40, 0.6); border: 1px solid rgba(0, 217, 255, 0.1); padding: 24px; border-radius: 12px; margin-top: 40px;" id="priorities-container">
-                <!-- JS will render priorities here -->
-                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" onload="if(window.renderPriorities) window.renderPriorities()" style="display:none;">
+            <!-- Daily Insight Banner -->
+            <div class="today-insight-banner">
+                <div class="insight-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path>
+                        <path d="M9 18h6"></path>
+                        <path d="M10 22h4"></path>
+                    </svg>
+                </div>
+                <div class="insight-content">
+                    <span class="insight-title">DAILY INSIGHT</span>
+                    <span class="insight-text">Plan your morning: Writing down reflections increases habit completion rate by 22%.</span>
+                </div>
             </div>
 
-            <div style="background: rgba(0, 20, 40, 0.6); border: 1px solid rgba(0, 217, 255, 0.1); padding: 24px; border-radius: 12px; margin-top: 24px; margin-bottom: 40px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                    <h3 style="font-size: 18px; font-weight: 700; margin: 0; color: #ffffff;">Today's Routine Checklist</h3>
-                    <a href="javascript:void(0)" onclick="app.router.navigate('/habits-library')" style="font-size: 13.5px; font-weight: 600; color: #00D9FF; text-decoration: none; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">Manage Habits →</a>
+            <!-- 2-Column Main Section -->
+            <div class="today-grid">
+                <!-- Left Column -->
+                <div class="today-col">
+                    <!-- Today's Top 3 Priorities -->
+                    <div class="today-panel">
+                        <div class="today-panel-header">
+                            <h3 class="today-panel-title">Today's Top 3 Priorities</h3>
+                            <button class="today-action-btn" id="btn-top-add-priority" onclick="window.startAddingPriority()">+ Add Priority</button>
+                        </div>
+                        <div id="priorities-container">
+                            <!-- Populated dynamically by window.renderPriorities() -->
+                        </div>
+                    </div>
+
+                    <!-- Today's Routine checklist -->
+                    <div class="today-panel">
+                        <div class="today-panel-header">
+                            <h3 class="today-panel-title">Today's Routine checklist</h3>
+                            <a href="javascript:void(0)" onclick="app.router.navigate('/habits-library')" class="today-action-btn">Manage Habits</a>
+                        </div>
+                        <div class="routine-checklist-container" id="routine-checklist-container">
+                            <!-- Populated dynamically by window.renderDashboardHabits() -->
+                        </div>
+                    </div>
                 </div>
-                <div style="display: flex; flex-direction: column; gap: 12px;">
-                    <style>
-                    .habit-card { border: 1px solid rgba(255, 255, 255, 0.1); padding: 14px; border-radius: 8px; background: rgba(0, 0, 0, 0.2); display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease; }
-                    .habit-card:has(input[type="checkbox"]:checked) { opacity: 0.5; background: rgba(0, 217, 255, 0.05); border-color: rgba(0, 217, 255, 0.2); }
-                    .habit-card:has(input[type="checkbox"]:checked) .habit-name { text-decoration: line-through; color: #a0aec0 !important; }
-                    </style>
-                    
-                <div id="routine-checklist-container" style="display: flex; flex-direction: column; gap: 12px;">
-                    <!-- Dynamically populated by renderDashboardHabits() in main.js -->
-                </div>
+
+                <!-- Right Column -->
+                <div class="today-col">
+                    <!-- Today's Schedule -->
+                    <div class="today-panel">
+                        <div class="today-panel-header">
+                            <h3 class="today-panel-title">Today's Schedule</h3>
+                            <a href="javascript:void(0)" onclick="app.router.navigate('/timeline')" class="today-action-btn">Open Timeline Planner</a>
+                        </div>
+                        <div id="schedule-container">
+                            <div class="empty-state-box">
+                                <p class="empty-state-text">No time blocks scheduled for today.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Daily Reflections Journal -->
+                    <div class="today-panel">
+                        <div class="today-panel-header">
+                            <h3 class="today-panel-title">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                                </svg>
+                                Daily Reflections Journal
+                            </h3>
+                        </div>
+
+                        <!-- Morning Focus -->
+                        <div class="reflection-block">
+                            <div>
+                                <div style="font-weight: 600; font-size: 14px; color: #ffffff; margin-bottom: 4px;">☀️ Morning Focus</div>
+                                <div style="font-size: 12px; color: #64748b; line-height: 1.4;">Write down your focus to start the day with clarity.</div>
+                            </div>
+                            <button class="reflection-btn" id="btn-morning-ref" onclick="window.openReflectionModal('morning')">Start Reflection</button>
+                        </div>
+
+                        <!-- Evening Review -->
+                        <div class="reflection-block">
+                            <div>
+                                <div style="font-weight: 600; font-size: 14px; color: #ffffff; margin-bottom: 4px;">🌙 Evening Review</div>
+                                <div style="font-size: 12px; color: #64748b; line-height: 1.4;">Reflect on your accomplishments and practice gratitude.</div>
+                            </div>
+                            <button class="reflection-btn" id="btn-evening-ref" onclick="window.openReflectionModal('evening')">Record Evening</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Reflection Modal -->
+    <div id="dashboard-reflection-modal">
+        <div class="modal-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h3 id="ref-modal-title" style="margin: 0; font-size: 17px; font-weight: 700; color: #ffffff;">Morning Focus</h3>
+                <button onclick="window.closeReflectionModal()" style="background: none; border: none; color: #64748b; font-size: 20px; cursor: pointer;">&times;</button>
+            </div>
+            <p id="ref-modal-desc" style="font-size: 13px; color: #94a3b8; margin: 0 0 16px 0;">Write down your primary intention and focus for today.</p>
+            <textarea id="ref-modal-text" placeholder="Write your thoughts here..." style="width: 100%; height: 110px; background: #0c0d11; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; padding: 12px; font-size: 13.5px; box-sizing: border-box; resize: none; outline: none; margin-bottom: 16px;"></textarea>
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button onclick="window.closeReflectionModal()" style="background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #94a3b8; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer;">Cancel</button>
+                <button onclick="window.saveReflection()" style="background: #4f46e5; border: none; color: #ffffff; padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;">Save Reflection</button>
+            </div>
+        </div>
+    </div>
+
+    <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" onload="if(window.initTodayDashboard) window.initTodayDashboard();" style="display:none;">
 </div>

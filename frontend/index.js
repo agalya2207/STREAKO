@@ -67,7 +67,7 @@ app.use((err, req, res, next) => {
 });
 
 // Start server
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`✅ STREAKO Frontend running on http://localhost:${PORT}`);
   console.log(`📍 Visit: http://localhost:${PORT}/login`);
   console.log(`📂 Public folder: ${path.join(__dirname, 'public')}`);

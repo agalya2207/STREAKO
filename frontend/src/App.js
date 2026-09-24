@@ -167,33 +167,31 @@ class App {
 
             const maxPriorities = 3;
             const canAdd = window.prioritiesData.length < maxPriorities;
+            const addBtn = document.getElementById('btn-top-add-priority');
+            if (addBtn) {
+                addBtn.style.display = canAdd ? 'inline-block' : 'none';
+            }
 
-            let html = `
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                    <h3 style="font-size: 18px; font-weight: 700; margin: 0; color: #ffffff;">Today's Top 3 Priorities</h3>
-                    <button onclick="window.startAddingPriority()" style="background: transparent; font-size: 13px; font-weight: 600; padding: 6px 14px; border: 1px dashed rgba(255,255,255,0.3); color: #a0aec0; border-radius: 8px; cursor: pointer; transition: all 0.2s; ${(!canAdd || window.isAddingPriority) ? 'opacity: 0.3; pointer-events: none;' : ''}" onmouseover="this.style.color='#00D9FF'; this.style.borderColor='#00D9FF'" onmouseout="this.style.color='#a0aec0'; this.style.borderColor='rgba(255,255,255,0.3)'">+ Add Priority</button>
-                </div>
-            `;
-
+            let html = '';
             if (window.prioritiesData.length === 0 && !window.isAddingPriority) {
-                html += `
-                    <div style="text-align: center; padding: 40px 0;">
-                        <p style="color: #a0aec0; font-size: 14px; margin-bottom: 16px;">Your day is clear. Add your Top 3 priorities.</p>
-                        <button onclick="window.startAddingPriority()" style="background: rgba(0, 217, 255, 0.1); color: #00D9FF; border: 1px solid rgba(0, 217, 255, 0.3); padding: 8px 16px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(0, 217, 255, 0.2)'" onmouseout="this.style.background='rgba(0, 217, 255, 0.1)'">+ Create Top Priority</button>
+                html = `
+                    <div class="empty-state-box">
+                        <p class="empty-state-text">Your day is clear. Add your Top 3 priorities.</p>
+                        <button onclick="window.startAddingPriority()" class="btn-subtle-create">+ Create Top Priority</button>
                     </div>
                 `;
             } else {
-                html += `<div style="display: flex; flex-direction: column; gap: 12px;">`;
+                html = `<div style="display: flex; flex-direction: column; gap: 10px;">`;
                 window.prioritiesData.forEach((p, index) => {
                     html += `
-                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.2); padding: 14px 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); transition: all 0.2s;">
-                            <div style="display: flex; align-items: center; gap: 16px;">
-                                <span style="color: #a0aec0; font-weight: 700; font-size: 14px; min-width: 16px;">${index + 1}</span>
-                                <input type="checkbox" onchange="window.togglePriority(${index})" ${p.completed ? 'checked' : ''} style="width: 18px; height: 18px; accent-color: #00D9FF; cursor: pointer;">
-                                <span style="font-size: 15px; font-weight: 500; color: ${p.completed ? '#64748b' : '#fff'}; text-decoration: ${p.completed ? 'line-through' : 'none'}; transition: all 0.2s;">${p.text}</span>
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: #0c0d11; padding: 13px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); transition: all 0.2s;">
+                            <div style="display: flex; align-items: center; gap: 14px;">
+                                <span style="color: #64748b; font-weight: 700; font-size: 13.5px; min-width: 16px;">${index + 1}</span>
+                                <input type="checkbox" onchange="window.togglePriority(${index})" ${p.completed ? 'checked' : ''} style="width: 18px; height: 18px; accent-color: #6366f1; cursor: pointer; border-radius: 4px;">
+                                <span style="font-size: 14px; font-weight: 500; color: ${p.completed ? '#64748b' : '#ffffff'}; text-decoration: ${p.completed ? 'line-through' : 'none'}; transition: all 0.2s;">${p.text}</span>
                             </div>
-                            <button onclick="window.deletePriority(${index})" style="background: transparent; border: none; color: #64748b; cursor: pointer; font-size: 16px; transition: color 0.2s;" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#64748b'">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+                            <button onclick="window.deletePriority(${index})" style="background: transparent; border: none; color: #64748b; cursor: pointer; font-size: 14px; padding: 4px; display: flex; align-items: center; justify-content: center; transition: color 0.2s;" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#64748b'">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
                             </button>
                         </div>
                     `;
@@ -202,13 +200,12 @@ class App {
                 if (window.isAddingPriority && canAdd) {
                     const nextIndex = window.prioritiesData.length + 1;
                     html += `
-                        <div style="display: flex; align-items: center; gap: 16px; background: rgba(0, 217, 255, 0.05); padding: 12px 16px; border-radius: 8px; border: 1px solid rgba(0, 217, 255, 0.3);">
-                            <span style="color: #00D9FF; font-weight: 700; font-size: 14px; min-width: 16px;">${nextIndex}</span>
-                            <input type="checkbox" disabled style="width: 18px; height: 18px; opacity: 0.3;">
-                            <input type="text" id="new-priority-input" placeholder="Describe priority..." style="flex: 1; background: transparent; border: none; outline: none; color: #fff; font-size: 15px;" autocomplete="off">
+                        <div style="display: flex; align-items: center; gap: 12px; background: rgba(99, 102, 241, 0.08); padding: 12px 16px; border-radius: 10px; border: 1px solid rgba(99, 102, 241, 0.3);">
+                            <span style="color: #818cf8; font-weight: 700; font-size: 13.5px; min-width: 16px;">${nextIndex}</span>
+                            <input type="text" id="new-priority-input" placeholder="Type your priority..." style="flex: 1; background: transparent; border: none; outline: none; color: #fff; font-size: 14px;" autocomplete="off">
                             <div style="display: flex; gap: 8px;">
-                                <button onclick="window.cancelPriority()" style="background: transparent; border: 1px solid #64748b; color: #a0aec0; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='transparent'">Cancel</button>
-                                <button onclick="window.savePriority()" style="background: #00D9FF; border: none; color: #001428; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 700; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">Add</button>
+                                <button onclick="window.cancelPriority()" style="background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #94a3b8; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500;">Cancel</button>
+                                <button onclick="window.savePriority()" style="background: #4f46e5; border: none; color: #ffffff; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;">Add</button>
                             </div>
                         </div>
                     `;
@@ -231,9 +228,6 @@ class App {
                             e.preventDefault();
                             window.cancelPriority();
                         }
-                    });
-                    input.addEventListener('keypress', (e) => {
-                        if (e.key === 'Enter') window.savePriority();
                     });
                 }
             }
@@ -258,17 +252,8 @@ class App {
                     text,
                     completed: false
                 });
-                
-                // SAVE TO STORAGE
                 Storage.set('priorities', window.prioritiesData);
-
-                // Keep adding if we haven't hit 3 yet
-                if (window.prioritiesData.length >= 3) {
-                    window.isAddingPriority = false;
-                } else {
-                    window.isAddingPriority = true;
-                }
-                
+                window.isAddingPriority = false;
                 window.renderPriorities();
             }
         };
@@ -285,6 +270,100 @@ class App {
             window.renderPriorities();
         };
 
+        // Reflections Modal Handlers
+        window.currentReflectionType = 'morning';
+        window.openReflectionModal = (type) => {
+            window.currentReflectionType = type;
+            const modal = document.getElementById('dashboard-reflection-modal');
+            const title = document.getElementById('ref-modal-title');
+            const desc = document.getElementById('ref-modal-desc');
+            const textarea = document.getElementById('ref-modal-text');
+            if (!modal) return;
+
+            const today = new Date().toISOString().split('T')[0];
+            const stored = Storage.get(`daily_reflections_${today}`, { morning: '', evening: '' });
+
+            if (type === 'morning') {
+                if (title) title.textContent = 'Morning Focus';
+                if (desc) desc.textContent = 'Write down your primary focus and intentions to start the day with clarity.';
+                if (textarea) textarea.value = stored.morning || '';
+            } else {
+                if (title) title.textContent = 'Evening Review';
+                if (desc) desc.textContent = 'Reflect on your accomplishments, learnings, and practice gratitude.';
+                if (textarea) textarea.value = stored.evening || '';
+            }
+
+            modal.style.display = 'flex';
+            if (textarea) textarea.focus();
+        };
+
+        window.closeReflectionModal = () => {
+            const modal = document.getElementById('dashboard-reflection-modal');
+            if (modal) modal.style.display = 'none';
+        };
+
+        window.saveReflection = () => {
+            const textarea = document.getElementById('ref-modal-text');
+            const val = textarea ? textarea.value.trim() : '';
+            const today = new Date().toISOString().split('T')[0];
+            const stored = Storage.get(`daily_reflections_${today}`, { morning: '', evening: '' });
+            
+            stored[window.currentReflectionType] = val;
+            Storage.set(`daily_reflections_${today}`, stored);
+            
+            window.closeReflectionModal();
+            window.updateReflectionUI();
+            if (window.showNotification) {
+                window.showNotification('Reflection saved!', 'success');
+            }
+        };
+
+        window.updateReflectionUI = () => {
+            const today = new Date().toISOString().split('T')[0];
+            const stored = Storage.get(`daily_reflections_${today}`, { morning: '', evening: '' });
+            
+            const morningStatus = document.getElementById('ref-status-morning');
+            const eveningStatus = document.getElementById('ref-status-evening');
+            const morningBtn = document.getElementById('btn-morning-ref');
+            const eveningBtn = document.getElementById('btn-evening-ref');
+
+            if (morningStatus) {
+                if (stored.morning && stored.morning.trim()) {
+                    morningStatus.textContent = '✅ Done';
+                    morningStatus.style.color = '#34d399';
+                    if (morningBtn) {
+                        morningBtn.textContent = 'Edit Reflection';
+                        morningBtn.classList.add('done');
+                    }
+                } else {
+                    morningStatus.textContent = '⏳ Pending';
+                    morningStatus.style.color = '#94a3b8';
+                    if (morningBtn) {
+                        morningBtn.textContent = 'Start Reflection';
+                        morningBtn.classList.remove('done');
+                    }
+                }
+            }
+
+            if (eveningStatus) {
+                if (stored.evening && stored.evening.trim()) {
+                    eveningStatus.textContent = '✅ Done';
+                    eveningStatus.style.color = '#34d399';
+                    if (eveningBtn) {
+                        eveningBtn.textContent = 'Edit Evening';
+                        eveningBtn.classList.add('done');
+                    }
+                } else {
+                    eveningStatus.textContent = '⏳ Pending';
+                    eveningStatus.style.color = '#64748b';
+                    if (eveningBtn) {
+                        eveningBtn.textContent = 'Record Evening';
+                        eveningBtn.classList.remove('done');
+                    }
+                }
+            }
+        };
+
         // Habits Library State & Logic
         window.selectedIcon = '';
         window.selectedColor = '';
@@ -293,16 +372,23 @@ class App {
         window.editingHabitId = null;
 
         window.seedHabits = () => {
-            if (Storage && Storage.getHabits().length === 0) {
+            if (Storage) {
                 const defaultHabits = [
-                    { name: "Morning Workout", description: "30 min strength training every morning", category: "Fitness", dailyTarget: 1, icon: "💪", accentColor: "#ef4444", frequency: "Daily", streak: 12, bestStreak: 31, frequencyLabel: "Daily", paused: false },
-                    { name: "Reading", description: "Read 20 pages daily", category: "Learning", dailyTarget: 1, icon: "📚", accentColor: "#3b82f6", frequency: "Daily", streak: 8, bestStreak: 18, frequencyLabel: "Daily", paused: false },
-                    { name: "Meditation", description: "10 min mindfulness practice", category: "Mindfulness", dailyTarget: 1, icon: "🧘", accentColor: "#10b981", frequency: "Daily", streak: 5, bestStreak: 14, frequencyLabel: "Daily", paused: false },
-                    { name: "Hydration", description: "Drink 8 glasses of water", category: "Health", dailyTarget: 1, icon: "💧", accentColor: "#0ea5e9", frequency: "Daily", streak: 21, bestStreak: 45, frequencyLabel: "Daily", paused: false },
-                    { name: "Sleep 8 Hours", description: "Get quality sleep every night", category: "Health", dailyTarget: 1, icon: "🌙", accentColor: "#8b5cf6", frequency: "Daily", streak: 7, bestStreak: 22, frequencyLabel: "Daily", paused: false },
-                    { name: "Journaling", description: "Write daily reflection (5-10 min)", category: "Personal", dailyTarget: 1, icon: "✍️", accentColor: "#f59e0b", frequency: "Daily", streak: 4, bestStreak: 12, frequencyLabel: "Daily", paused: false }
+                    { name: "Wake up early (6:00 AM)", description: "Start the day with focus", category: "Health", dailyTarget: 1, icon: "⏰", accentColor: "#3b82f6", frequency: "Daily", streak: 0, bestStreak: 7, frequencyLabel: "Daily", paused: false },
+                    { name: "Cardio / Weight Training", description: "30 min fitness session", category: "Fitness", dailyTarget: 1, icon: "💪", accentColor: "#ef4444", frequency: "Daily", streak: 3, bestStreak: 14, frequencyLabel: "Daily", paused: false },
+                    { name: "Deep Work Session", description: "90 min uninterrupted deep work", category: "Focus", dailyTarget: 1, icon: "🎯", accentColor: "#6366f1", frequency: "Daily", streak: 5, bestStreak: 12, frequencyLabel: "Daily", paused: false },
+                    { name: "Hydration (2L)", description: "Drink 8 glasses of water", category: "Health", dailyTarget: 1, icon: "💧", accentColor: "#0ea5e9", frequency: "Daily", streak: 7, bestStreak: 21, frequencyLabel: "Daily", paused: false },
+                    { name: "Read 20 pages", description: "Read book or educational material", category: "Learning", dailyTarget: 1, icon: "📚", accentColor: "#8b5cf6", frequency: "Daily", streak: 4, bestStreak: 18, frequencyLabel: "Daily", paused: false },
+                    { name: "Meditation & Mindfulness", description: "10 min mindfulness session", category: "Mindfulness", dailyTarget: 1, icon: "🧘", accentColor: "#10b981", frequency: "Daily", streak: 2, bestStreak: 10, frequencyLabel: "Daily", paused: false },
+                    { name: "Clean Workspace", description: "Tidy up desk and workspace", category: "Productivity", dailyTarget: 1, icon: "✨", accentColor: "#f59e0b", frequency: "Daily", streak: 1, bestStreak: 8, frequencyLabel: "Daily", paused: false },
+                    { name: "Evening Reflection", description: "Write down thoughts & gratitude", category: "Personal", dailyTarget: 1, icon: "✍️", accentColor: "#ec4899", frequency: "Daily", streak: 6, bestStreak: 15, frequencyLabel: "Daily", paused: false },
+                    { name: "Sleep by 11:00 PM", description: "Ensure 8 hours of restorative sleep", category: "Health", dailyTarget: 1, icon: "🌙", accentColor: "#6366f1", frequency: "Daily", streak: 2, bestStreak: 9, frequencyLabel: "Daily", paused: false }
                 ];
-                defaultHabits.forEach(h => Storage.addHabit(h));
+                const habits = Storage.getHabits();
+                if (habits.length === 0 || (habits.length === 6 && habits[0].name === "Morning Workout")) {
+                    localStorage.removeItem('streako_habits');
+                    defaultHabits.forEach(h => Storage.addHabit(h));
+                }
             }
         };
 
@@ -724,45 +810,110 @@ class App {
             if (habits.length === 0) {
                 container.innerHTML = `
                     <div style="text-align: center; padding: 32px 0;">
-                        <p style="color: #a0aec0; font-size: 14px; margin-bottom: 0;">No active routines for today.</p>
+                        <p style="color: #64748b; font-size: 13.5px; margin-bottom: 0;">No active routines for today.</p>
                     </div>
                 `;
-                const completionElement = document.querySelector('[data-metric="completion"]');
-                if (completionElement) completionElement.textContent = '100%';
-                return;
+            } else {
+                habits.forEach((habit) => {
+                    const today = new Date().toISOString().split('T')[0];
+                    const isCompleted = Storage.isCompleted(habit.id, today);
+                    
+                    const html = `
+                        <div class="routine-item ${isCompleted ? 'completed' : ''}" data-habit-id="${habit.id}">
+                            <div style="display: flex; align-items: center; gap: 14px;">
+                                <input type="checkbox" class="custom-check habit-checkbox" data-habit-id="${habit.id}" onchange="window.toggleHabitCompletion('${habit.id}')" ${isCompleted ? 'checked' : ''}>
+                                <div style="display: flex; flex-direction: column;">
+                                    <span class="routine-name" style="font-size: 14px; font-weight: 600; color: ${isCompleted ? '#64748b' : '#ffffff'}; transition: all 0.2s ease;">${habit.name}</span>
+                                    <span style="font-size: 12px; color: #64748b; margin-top: 3px;">${habit.category} • Streak: 🔥 ${habit.streak || 0}</span>
+                                </div>
+                            </div>
+                            <span class="routine-target-badge">Target: ${habit.dailyTarget || 1}x</span>
+                        </div>
+                    `;
+                    container.insertAdjacentHTML('beforeend', html);
+                });
             }
 
-            habits.forEach((habit, index) => {
-                const today = new Date().toISOString().split('T')[0];
-                const isCompleted = Storage.isCompleted(habit.id, today);
-                
-                const html = `
-                    <div class="habit-card" data-habit-id="${habit.id}" style="border: 1px solid rgba(255, 255, 255, 0.1); padding: 14px; border-radius: 8px; background: ${isCompleted ? 'rgba(0, 217, 255, 0.05)' : 'rgba(0, 0, 0, 0.2)'}; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease; opacity: ${isCompleted ? '0.5' : '1'}; border-color: ${isCompleted ? 'rgba(0, 217, 255, 0.2)' : 'rgba(255,255,255,0.1)'};">
-                        <div style="display: flex; align-items: center; gap: 16px;">
-                            <input type="checkbox" class="habit-checkbox" data-habit-id="${habit.id}" onchange="window.toggleHabitCompletion('${habit.id}')" ${isCompleted ? 'checked' : ''} style="width: 20px; height: 20px; cursor: pointer; accent-color: #00D9FF;">
-                            <div style="display: flex; flex-direction: column;">
-                                <span class="habit-name" style="font-size: 15px; font-weight: 600; color: ${isCompleted ? '#a0aec0' : '#ffffff'}; text-decoration: ${isCompleted ? 'line-through' : 'none'}; transition: all 0.3s ease;">${habit.name}</span>
-                                <span style="font-size: 13px; color: #a0aec0; margin-top: 4px;">${habit.icon} ${habit.category} • 🔥 ${habit.streak || 0} Streak</span>
-                            </div>
-                        </div>
-                        <span style="font-size: 13px; color: #a0aec0; background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 6px; font-weight: 500;">Target: ${habit.dailyTarget || 1}x</span>
-                    </div>
-                `;
-                container.insertAdjacentHTML('beforeend', html);
-            });
+            // Update top 4 metric cards
+            const today = new Date().toISOString().split('T')[0];
+            const completedCount = habits.filter(h => Storage.isCompleted(h.id, today)).length;
+            const totalCount = habits.length;
+            const pct = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
-            // RECALCULATE METRICS AFTER RENDER
-            setTimeout(() => {
-                const completedCount = document.querySelectorAll('.habit-checkbox:checked').length;
-                const totalCount = document.querySelectorAll('.habit-checkbox').length;
-                const percentage = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+            const donutPct = document.getElementById('metric-progress-pct');
+            if (donutPct) donutPct.textContent = `${pct}%`;
 
-                const completionElement = document.querySelector('[data-metric="completion"]');
-                if (completionElement) {
-                    completionElement.textContent = percentage + '%';
-                }
-                if (window.updateDashboardSubtitle) window.updateDashboardSubtitle();
-            }, 100);
+            const donutCircle = document.getElementById('metric-progress-donut');
+            if (donutCircle) {
+                const circumference = 113.1;
+                const offset = circumference - (pct / 100) * circumference;
+                donutCircle.style.strokeDashoffset = offset;
+            }
+
+            const habitsVal = document.getElementById('metric-habits-val');
+            if (habitsVal) habitsVal.textContent = `${completedCount}/${totalCount} Habits`;
+
+            const tasksVal = document.getElementById('metric-tasks-val');
+            if (tasksVal) {
+                const plannerTasks = Storage.get('planner_tasks', []);
+                const compTasks = plannerTasks.filter(t => t.completed).length;
+                tasksVal.textContent = `${compTasks}/${plannerTasks.length} Planner Tasks`;
+            }
+
+            const streakCount = document.getElementById('metric-streak-count');
+            if (streakCount) {
+                const maxStreak = habits.reduce((max, h) => Math.max(max, h.streak || 0), 0);
+                streakCount.textContent = completedCount > 0 ? (maxStreak > 0 ? maxStreak : 1) : 0;
+            }
+
+            const prodScore = document.getElementById('metric-productivity-score');
+            if (prodScore) {
+                prodScore.textContent = pct;
+            }
+
+            const legacyMetric = document.querySelector('[data-metric="completion"]');
+            if (legacyMetric) legacyMetric.textContent = `${pct}%`;
+        };
+
+        window.initTodayDashboard = () => {
+            // Formatted date (matching Thursday, 24 September 2026)
+            const dateEl = document.getElementById('dashboard-date');
+            if (dateEl) {
+                const now = new Date();
+                const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+                dateEl.textContent = new Intl.DateTimeFormat('en-US', options).format(now);
+            }
+
+            // User info
+            const userEmail = localStorage.getItem('user_email') || '';
+            const userJson = localStorage.getItem('user') || localStorage.getItem('streako_user') || '{}';
+            let userName = '';
+            try {
+                const userObj = JSON.parse(userJson);
+                userName = userObj.fullName || userObj.full_name || userObj.name || '';
+            } catch (e) { }
+
+            if (!userName && userEmail) {
+                const prefix = userEmail.split('@')[0];
+                userName = prefix.charAt(0).toUpperCase() + prefix.slice(1);
+            }
+            if (!userName) userName = 'Jack';
+
+            const greetingEl = document.getElementById('dashboard-greeting');
+            if (greetingEl) {
+                const hour = new Date().getHours();
+                const timeGreeting = hour < 12 ? 'Good Morning' : hour < 17 ? 'Good Afternoon' : 'Good Evening';
+                greetingEl.textContent = `${timeGreeting}, ${userName} 👋`;
+            }
+
+            const sidebarName = document.getElementById('sidebar-name');
+            const sidebarEmail = document.getElementById('sidebar-email');
+            if (sidebarName) sidebarName.textContent = userName;
+            if (sidebarEmail) sidebarEmail.textContent = userEmail || 'jack@dailyos.io';
+
+            window.renderPriorities();
+            window.renderDashboardHabits();
+            if (window.updateReflectionUI) window.updateReflectionUI();
         };
 
         window.toggleHabitCompletion = (id) => {
@@ -771,7 +922,6 @@ class App {
             const willBeCompleted = !Storage.isCompleted(id, today);
             if (willBeCompleted) {
                 Storage.markCompleted(id, today);
-                // SHOW NOTIFICATION
                 if (window.showNotification) {
                     window.showNotification('✅ Great job! Keep going!', 'success');
                 }
@@ -942,9 +1092,12 @@ class App {
             }
 
             if (path === '/dashboard' || path === '/') {
-                window.renderPriorities();
-                window.renderDashboardHabits();
-                if (window.checkRecoveryStatus) window.checkRecoveryStatus();
+                if (window.initTodayDashboard) {
+                    window.initTodayDashboard();
+                } else {
+                    window.renderPriorities();
+                    window.renderDashboardHabits();
+                }
 
                 // Setup mobile sidebar toggle & overlay
                 const hamburger = document.getElementById('hamburger-toggle');
