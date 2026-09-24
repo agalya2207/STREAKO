@@ -198,14 +198,69 @@ const getCurrentUser = async (req, res, next) => {
       .eq('id', req.user.id)
       .single();
 
-    if (error) {
+    if (error && error.code !== 'PGRST116') {
       return res.status(404).json({ error: 'Profile not found' });
     }
 
-    res.status(200).json({ user: profile });
+    res.status(200).json({
+      user: {
+        id: req.user.id,
+        email: profile?.email || req.user.email,
+        fullName: profile?.full_name || req.user.user_metadata?.full_name || '',
+      }
+    });
   } catch (err) {
     next(err);
   }
 };
 
-module.exports = { signup, login, logout, getCurrentUser };
+// UPDATE USER PROFILE
+const updateProfile = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const { fullName, email } = req.body;
+
+    const updates = {};
+    if (fullName !== undefined) updates.full_name = fullName;
+    if (email !== undefined) updates.email = email;
+
+    // 1. Upsert into profiles table
+    const { data: profile, error: profileErr } = await supabase
+      .from('profiles')
+      .upsert({ id: userId, email: email || req.user.email, full_name: fullName || '' })
+      .select()
+      .single();
+
+    if (profileErr) {
+      console.error('Error updating profile in db:', profileErr);
+    }
+
+    // 2. Update Supabase Auth user metadata / email
+    try {
+      const authUpdates = {};
+      if (fullName !== undefined) authUpdates.user_metadata = { full_name: fullName };
+      if (email && email !== req.user.email) authUpdates.email = email;
+
+      if (Object.keys(authUpdates).length > 0) {
+        await supabase.auth.admin.updateUserById(userId, authUpdates);
+      }
+    } catch (authErr) {
+      console.warn('Auth admin update warning:', authErr.message);
+    }
+
+    res.status(200).json({
+      message: 'Profile updated successfully',
+      user: {
+        id: userId,
+        email: email || profile?.email || req.user.email,
+        fullName: fullName || profile?.full_name || '',
+      }
+    });
+  } catch (err) {
+    console.error('Update profile error:', err);
+    res.status(400).json({ error: err.message || 'Failed to update profile' });
+  }
+};
+
+module.exports = { signup, login, logout, getCurrentUser, updateProfile };
+

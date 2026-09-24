@@ -1500,27 +1500,32 @@ class App {
             if (path === '/login') {
                 const loginForm = document.getElementById('login-form');
                 if (loginForm) {
-                    loginForm.addEventListener('submit', async (e) => {
+                    loginForm.onsubmit = async (e) => {
                         e.preventDefault();
                         const email = document.getElementById('login-email').value.trim();
                         const password = document.getElementById('login-password').value;
                         const errorDiv = document.getElementById('login-error');
                         const loginBtn = document.getElementById('login-btn');
+                        
                         errorDiv.style.display = 'none';
                         errorDiv.textContent = '';
+
                         if (!email || !password) {
-                            errorDiv.textContent = 'Email and password are required';
+                            errorDiv.textContent = 'Please enter both email and password';
                             errorDiv.style.display = 'block';
                             return;
                         }
+
                         loginBtn.disabled = true;
                         loginBtn.textContent = 'Logging in...';
+
                         try {
                             const response = await fetch('/api/auth/login', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ email, password }),
                             });
+
                             const responseText = await response.text();
                             let data = {};
                             try {
@@ -1528,7 +1533,16 @@ class App {
                             } catch (jsonErr) {
                                 data = { error: 'Server error. Please try again.' };
                             }
-                            if (!response.ok) throw new Error(data.error || 'Login failed');
+
+                            if (!response.ok) {
+                                let errMsg = data.error || 'Login failed. Please check your credentials.';
+                                if (errMsg.includes('Invalid login credentials')) {
+                                    errMsg = '❌ Incorrect email or password. Please try again.';
+                                } else if (errMsg.includes('Email not confirmed')) {
+                                    errMsg = '❌ Email not confirmed. Please check your inbox.';
+                                }
+                                throw new Error(errMsg);
+                            }
                             
                             if (data.session && data.session.access_token) {
                                 localStorage.setItem('access_token', data.session.access_token);
@@ -1548,7 +1562,7 @@ class App {
                             setTimeout(() => {
                                 if (window.app && window.app.router) window.app.router.navigate('/dashboard');
                                 else window.location.href = '/dashboard';
-                            }, 500);
+                            }, 400);
                         } catch (error) {
                             console.error('Login error:', error);
                             errorDiv.textContent = error.message || 'Login failed. Please try again.';
@@ -1556,14 +1570,14 @@ class App {
                             loginBtn.disabled = false;
                             loginBtn.textContent = 'Log In';
                         }
-                    });
+                    };
                 }
             }
 
             if (path === '/signup') {
                 const signupForm = document.getElementById('signup-form');
                 if (signupForm) {
-                    signupForm.addEventListener('submit', async (e) => {
+                    signupForm.onsubmit = async (e) => {
                         e.preventDefault();
                         const fullName = document.getElementById('signup-fullname').value.trim();
                         const email = document.getElementById('signup-email').value.trim();
@@ -1618,7 +1632,6 @@ class App {
                             }
                             if (!response.ok) throw new Error(data.error || 'Signup failed');
                             
-                            // Save session tokens so user is immediately logged in
                             if (data.session && data.session.access_token) {
                                 localStorage.setItem('access_token', data.session.access_token);
                                 localStorage.setItem('streako_auth_token', data.session.access_token);
@@ -1637,7 +1650,6 @@ class App {
                             signupBtn.textContent = '✓ Account Created';
                             document.getElementById('signup-form').reset();
                             
-                            // Immediately redirect to dashboard as requested
                             setTimeout(() => {
                                 if (window.app && window.app.router) window.app.router.navigate('/dashboard');
                                 else window.location.href = '/dashboard';
@@ -1647,11 +1659,12 @@ class App {
                             errorDiv.textContent = error.message || 'Signup failed. Please try again.';
                             errorDiv.style.display = 'block';
                             signupBtn.disabled = false;
-                            signupBtn.textContent = 'Sign Up';
+                            signupBtn.textContent = 'Create Account';
                         }
-                    });
+                    };
                 }
             }
+
 
             if (path === '/dashboard' || path === '/') {
                 if (window.initTodayDashboard) {
@@ -1753,7 +1766,7 @@ class App {
         // SYSTEM SETTINGS & LOGOUT LOGIC
         // ─────────────────────────────────────────────────────────────────────
 
-        window.saveSettings = () => {
+        window.saveSettings = async () => {
             const nameInput = document.getElementById('settings-fullname');
             const emailInput = document.getElementById('settings-email');
             const avatarInput = document.getElementById('settings-avatar');
@@ -1776,6 +1789,23 @@ class App {
             localStorage.setItem('user', JSON.stringify(userObj));
             localStorage.setItem('streako_user', JSON.stringify(userObj));
             localStorage.setItem('user_email', email);
+
+            // Update backend database and Supabase profile
+            const token = localStorage.getItem('access_token') || localStorage.getItem('streako_auth_token');
+            if (token) {
+                try {
+                    await fetch('/api/auth/profile', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ fullName, email })
+                    });
+                } catch (err) {
+                    console.warn('Backend profile sync warning:', err.message);
+                }
+            }
 
             // Update sidebar user profile elements instantly across current DOM
             const sidebarName = document.getElementById('sidebar-name');

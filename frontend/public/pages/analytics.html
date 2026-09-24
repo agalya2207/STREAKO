@@ -65,7 +65,7 @@
         </div>
 
         <!-- Main Content -->
-        <div class="main-content" style="padding: 32px 36px; background: #07080a; min-height: 100vh; overflow-y: auto;">
+        <div class="main-content" id="analytics-main" style="padding: 32px 36px; background: #07080a; min-height: 100vh; overflow-y: auto;">
 
             <!-- Header -->
             <div style="margin-bottom: 28px;">
@@ -74,341 +74,324 @@
             </div>
 
             <!-- 4 Stat Cards -->
-            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px;" id="analytics-stat-cards">
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px;">
                 <div style="background: #0d0e14; border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 20px 22px;">
-                    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
                         <span style="font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#64748b;">CURRENT STREAK</span>
-                        <span style="font-size:18px;">🔥</span>
+                        <span style="font-size:20px;">🔥</span>
                     </div>
-                    <div id="stat-current-streak" style="font-size:30px; font-weight:800; color:#ffffff; line-height:1;">0 Days</div>
+                    <div id="stat-current-streak" style="font-size:30px; font-weight:800; color:#ffffff; line-height:1.1;">0 Days</div>
                     <div style="font-size:12px; color:#64748b; margin-top:6px;">Streak protected</div>
                 </div>
                 <div style="background: #0d0e14; border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 20px 22px;">
-                    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
                         <span style="font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#64748b;">LONGEST STREAK</span>
-                        <span style="font-size:18px;">🏆</span>
+                        <span style="font-size:20px;">🏆</span>
                     </div>
-                    <div id="stat-longest-streak" style="font-size:30px; font-weight:800; color:#ffffff; line-height:1;">0 Days</div>
+                    <div id="stat-longest-streak" style="font-size:30px; font-weight:800; color:#ffffff; line-height:1.1;">0 Days</div>
                     <div style="font-size:12px; color:#64748b; margin-top:6px;">All-time high consistency</div>
                 </div>
                 <div style="background: #0d0e14; border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 20px 22px;">
-                    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
                         <span style="font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#64748b;">AVG WEEKLY COMPLETION</span>
-                        <span style="font-size:18px;">✅</span>
+                        <span style="font-size:20px;">✅</span>
                     </div>
-                    <div id="stat-avg-weekly" style="font-size:30px; font-weight:800; color:#ffffff; line-height:1;">0%</div>
+                    <div id="stat-avg-weekly" style="font-size:30px; font-weight:800; color:#ffffff; line-height:1.1;">0%</div>
                     <div style="font-size:12px; color:#64748b; margin-top:6px;">Routine checklist rate</div>
                 </div>
                 <div style="background: #0d0e14; border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 20px 22px;">
-                    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
                         <span style="font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#64748b;">TOTAL COMPLETED TASKS</span>
-                        <span style="font-size:18px;">📋</span>
+                        <span style="font-size:20px;">📋</span>
                     </div>
-                    <div id="stat-total-completions" style="font-size:30px; font-weight:800; color:#ffffff; line-height:1;">0</div>
+                    <div id="stat-total-completions" style="font-size:30px; font-weight:800; color:#ffffff; line-height:1.1;">0</div>
                     <div style="font-size:12px; color:#64748b; margin-top:6px;">Items checked off planner</div>
                 </div>
             </div>
 
             <!-- Consistency Heatmap -->
             <div style="background: #0d0e14; border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 24px; margin-bottom: 24px;">
-                <h3 style="font-size:15px; font-weight:700; color:#ffffff; margin:0 0 20px 0;">Consistency Heatmap (Last 6 Months)</h3>
-                <div id="heatmap-container" style="overflow-x:auto; padding-bottom: 8px;">
-                    <!-- Rendered by JS -->
-                </div>
-                <div style="display:flex; justify-content:flex-end; align-items:center; gap:6px; margin-top:12px; font-size:12px; color:#64748b;">
+                <h3 style="font-size:15px; font-weight:700; color:#ffffff; margin:0 0 18px 0;">Consistency Heatmap (Last 6 Months)</h3>
+                <div id="heatmap-container" style="overflow-x:auto;"></div>
+                <div style="display:flex; justify-content:flex-end; align-items:center; gap:5px; margin-top:10px; font-size:12px; color:#64748b;">
                     Less
-                    <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:rgba(99,102,241,0.1);"></span>
+                    <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:rgba(99,102,241,0.08);"></span>
                     <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:rgba(99,102,241,0.3);"></span>
                     <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:rgba(99,102,241,0.55);"></span>
-                    <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:rgba(99,102,241,0.8);"></span>
+                    <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:rgba(99,102,241,0.85);"></span>
                     More
                 </div>
             </div>
 
             <!-- Row: 30-Day Productivity + Category Distribution -->
-            <div style="display: grid; grid-template-columns: 1fr 0.6fr; gap: 20px; margin-bottom: 24px;">
-
-                <!-- 30-Day Productivity Index -->
+            <div style="display: grid; grid-template-columns: 1.6fr 1fr; gap: 20px; margin-bottom: 24px;">
                 <div style="background: #0d0e14; border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 24px;">
-                    <h3 style="font-size:15px; font-weight:700; color:#ffffff; margin:0 0 16px 0;">📈 30-Day Productivity Index</h3>
-                    <div style="position:relative;">
-                        <canvas id="productivity-chart" width="500" height="180" style="width:100%; height:180px;"></canvas>
-                    </div>
+                    <h3 style="font-size:15px; font-weight:700; color:#ffffff; margin:0 0 14px 0;">📈 30-Day Productivity Index</h3>
+                    <div id="productivity-wrap" style="width:100%; height:180px; position:relative;"></div>
                 </div>
-
-                <!-- Category Distribution -->
                 <div style="background: #0d0e14; border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 24px;">
-                    <h3 style="font-size:15px; font-weight:700; color:#ffffff; margin:0 0 16px 0;">⚡ Category Distribution</h3>
-                    <div style="display:flex; flex-direction:column; align-items:center; gap:16px;">
-                        <canvas id="donut-chart" width="160" height="160" style="width:160px; height:160px;"></canvas>
-                        <div style="display:flex; flex-wrap:wrap; gap:8px 14px; justify-content:center;" id="donut-legend"></div>
+                    <h3 style="font-size:15px; font-weight:700; color:#ffffff; margin:0 0 14px 0;">⚡ Category Distribution</h3>
+                    <div style="display:flex; flex-direction:column; align-items:center; gap:14px;">
+                        <div id="donut-wrap" style="width:160px; height:160px; position:relative;"></div>
+                        <div id="donut-legend" style="display:flex; flex-wrap:wrap; gap:6px 12px; justify-content:center;"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Row: Weekly Completion + Habit-by-Habit -->
+            <!-- Row: Weekly Completion + Habit Performance -->
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;">
-
-                <!-- Weekly Completion Checklist Rate -->
                 <div style="background: #0d0e14; border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 24px;">
-                    <h3 style="font-size:15px; font-weight:700; color:#ffffff; margin:0 0 16px 0;">☑️ Weekly Completion Checklist Rate</h3>
-                    <canvas id="weekly-chart" width="400" height="180" style="width:100%; height:180px;"></canvas>
+                    <h3 style="font-size:15px; font-weight:700; color:#ffffff; margin:0 0 14px 0;">☑️ Weekly Completion Checklist Rate</h3>
+                    <div id="weekly-wrap" style="width:100%; height:180px; position:relative;"></div>
                 </div>
-
-                <!-- Habit-by-Habit Performance -->
                 <div style="background: #0d0e14; border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 24px;">
-                    <h3 style="font-size:15px; font-weight:700; color:#ffffff; margin:0 0 16px 0;">⚡ Habit-by-Habit Performance</h3>
-                    <div id="habit-performance-list" style="display:flex; flex-direction:column; gap:10px; max-height:220px; overflow-y:auto; padding-right:4px;">
-                        <!-- Rendered by JS -->
-                    </div>
+                    <h3 style="font-size:15px; font-weight:700; color:#ffffff; margin:0 0 14px 0;">⚡ Habit-by-Habit Performance</h3>
+                    <div id="habit-performance-list" style="display:flex; flex-direction:column; gap:10px; max-height:220px; overflow-y:auto; padding-right:4px;"></div>
                 </div>
             </div>
 
-        </div><!-- end main-content -->
+        </div>
     </div>
 </div>
 
 <style>
-    #analytics .main-content::-webkit-scrollbar { width: 6px; }
-    #analytics .main-content::-webkit-scrollbar-track { background: transparent; }
-    #analytics .main-content::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.3); border-radius: 3px; }
-    #habit-performance-list::-webkit-scrollbar { width: 4px; }
-    #habit-performance-list::-webkit-scrollbar-track { background: transparent; }
-    #habit-performance-list::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.25); border-radius: 2px; }
+#analytics .main-content::-webkit-scrollbar { width: 6px; }
+#analytics .main-content::-webkit-scrollbar-track { background: transparent; }
+#analytics .main-content::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.3); border-radius: 3px; }
+#habit-performance-list::-webkit-scrollbar { width: 4px; }
+#habit-performance-list::-webkit-scrollbar-track { background: transparent; }
+#habit-performance-list::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.3); border-radius: 2px; }
 </style>
 
 <script>
 (function() {
-    // ─── helpers ───────────────────────────────────────────────────────────────
+
+    // ── data helpers ───────────────────────────────────────────────────────────
     function getHabits() {
         try { return JSON.parse(localStorage.getItem('streako_habits') || '[]'); } catch(e){ return []; }
     }
-    function getTasks() {
-        try { return JSON.parse(localStorage.getItem('streako_tasks') || '[]'); } catch(e){ return []; }
-    }
-    function dateStr(offset = 0) {
-        const d = new Date();
-        d.setDate(d.getDate() + offset);
+    function dateStr(offset) {
+        var d = new Date();
+        d.setDate(d.getDate() + (offset || 0));
         return d.toISOString().split('T')[0];
     }
 
-    // ─── compute streaks ───────────────────────────────────────────────────────
+    // ── canvas helper: create a properly sized canvas ─────────────────────────
+    function makeCanvas(wrapper, w, h) {
+        // Clear wrapper
+        wrapper.innerHTML = '';
+        var dpr = window.devicePixelRatio || 1;
+        var canvas = document.createElement('canvas');
+        canvas.width  = w * dpr;
+        canvas.height = h * dpr;
+        canvas.style.width  = w + 'px';
+        canvas.style.height = h + 'px';
+        var ctx = canvas.getContext('2d');
+        ctx.scale(dpr, dpr);
+        wrapper.appendChild(canvas);
+        return { canvas: canvas, ctx: ctx, w: w, h: h };
+    }
+
+    // ── rounded rect (polyfill) ────────────────────────────────────────────────
+    function roundRect(ctx, x, y, w, h, r) {
+        r = Math.min(r, w / 2, h / 2);
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.lineTo(x + w - r, y);
+        ctx.arcTo(x + w, y, x + w, y + r, r);
+        ctx.lineTo(x + w, y + h - r);
+        ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+        ctx.lineTo(x + r, y + h);
+        ctx.arcTo(x, y + h, x, y + h - r, r);
+        ctx.lineTo(x, y + r);
+        ctx.arcTo(x, y, x + r, y, r);
+        ctx.closePath();
+    }
+
+    // ── streaks ────────────────────────────────────────────────────────────────
     function computeStreaks(habits) {
-        // Build a set of dates where ANY habit was completed
-        const completedSet = new Set();
-        habits.forEach(h => {
-            (h.completions || []).forEach(d => completedSet.add(d));
+        var completedSet = {};
+        habits.forEach(function(h) {
+            (h.completions || []).forEach(function(d){ completedSet[d] = true; });
         });
 
-        let current = 0;
-        let longest = 0;
-        let streak = 0;
-        let tempStreak = 0;
-
-        // current streak: walk back from today
-        for (let i = 0; i <= 365; i++) {
-            const d = dateStr(-i);
-            if (completedSet.has(d)) {
-                if (i === 0 || current > 0) current++;
-            } else {
-                if (i !== 0) break;
-            }
+        var current = 0;
+        for (var i = 0; i <= 365; i++) {
+            if (completedSet[dateStr(-i)]) { current++; }
+            else if (i > 0) { break; }
         }
 
-        // longest streak overall
-        const allDates = [...completedSet].sort();
-        let prev = null;
-        allDates.forEach(d => {
+        var allDates = Object.keys(completedSet).sort();
+        var longest = 0, run = 0, prev = null;
+        allDates.forEach(function(d) {
             if (prev) {
-                const diff = (new Date(d) - new Date(prev)) / 86400000;
-                if (diff === 1) { tempStreak++; }
-                else { tempStreak = 1; }
-            } else { tempStreak = 1; }
-            if (tempStreak > longest) longest = tempStreak;
+                var diff = (new Date(d) - new Date(prev)) / 86400000;
+                run = diff === 1 ? run + 1 : 1;
+            } else { run = 1; }
+            if (run > longest) longest = run;
             prev = d;
         });
-
-        return { current, longest };
+        return { current: current, longest: longest };
     }
 
-    // ─── compute avg weekly completion ────────────────────────────────────────
     function computeAvgWeekly(habits) {
         if (!habits.length) return 0;
-        let totalRate = 0;
-        habits.forEach(h => {
-            const completions = (h.completions || []).filter(d => {
-                const diff = (new Date() - new Date(d)) / 86400000;
-                return diff <= 7;
-            });
-            totalRate += Math.min(completions.length / 7, 1);
+        var total = 0;
+        habits.forEach(function(h) {
+            var count = (h.completions || []).filter(function(d) {
+                return (new Date() - new Date(d)) / 86400000 <= 7;
+            }).length;
+            total += Math.min(count / 7, 1);
         });
-        return Math.round((totalRate / habits.length) * 100);
+        return Math.round((total / habits.length) * 100);
     }
 
-    // ─── total completed tasks ────────────────────────────────────────────────
     function computeTotalCompletions(habits) {
-        return habits.reduce((sum, h) => sum + (h.completions || []).length, 0);
+        return habits.reduce(function(s, h){ return s + (h.completions || []).length; }, 0);
     }
 
-    // ─── heatmap ──────────────────────────────────────────────────────────────
+    // ── HEATMAP (SVG) ──────────────────────────────────────────────────────────
     function renderHeatmap(habits) {
-        const container = document.getElementById('heatmap-container');
+        var container = document.getElementById('heatmap-container');
         if (!container) return;
 
-        // Build completions map: date -> count
-        const countMap = {};
-        habits.forEach(h => {
-            (h.completions || []).forEach(d => {
-                countMap[d] = (countMap[d] || 0) + 1;
-            });
+        var countMap = {};
+        habits.forEach(function(h) {
+            (h.completions || []).forEach(function(d){ countMap[d] = (countMap[d] || 0) + 1; });
         });
-        const maxCount = Math.max(1, ...Object.values(countMap));
+        var vals = Object.values(countMap);
+        var maxCount = vals.length ? Math.max.apply(null, vals) : 1;
 
-        // Generate 26 weeks of dates ending today
-        const today = new Date();
-        const dayOfWeek = today.getDay(); // 0=Sun
-        // Align to start of current week (Sunday)
-        const endOfLastWeek = new Date(today);
-        endOfLastWeek.setDate(today.getDate() - dayOfWeek);
+        var today = new Date();
+        var dow = today.getDay(); // 0=Sun
+        // Start from Sunday of the week 25 full weeks ago
+        var startDate = new Date(today);
+        startDate.setDate(today.getDate() - dow - 25 * 7);
 
-        const weeks = 26;
-        const cellSize = 13;
-        const cellGap = 3;
-        const rowH = cellSize + cellGap;
-        const colW = cellSize + cellGap;
-        const paddingLeft = 36; // for day labels
-        const paddingTop = 26;  // for month labels
-        const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-        const shownDays = [0, 1, 3, 5]; // Sun, Mon, Wed, Fri labels
+        var weeks = 26;
+        var cs = 12, gap = 3, step = cs + gap;
+        var padL = 32, padT = 22;
+        var svgW = padL + weeks * step;
+        var svgH = padT + 7 * step;
 
-        const svgW = paddingLeft + weeks * colW;
-        const svgH = paddingTop + 7 * rowH;
+        var dayLabels = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+        var shownRows = [0, 2, 4, 6];
 
-        let svg = `<svg width="${svgW}" height="${svgH}" xmlns="http://www.w3.org/2000/svg" style="display:block;">`;
+        var cells = '';
+        var monthsSeen = {};
+        var monthLabels = '';
 
-        // Day labels
-        shownDays.forEach(d => {
-            svg += `<text x="0" y="${paddingTop + d * rowH + cellSize - 2}" font-size="10" fill="#475569" font-family="system-ui">${days[d]}</text>`;
-        });
+        for (var w = 0; w < weeks; w++) {
+            for (var d = 0; d < 7; d++) {
+                var cur = new Date(startDate);
+                cur.setDate(startDate.getDate() + w * 7 + d);
+                if (cur > today) continue;
 
-        // Month tracking
-        const monthLabels = {};
-        for (let w = 0; w < weeks; w++) {
-            for (let d = 0; d < 7; d++) {
-                const date = new Date(endOfLastWeek);
-                date.setDate(endOfLastWeek.getDate() - (weeks - 1 - w) * 7 + d);
-                const ds = date.toISOString().split('T')[0];
-                const count = countMap[ds] || 0;
-                const intensity = count === 0 ? 0 : Math.min(0.9, 0.15 + 0.75 * (count / maxCount));
-                const fill = count === 0 ? 'rgba(255,255,255,0.05)' : `rgba(99,102,241,${intensity.toFixed(2)})`;
-                const x = paddingLeft + w * colW;
-                const y = paddingTop + d * rowH;
+                var ds = cur.toISOString().split('T')[0];
+                var count = countMap[ds] || 0;
+                var alpha = count === 0 ? 0.06 : Math.min(0.9, 0.2 + 0.7 * (count / maxCount));
+                var fill = count === 0
+                    ? 'rgba(255,255,255,' + alpha + ')'
+                    : 'rgba(99,102,241,' + alpha.toFixed(2) + ')';
 
-                // Month label on first day of month
-                if (date.getDate() === 1 || (w === 0 && d === 0)) {
-                    const mname = date.toLocaleString('default', { month: 'short' });
-                    if (!monthLabels[mname]) {
-                        monthLabels[mname] = x;
-                        svg += `<text x="${x}" y="14" font-size="11" fill="#64748b" font-family="system-ui">${mname}</text>`;
+                var x = padL + w * step;
+                var y = padT + d * step;
+
+                // Month label
+                if (d === 0) {
+                    var mname = cur.toLocaleString('default', { month: 'short' });
+                    var mkey = cur.getFullYear() + '-' + cur.getMonth();
+                    if (!monthsSeen[mkey]) {
+                        monthsSeen[mkey] = true;
+                        monthLabels += '<text x="' + x + '" y="14" font-size="11" fill="#64748b" font-family="system-ui,sans-serif">' + mname + '</text>';
                     }
                 }
 
-                svg += `<rect x="${x}" y="${y}" width="${cellSize}" height="${cellSize}" rx="2" fill="${fill}">
-                    <title>${ds}: ${count} completion${count !== 1 ? 's' : ''}</title>
-                </rect>`;
+                cells += '<rect x="' + x + '" y="' + y + '" width="' + cs + '" height="' + cs + '" rx="2" fill="' + fill + '"><title>' + ds + ': ' + count + ' completion' + (count !== 1 ? 's' : '') + '</title></rect>';
             }
         }
-        svg += '</svg>';
-        container.innerHTML = svg;
+
+        var rowLabels = shownRows.map(function(r) {
+            return '<text x="0" y="' + (padT + r * step + cs - 1) + '" font-size="10" fill="#475569" font-family="system-ui,sans-serif">' + dayLabels[r] + '</text>';
+        }).join('');
+
+        container.innerHTML = '<svg width="' + svgW + '" height="' + svgH + '" xmlns="http://www.w3.org/2000/svg" style="display:block;">'
+            + monthLabels + rowLabels + cells + '</svg>';
     }
 
-    // ─── 30-day line chart ────────────────────────────────────────────────────
+    // ── 30-DAY PRODUCTIVITY LINE CHART ─────────────────────────────────────────
     function renderProductivityChart(habits) {
-        const canvas = document.getElementById('productivity-chart');
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        const W = canvas.width, H = canvas.height;
-        const padL = 36, padR = 16, padT = 16, padB = 28;
-        const days = 30;
+        var wrap = document.getElementById('productivity-wrap');
+        if (!wrap) return;
+        var W = wrap.offsetWidth || 500, H = 180;
+        var c = makeCanvas(wrap, W, H);
+        var ctx = c.ctx;
+        var padL = 38, padR = 14, padT = 14, padB = 26;
+        var cW = W - padL - padR, cH = H - padT - padB;
 
-        // Build data: for each of last 30 days, what % of habits were completed
-        const data = [];
-        const labels = [];
-        for (let i = days - 1; i >= 0; i--) {
-            const d = dateStr(-i);
-            if (!habits.length) { data.push(0); labels.push(d); continue; }
-            const completedCount = habits.filter(h => (h.completions || []).includes(d)).length;
-            data.push(Math.round((completedCount / habits.length) * 100));
-            labels.push(d);
+        var days = 30, data = [], labels = [];
+        for (var i = days - 1; i >= 0; i--) {
+            var ds = dateStr(-i);
+            var pct = 0;
+            if (habits.length) {
+                var done = habits.filter(function(h){ return (h.completions||[]).indexOf(ds) !== -1; }).length;
+                pct = Math.round((done / habits.length) * 100);
+            }
+            data.push(pct);
+            labels.push(ds);
         }
 
-        ctx.clearRect(0, 0, W, H);
-
-        const chartW = W - padL - padR;
-        const chartH = H - padT - padB;
-
-        // Grid lines
-        ctx.strokeStyle = 'rgba(255,255,255,0.05)';
-        ctx.lineWidth = 1;
-        [0, 25, 50, 75, 100].forEach((v, i) => {
-            const y = padT + chartH - (v / 100) * chartH;
-            ctx.beginPath();
-            ctx.moveTo(padL, y);
-            ctx.lineTo(W - padR, y);
-            ctx.stroke();
+        // Grid lines + Y labels
+        ctx.font = '9px system-ui,sans-serif';
+        ctx.textAlign = 'right';
+        [0,25,50,75,100].forEach(function(v) {
+            var y = padT + cH - (v / 100) * cH;
+            ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(W - padR, y); ctx.stroke();
             ctx.fillStyle = '#475569';
-            ctx.font = '9px system-ui';
-            ctx.textAlign = 'right';
             ctx.fillText(v, padL - 4, y + 3);
         });
 
-        // X-axis labels (every 5 days)
+        // X labels every 5 days
         ctx.fillStyle = '#475569';
-        ctx.font = '9px system-ui';
         ctx.textAlign = 'center';
-        for (let i = 0; i < days; i += 5) {
-            const x = padL + (i / (days - 1)) * chartW;
-            const dateLabel = new Date(labels[i]);
-            ctx.fillText(`${dateLabel.getMonth()+1}/${dateLabel.getDate()}`, x, H - 6);
+        for (var j = 0; j < days; j += 5) {
+            var x = padL + (j / (days - 1)) * cW;
+            var dt = new Date(labels[j]);
+            ctx.fillText((dt.getMonth()+1) + '/' + dt.getDate(), x, H - 6);
         }
 
-        // Line
-        ctx.beginPath();
-        data.forEach((v, i) => {
-            const x = padL + (i / (days - 1)) * chartW;
-            const y = padT + chartH - (v / 100) * chartH;
-            if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        // Gradient fill under line
+        var pts = data.map(function(v, idx) {
+            return { x: padL + (idx / (days - 1)) * cW, y: padT + cH - (v / 100) * cH };
         });
 
-        // Gradient fill
-        const grad = ctx.createLinearGradient(0, padT, 0, H - padB);
-        grad.addColorStop(0, 'rgba(99,102,241,0.3)');
-        grad.addColorStop(1, 'rgba(99,102,241,0)');
+        ctx.beginPath();
+        pts.forEach(function(p, idx) { idx === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y); });
         ctx.strokeStyle = '#6366f1';
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 2.5;
         ctx.lineJoin = 'round';
         ctx.lineCap = 'round';
         ctx.stroke();
 
-        // Fill area
-        ctx.lineTo(padL + chartW, padT + chartH);
-        ctx.lineTo(padL, padT + chartH);
+        ctx.lineTo(pts[pts.length-1].x, padT + cH);
+        ctx.lineTo(pts[0].x, padT + cH);
         ctx.closePath();
+        var grad = ctx.createLinearGradient(0, padT, 0, padT + cH);
+        grad.addColorStop(0, 'rgba(99,102,241,0.35)');
+        grad.addColorStop(1, 'rgba(99,102,241,0.02)');
         ctx.fillStyle = grad;
         ctx.fill();
     }
 
-    // ─── category donut chart ─────────────────────────────────────────────────
+    // ── DONUT CHART (SVG — avoids canvas cross-origin issues) ─────────────────
     function renderDonutChart(habits) {
-        const canvas = document.getElementById('donut-chart');
-        const legend = document.getElementById('donut-legend');
-        if (!canvas || !legend) return;
-        const ctx = canvas.getContext('2d');
-        const W = canvas.width, H = canvas.height;
-        const cx = W / 2, cy = H / 2, r = W / 2 - 16, innerR = r * 0.55;
+        var wrap = document.getElementById('donut-wrap');
+        var legend = document.getElementById('donut-legend');
+        if (!wrap || !legend) return;
 
-        // Count by category
-        const catColors = {
+        var CAT_COLORS = {
             'Health':      '#22d3ee',
             'Fitness':     '#818cf8',
             'Learning':    '#f59e0b',
@@ -418,179 +401,172 @@
             'Other':       '#64748b'
         };
 
-        const catCount = {};
-        habits.forEach(h => {
-            const cat = (h.category || 'Other');
+        var catCount = {};
+        habits.forEach(function(h) {
+            var cat = h.category || 'Other';
             catCount[cat] = (catCount[cat] || 0) + 1;
         });
 
-        let categories = Object.entries(catCount);
-        if (!categories.length) {
-            // Default display
-            categories = [['Health', 30], ['Fitness', 25], ['Learning', 25], ['Mindfulness', 20]];
-        }
-        const total = categories.reduce((s, [, v]) => s + v, 0);
+        var cats = Object.entries ? Object.entries(catCount) : Object.keys(catCount).map(function(k){ return [k, catCount[k]]; });
+        if (!cats.length) cats = [['Health',30],['Fitness',25],['Learning',25],['Mindfulness',20]];
 
-        ctx.clearRect(0, 0, W, H);
+        var total = cats.reduce(function(s, c){ return s + c[1]; }, 0);
+        var cx = 80, cy = 80, r = 60, inner = 36;
+        var startAngle = -Math.PI / 2;
+        var paths = '';
 
-        let startAngle = -Math.PI / 2;
-        categories.forEach(([cat, count]) => {
-            const angle = (count / total) * 2 * Math.PI;
-            const color = catColors[cat] || '#64748b';
-            ctx.beginPath();
-            ctx.moveTo(cx, cy);
-            ctx.arc(cx, cy, r, startAngle, startAngle + angle);
-            ctx.closePath();
-            ctx.fillStyle = color;
-            ctx.fill();
-            startAngle += angle;
+        cats.forEach(function(cat) {
+            var name = cat[0], val = cat[1];
+            var angle = (val / total) * 2 * Math.PI;
+            var endAngle = startAngle + angle;
+            var x1 = cx + r * Math.cos(startAngle), y1 = cy + r * Math.sin(startAngle);
+            var x2 = cx + r * Math.cos(endAngle),   y2 = cy + r * Math.sin(endAngle);
+            var xi1 = cx + inner * Math.cos(startAngle), yi1 = cy + inner * Math.sin(startAngle);
+            var xi2 = cx + inner * Math.cos(endAngle),   yi2 = cy + inner * Math.sin(endAngle);
+            var large = angle > Math.PI ? 1 : 0;
+            var color = CAT_COLORS[name] || '#64748b';
+            paths += '<path d="M' + xi1 + ',' + yi1
+                + ' L' + x1  + ',' + y1
+                + ' A' + r   + ',' + r   + ' 0 ' + large + ' 1 ' + x2  + ',' + y2
+                + ' L' + xi2 + ',' + yi2
+                + ' A' + inner + ',' + inner + ' 0 ' + large + ' 0 ' + xi1 + ',' + yi1
+                + ' Z" fill="' + color + '"/>';
+            startAngle = endAngle;
         });
 
-        // Inner circle (donut hole)
-        ctx.beginPath();
-        ctx.arc(cx, cy, innerR, 0, 2 * Math.PI);
-        ctx.fillStyle = '#0d0e14';
-        ctx.fill();
+        wrap.innerHTML = '<svg width="160" height="160" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">'
+            + paths
+            + '<circle cx="80" cy="80" r="34" fill="#0d0e14"/>'
+            + '</svg>';
 
-        // Legend
-        legend.innerHTML = categories.map(([cat, count]) => {
-            const pct = Math.round((count / total) * 100);
-            const color = catColors[cat] || '#64748b';
-            return `<div style="display:flex; align-items:center; gap:5px; font-size:11px; color:#94a3b8;">
-                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${color};flex-shrink:0;"></span>
-                <span style="font-weight:600; color:#cbd5e1;">${cat.toUpperCase()}</span>
-            </div>`;
+        legend.innerHTML = cats.map(function(cat) {
+            var color = CAT_COLORS[cat[0]] || '#64748b';
+            return '<div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#94a3b8;">'
+                + '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' + color + ';flex-shrink:0;"></span>'
+                + '<span style="font-weight:600;color:#cbd5e1;">' + cat[0].toUpperCase() + '</span>'
+                + '</div>';
         }).join('');
     }
 
-    // ─── weekly completion bar chart ──────────────────────────────────────────
+    // ── WEEKLY BAR CHART ───────────────────────────────────────────────────────
     function renderWeeklyChart(habits) {
-        const canvas = document.getElementById('weekly-chart');
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        const W = canvas.width, H = canvas.height;
-        const padL = 36, padR = 16, padT = 16, padB = 28;
+        var wrap = document.getElementById('weekly-wrap');
+        if (!wrap) return;
+        var W = wrap.offsetWidth || 400, H = 180;
+        var c = makeCanvas(wrap, W, H);
+        var ctx = c.ctx;
+        var padL = 38, padR = 14, padT = 14, padB = 26;
+        var cW = W - padL - padR, cH = H - padT - padB;
 
-        // Last 7 days labels
-        const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        const days = [];
-        for (let i = 6; i >= 0; i--) {
-            const d = new Date();
-            d.setDate(d.getDate() - i);
+        var dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+        var days = [];
+        for (var i = 6; i >= 0; i--) {
+            var d = new Date(); d.setDate(d.getDate() - i);
             days.push({ date: d.toISOString().split('T')[0], label: dayNames[d.getDay()] });
         }
 
-        const data = days.map(({ date }) => {
+        var data = days.map(function(day) {
             if (!habits.length) return 0;
-            const completed = habits.filter(h => (h.completions || []).includes(date)).length;
-            return Math.round((completed / habits.length) * 100);
+            var done = habits.filter(function(h){ return (h.completions||[]).indexOf(day.date) !== -1; }).length;
+            return Math.round((done / habits.length) * 100);
         });
 
-        ctx.clearRect(0, 0, W, H);
-        const chartW = W - padL - padR;
-        const chartH = H - padT - padB;
-
         // Grid lines
-        ctx.strokeStyle = 'rgba(255,255,255,0.05)';
-        ctx.lineWidth = 1;
-        [0, 25, 50, 75, 100].forEach(v => {
-            const y = padT + chartH - (v / 100) * chartH;
-            ctx.beginPath();
-            ctx.moveTo(padL, y);
-            ctx.lineTo(W - padR, y);
-            ctx.stroke();
+        ctx.font = '9px system-ui,sans-serif';
+        ctx.textAlign = 'right';
+        [0,25,50,75,100].forEach(function(v) {
+            var y = padT + cH - (v / 100) * cH;
+            ctx.strokeStyle = 'rgba(255,255,255,0.05)'; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(W - padR, y); ctx.stroke();
             ctx.fillStyle = '#475569';
-            ctx.font = '9px system-ui';
-            ctx.textAlign = 'right';
             ctx.fillText(v, padL - 4, y + 3);
         });
 
-        // Bars
-        const barW = (chartW / days.length) * 0.55;
-        const barGap = chartW / days.length;
-        data.forEach((v, i) => {
-            const x = padL + i * barGap + (barGap - barW) / 2;
-            const barH = (v / 100) * chartH;
-            const y = padT + chartH - barH;
+        var barW = Math.max(8, (cW / 7) * 0.55);
+        var slot  = cW / 7;
 
-            const grad = ctx.createLinearGradient(0, y, 0, padT + chartH);
+        data.forEach(function(v, i) {
+            var x  = padL + i * slot + (slot - barW) / 2;
+            var bH = Math.max(2, (v / 100) * cH);
+            var y  = padT + cH - bH;
+
+            var grad = ctx.createLinearGradient(0, y, 0, padT + cH);
             grad.addColorStop(0, 'rgba(99,102,241,0.9)');
             grad.addColorStop(1, 'rgba(99,102,241,0.3)');
 
-            ctx.beginPath();
-            ctx.roundRect(x, y, barW, barH, [4, 4, 0, 0]);
+            roundRect(ctx, x, y, barW, bH, 4);
             ctx.fillStyle = grad;
             ctx.fill();
 
-            // X labels
             ctx.fillStyle = '#475569';
-            ctx.font = '10px system-ui';
+            ctx.font = '10px system-ui,sans-serif';
             ctx.textAlign = 'center';
             ctx.fillText(days[i].label, x + barW / 2, H - 6);
         });
     }
 
-    // ─── habit-by-habit performance ───────────────────────────────────────────
+    // ── HABIT-BY-HABIT ─────────────────────────────────────────────────────────
     function renderHabitPerformance(habits) {
-        const container = document.getElementById('habit-performance-list');
+        var container = document.getElementById('habit-performance-list');
         if (!container) return;
 
-        const BAR_COLORS = ['#22d3ee','#818cf8','#f87171','#34d399','#f59e0b','#a78bfa','#60a5fa','#fb923c'];
+        var COLORS = ['#22d3ee','#818cf8','#f87171','#34d399','#f59e0b','#a78bfa','#60a5fa','#fb923c'];
 
         if (!habits.length) {
-            container.innerHTML = '<div style="text-align:center; color:#475569; font-size:13px; padding:24px 0;">No habits tracked yet. Add habits to see performance.</div>';
+            container.innerHTML = '<div style="text-align:center;color:#475569;font-size:13px;padding:24px 0;">No habits tracked yet.<br>Add habits to see performance.</div>';
             return;
         }
 
-        // Sort by total completions desc
-        const sorted = [...habits].sort((a, b) => (b.completions || []).length - (a.completions || []).length);
-        const max = Math.max(1, (sorted[0].completions || []).length);
+        var sorted = habits.slice().sort(function(a,b){
+            return (b.completions||[]).length - (a.completions||[]).length;
+        });
+        var max = Math.max(1, (sorted[0].completions||[]).length);
 
-        container.innerHTML = sorted.map((h, i) => {
-            const count = (h.completions || []).length;
-            const pct = Math.round((count / max) * 100);
-            const color = BAR_COLORS[i % BAR_COLORS.length];
-            return `<div style="display:flex; flex-direction:column; gap:4px;">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span style="font-size:13px; font-weight:600; color:#e2e8f0;">${h.name || 'Habit'}</span>
-                    <span style="font-size:12px; color:#94a3b8; white-space:nowrap; margin-left:8px;">${count} completion${count !== 1 ? 's' : ''}</span>
-                </div>
-                <div style="height:6px; background:rgba(255,255,255,0.06); border-radius:3px; overflow:hidden;">
-                    <div style="height:100%; width:${pct}%; background:${color}; border-radius:3px; transition:width 0.6s ease;"></div>
-                </div>
-            </div>`;
+        container.innerHTML = sorted.map(function(h, i) {
+            var count = (h.completions||[]).length;
+            var pct   = Math.round((count / max) * 100);
+            var color = COLORS[i % COLORS.length];
+            return '<div style="display:flex;flex-direction:column;gap:4px;">'
+                + '<div style="display:flex;justify-content:space-between;align-items:center;">'
+                + '<span style="font-size:13px;font-weight:600;color:#e2e8f0;">' + (h.name||'Habit') + '</span>'
+                + '<span style="font-size:12px;color:#94a3b8;white-space:nowrap;margin-left:8px;">' + count + ' completion' + (count!==1?'s':'') + '</span>'
+                + '</div>'
+                + '<div style="height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;">'
+                + '<div style="height:100%;width:' + pct + '%;background:' + color + ';border-radius:3px;"></div>'
+                + '</div></div>';
         }).join('');
     }
 
-    // ─── main render ──────────────────────────────────────────────────────────
+    // ── MAIN RENDER ────────────────────────────────────────────────────────────
     function renderAnalytics() {
-        const habits = getHabits();
+        var habits = getHabits();
 
         // Stat cards
-        const { current, longest } = computeStreaks(habits);
-        const avgWeekly = computeAvgWeekly(habits);
-        const totalCompletions = computeTotalCompletions(habits);
-
-        const sc = document.getElementById('stat-current-streak');
-        const sl = document.getElementById('stat-longest-streak');
-        const sa = document.getElementById('stat-avg-weekly');
-        const st = document.getElementById('stat-total-completions');
-        if (sc) sc.textContent = current + ' Day' + (current !== 1 ? 's' : '');
-        if (sl) sl.textContent = longest + ' Day' + (longest !== 1 ? 's' : '');
-        if (sa) sa.textContent = avgWeekly + '%';
-        if (st) st.textContent = totalCompletions;
+        var s = computeStreaks(habits);
+        var el;
+        el = document.getElementById('stat-current-streak');
+        if (el) el.textContent = s.current + ' Day' + (s.current !== 1 ? 's' : '');
+        el = document.getElementById('stat-longest-streak');
+        if (el) el.textContent = s.longest + ' Day' + (s.longest !== 1 ? 's' : '');
+        el = document.getElementById('stat-avg-weekly');
+        if (el) el.textContent = computeAvgWeekly(habits) + '%';
+        el = document.getElementById('stat-total-completions');
+        if (el) el.textContent = computeTotalCompletions(habits);
 
         renderHeatmap(habits);
-        renderProductivityChart(habits);
-        renderDonutChart(habits);
-        renderWeeklyChart(habits);
-        renderHabitPerformance(habits);
+        // Charts need layout to be done so offsetWidth is real → use requestAnimationFrame
+        requestAnimationFrame(function() {
+            renderProductivityChart(habits);
+            renderDonutChart(habits);
+            renderWeeklyChart(habits);
+            renderHabitPerformance(habits);
+        });
     }
 
-    // Run on next tick to ensure DOM is ready
-    setTimeout(renderAnalytics, 50);
-
-    // Expose for refresh
+    // Expose globally so App.js route handler can call it on navigation
     window.renderAnalytics = renderAnalytics;
+
+    // Auto-run after a short delay to ensure the DOM is painted
+    setTimeout(renderAnalytics, 120);
 })();
 </script>
