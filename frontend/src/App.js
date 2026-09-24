@@ -1163,6 +1163,205 @@ class App {
             });
         };
 
+        // ─────────────────────────────────────────────────────────────────────
+        // PRODUCTIVITY CALENDAR PAGE LOGIC
+        // ─────────────────────────────────────────────────────────────────────
+
+        window.calendarCurrentDate = new Date();
+        window.calendarSelectedDate = new Date().toISOString().split('T')[0];
+
+        window.prevCalendarMonth = () => {
+            window.calendarCurrentDate.setMonth(window.calendarCurrentDate.getMonth() - 1);
+            window.renderCalendar();
+        };
+
+        window.nextCalendarMonth = () => {
+            window.calendarCurrentDate.setMonth(window.calendarCurrentDate.getMonth() + 1);
+            window.renderCalendar();
+        };
+
+        window.selectCalendarDate = (dateStr) => {
+            window.calendarSelectedDate = dateStr;
+            window.renderCalendar();
+        };
+
+        window.renderCalendar = () => {
+            const container = document.getElementById('calendar-days-grid');
+            const monthYearEl = document.getElementById('calendar-month-year');
+            if (!container || !Storage) return;
+
+            const curr = window.calendarCurrentDate;
+            const year = curr.getFullYear();
+            const month = curr.getMonth();
+
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            if (monthYearEl) {
+                monthYearEl.textContent = `${monthNames[month]} ${year}`;
+            }
+
+            const firstDayIndex = new Date(year, month, 1).getDay(); // 0-6 Sun-Sat
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            let html = '';
+
+            // Leading empty padding cells for previous month
+            for (let i = 0; i < firstDayIndex; i++) {
+                html += `<div style="background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.03); border-radius: 12px; min-height: 94px; opacity: 0.3;"></div>`;
+            }
+
+            const habits = Storage.getHabits();
+            const totalActiveHabits = habits.filter(h => !h.paused).length || habits.length || 1;
+
+            // Render day cells
+            for (let d = 1; d <= daysInMonth; d++) {
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+                const isSelected = dateStr === window.calendarSelectedDate;
+
+                // Compute completions for dateStr
+                const completedCount = habits.filter(h => Storage.isCompleted(h.id, dateStr)).length;
+                const pct = Math.round((completedCount / totalActiveHabits) * 100);
+
+                const borderStyle = isSelected
+                    ? 'border: 2px solid #818cf8; background: rgba(99, 102, 241, 0.08); box-shadow: 0 0 16px rgba(99, 102, 241, 0.2);'
+                    : 'border: 1px solid rgba(255,255,255,0.07); background: #07080a;';
+
+                html += `
+                    <div onclick="window.selectCalendarDate('${dateStr}')" style="${borderStyle} border-radius: 12px; padding: 12px; min-height: 94px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; transition: all 0.2s;" onmouseover="if('${dateStr}' !== '${window.calendarSelectedDate}') this.style.background='rgba(255,255,255,0.04)';" onmouseout="if('${dateStr}' !== '${window.calendarSelectedDate}') this.style.background='#07080a';">
+                        <div style="font-size: 14px; font-weight: 700; color: #ffffff;">${d}</div>
+                        <div style="display: flex; flex-direction: column; gap: 2px;">
+                            ${completedCount > 0 ? `
+                                <div style="font-size: 13px; font-weight: 800; color: #818cf8;">${pct}%</div>
+                                <div style="font-size: 11px; font-weight: 600; color: #64748b;">✓ ${completedCount}</div>
+                            ` : `
+                                <div style="font-size: 11px; color: rgba(255,255,255,0.15);">-</div>
+                            `}
+                        </div>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+            window.renderDailySummary(window.calendarSelectedDate);
+        };
+
+        window.renderDailySummary = (dateStr) => {
+            const summaryContainer = document.getElementById('calendar-daily-summary-content');
+            const dateLabel = document.getElementById('summary-date-label');
+            if (!summaryContainer || !Storage) return;
+
+            // Format date label e.g. "Wednesday, 5 Aug 2026"
+            const dateObj = new Date(dateStr + 'T00:00:00');
+            const dateFormatted = new Intl.DateTimeFormat('en-US', { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' }).format(dateObj);
+            if (dateLabel) dateLabel.textContent = dateFormatted;
+
+            const habits = Storage.getHabits();
+            const totalActiveHabits = habits.filter(h => !h.paused).length || habits.length || 1;
+            const completedCount = habits.filter(h => Storage.isCompleted(h.id, dateStr)).length;
+            const score = totalActiveHabits > 0 ? Math.round((completedCount / totalActiveHabits) * 100) : 0;
+
+            let html = `
+                <!-- Productivity Score Box matching reference screenshot -->
+                <div style="background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.25); border-radius: 12px; padding: 16px 20px; display: flex; align-items: center; gap: 16px;">
+                    <div style="width: 44px; height: 44px; border-radius: 10px; background: rgba(99, 102, 241, 0.2); border: 1px solid rgba(99, 102, 241, 0.3); display: flex; align-items: center; justify-content: center; font-size: 22px; color: #818cf8;">
+                        🎖️
+                    </div>
+                    <div>
+                        <div style="font-size: 10.5px; font-weight: 700; color: #818cf8; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 2px;">PRODUCTIVITY SCORE</div>
+                        <div style="font-size: 22px; font-weight: 800; color: #ffffff;">${score} <span style="font-size: 14px; font-weight: 600; color: #64748b;">/ 100</span></div>
+                    </div>
+                </div>
+
+                <!-- Habit Checklist -->
+                <div>
+                    <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: #64748b; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 12px;">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                        HABIT CHECKLIST
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 8px; max-height: 200px; overflow-y: auto; padding-right: 4px; scrollbar-width: thin;">
+            `;
+
+            if (habits.length === 0) {
+                html += `<div style="font-size: 13px; color: #64748b; text-align: center; padding: 12px 0;">No habits configured yet.</div>`;
+            } else {
+                habits.forEach(h => {
+                    const isComp = Storage.isCompleted(h.id, dateStr);
+                    html += `
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: #07080a; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+                            <span style="font-size: 13.5px; font-weight: 600; color: ${isComp ? '#64748b' : '#ffffff'}; text-decoration: ${isComp ? 'line-through' : 'none'};">${h.name}</span>
+                            <span style="font-size: 11px; font-weight: 700; color: ${isComp ? '#818cf8' : '#64748b'}; letter-spacing: 0.04em;">${isComp ? '✓ COMPLETED' : '⏳ MISSED'}</span>
+                        </div>
+                    `;
+                });
+            }
+
+            html += `
+                    </div>
+                </div>
+
+                <!-- Planner Tasks -->
+                <div>
+                    <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: #64748b; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 12px;">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="m9 14 2 2 4-4"/></svg>
+                        PLANNER TASKS
+                    </div>
+            `;
+
+            const tasks = Storage.get('planner_tasks', []);
+            if (tasks.length === 0) {
+                html += `<div style="font-size: 13px; color: #64748b;">No tasks planned on this date.</div>`;
+            } else {
+                html += `<div style="display: flex; flex-direction: column; gap: 8px;">`;
+                tasks.forEach(t => {
+                    html += `
+                        <div style="display: flex; align-items: center; justify-content: space-between; background: #07080a; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+                            <span style="font-size: 13.5px; font-weight: 600; color: ${t.completed ? '#64748b' : '#ffffff'}; text-decoration: ${t.completed ? 'line-through' : 'none'};">${t.text}</span>
+                            <span style="font-size: 11px; font-weight: 700; color: ${t.completed ? '#10b981' : '#6366f1'};">${t.completed ? 'DONE' : t.priority || 'TASK'}</span>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            }
+
+            html += `
+                </div>
+
+                <!-- Journal Reflections -->
+                <div>
+                    <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: #64748b; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 12px;">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                        JOURNAL REFLECTIONS
+                    </div>
+            `;
+
+            const reflections = Storage.get(`daily_reflections_${dateStr}`, { morning: '', evening: '' });
+            if (!reflections.morning && !reflections.evening) {
+                html += `<div style="font-size: 13px; color: #64748b;">No journal logs recorded on this date.</div>`;
+            } else {
+                html += `<div style="display: flex; flex-direction: column; gap: 10px;">`;
+                if (reflections.morning) {
+                    html += `
+                        <div style="background: #07080a; padding: 10px 14px; border-radius: 8px; border-left: 3px solid #f59e0b;">
+                            <div style="font-size: 11px; font-weight: 700; color: #f59e0b; margin-bottom: 2px;">☀️ MORNING FOCUS</div>
+                            <div style="font-size: 13px; color: #cbd5e1; line-height: 1.4;">${reflections.morning}</div>
+                        </div>
+                    `;
+                }
+                if (reflections.evening) {
+                    html += `
+                        <div style="background: #07080a; padding: 10px 14px; border-radius: 8px; border-left: 3px solid #6366f1;">
+                            <div style="font-size: 11px; font-weight: 700; color: #818cf8; margin-bottom: 2px;">🌙 EVENING REVIEW</div>
+                            <div style="font-size: 13px; color: #cbd5e1; line-height: 1.4;">${reflections.evening}</div>
+                        </div>
+                    `;
+                }
+                html += `</div>`;
+            }
+
+            html += `</div>`;
+
+            summaryContainer.innerHTML = html;
+        };
+
         window.renderDashboardHabits = () => {
             const container = document.getElementById('routine-checklist-container');
             if (!container || !Storage) return;
@@ -1489,6 +1688,9 @@ class App {
             if (path === '/timeline') {
                 if (window.renderPlannerTasks) window.renderPlannerTasks();
                 if (window.renderTimelineGrid) window.renderTimelineGrid();
+            }
+            if (path === '/calendar') {
+                if (window.renderCalendar) window.renderCalendar();
             }
 
             // Populate sidebar profile and settings page from localStorage
