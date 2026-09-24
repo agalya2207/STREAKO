@@ -66,10 +66,21 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: err.message });
 });
 
-// Start server
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`✅ STREAKO Frontend running on http://localhost:${PORT}`);
-  console.log(`📍 Visit: http://localhost:${PORT}/login`);
-  console.log(`📂 Public folder: ${path.join(__dirname, 'public')}`);
-  console.log(`📂 Src folder: ${path.join(__dirname, 'src')}`);
-});
+// Start server with fallback if port is busy
+const startServer = (portToUse) => {
+  const server = app.listen(portToUse, '0.0.0.0', () => {
+    console.log(`✅ STREAKO Frontend running on http://localhost:${portToUse}`);
+    console.log(`📍 Visit: http://localhost:${portToUse}`);
+  });
+
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.log(`⚠️ Port ${portToUse} is in use, trying http://localhost:${portToUse + 1}...`);
+      startServer(portToUse + 1);
+    } else {
+      console.error('Server error:', err);
+    }
+  });
+};
+
+startServer(Number(PORT));

@@ -374,15 +374,13 @@ class App {
         window.seedHabits = () => {
             if (Storage) {
                 const defaultHabits = [
-                    { id: "habit_wakeup", name: "Wake up early (6:00 AM)", description: "Start the day with focus", category: "Health", dailyTarget: 1, icon: "⏰", accentColor: "#3b82f6", frequency: "Daily", streak: 0, bestStreak: 7, frequencyLabel: "Daily", paused: false },
-                    { id: "habit_cardio", name: "Cardio / Weight Training", description: "30 min fitness session", category: "Fitness", dailyTarget: 1, icon: "💪", accentColor: "#ef4444", frequency: "Daily", streak: 3, bestStreak: 14, frequencyLabel: "Daily", paused: false },
-                    { id: "habit_deepwork", name: "Deep Work Session", description: "90 min uninterrupted deep work", category: "Focus", dailyTarget: 1, icon: "🎯", accentColor: "#6366f1", frequency: "Daily", streak: 5, bestStreak: 12, frequencyLabel: "Daily", paused: false },
-                    { id: "habit_hydration", name: "Hydration (2L)", description: "Drink 8 glasses of water", category: "Health", dailyTarget: 1, icon: "💧", accentColor: "#0ea5e9", frequency: "Daily", streak: 7, bestStreak: 21, frequencyLabel: "Daily", paused: false },
-                    { id: "habit_read", name: "Read 20 pages", description: "Read book or educational material", category: "Learning", dailyTarget: 1, icon: "📚", accentColor: "#8b5cf6", frequency: "Daily", streak: 4, bestStreak: 18, frequencyLabel: "Daily", paused: false },
-                    { id: "habit_meditation", name: "Meditation & Mindfulness", description: "10 min mindfulness session", category: "Mindfulness", dailyTarget: 1, icon: "🧘", accentColor: "#10b981", frequency: "Daily", streak: 2, bestStreak: 10, frequencyLabel: "Daily", paused: false },
-                    { id: "habit_clean", name: "Clean Workspace", description: "Tidy up desk and workspace", category: "Productivity", dailyTarget: 1, icon: "✨", accentColor: "#f59e0b", frequency: "Daily", streak: 1, bestStreak: 8, frequencyLabel: "Daily", paused: false },
-                    { id: "habit_reflection", name: "Evening Reflection", description: "Write down thoughts & gratitude", category: "Personal", dailyTarget: 1, icon: "✍️", accentColor: "#ec4899", frequency: "Daily", streak: 6, bestStreak: 15, frequencyLabel: "Daily", paused: false },
-                    { id: "habit_sleep", name: "Sleep by 11:00 PM", description: "Ensure 8 hours of restorative sleep", category: "Health", dailyTarget: 1, icon: "🌙", accentColor: "#6366f1", frequency: "Daily", streak: 2, bestStreak: 9, frequencyLabel: "Daily", paused: false }
+                    { id: "habit_wakeup", name: "Wake up early (6:00 AM)", description: "Start the day productively", category: "Health", dailyTarget: 1, icon: "☀️", accentColor: "#f59e0b", frequency: "Daily", streak: 0, bestStreak: 15, frequencyLabel: "Daily", paused: false },
+                    { id: "habit_cardio", name: "Cardio / Weight Training", description: "30-45 minutes workout session", category: "Fitness", dailyTarget: 1, icon: "💪", accentColor: "#ef4444", frequency: "Daily", streak: 3, bestStreak: 12, frequencyLabel: "Daily", paused: false },
+                    { id: "habit_reading", name: "Read 15 Pages", description: "Non-fiction or professional development", category: "Learning", dailyTarget: 1, icon: "📚", accentColor: "#3b82f6", frequency: "Daily", streak: 9, bestStreak: 21, frequencyLabel: "Daily", paused: false },
+                    { id: "habit_meditation", name: "Meditation & Breathwork", description: "10 minutes mindfulness session", category: "Mindfulness", dailyTarget: 1, icon: "🧘", accentColor: "#8b5cf6", frequency: "Daily", streak: 5, bestStreak: 8, frequencyLabel: "Daily", paused: false },
+                    { id: "habit_hydration", name: "Drink 3L Water", description: "Stay hydrated throughout the day", category: "Health", dailyTarget: 1, icon: "💧", accentColor: "#0ea5e9", frequency: "Daily", streak: 14, bestStreak: 22, frequencyLabel: "Daily", paused: false },
+                    { id: "habit_deepwork", name: "Deep Work (2 Hours)", description: "Focus on primary project without distractions", category: "Career", dailyTarget: 1, icon: "💼", accentColor: "#6366f1", frequency: "Daily", streak: 4, bestStreak: 9, frequencyLabel: "Daily", paused: false },
+                    { id: "habit_reflection", name: "Reflective Journaling", description: "Morning and evening thoughts log", category: "Personal", dailyTarget: 1, icon: "✍️", accentColor: "#ec4899", frequency: "Daily", streak: 6, bestStreak: 10, frequencyLabel: "Daily", paused: false }
                 ];
                 const habits = Storage.getHabits();
                 if (habits.length === 0 || (habits.length === 6 && habits[0].name === "Morning Workout")) {
@@ -665,42 +663,114 @@ class App {
             window.closeHabitModal();
         };
 
+        window.activeHabitsCategory = 'All';
+
+        window.filterHabitsCategory = (cat, el) => {
+            window.activeHabitsCategory = cat;
+            const container = document.getElementById('habit-category-tabs');
+            if (container) {
+                container.querySelectorAll('.habit-tab').forEach(t => t.classList.remove('active'));
+            }
+            if (el) el.classList.add('active');
+            window.renderHabits();
+        };
+
         window.renderHabits = () => {
-            const grid = document.querySelector('.habits-grid');
-            if(!grid) return;
+            const grid = document.querySelector('.habits-grid') || document.getElementById('habits-grid');
+            if (!grid) return;
             grid.innerHTML = ''; // Clear current grid
             
             if (Storage && Storage.getHabits) {
-                const habits = Storage.getHabits();
-                habits.forEach(habit => window.addHabitCard(habit, grid));
+                let habits = Storage.getHabits();
+                const filter = window.activeHabitsCategory || 'All';
+                if (filter !== 'All') {
+                    habits = habits.filter(h => (h.category || '').toLowerCase() === filter.toLowerCase());
+                }
+
+                if (habits.length === 0) {
+                    grid.innerHTML = `
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 48px 20px; background: #0c0d12; border-radius: 14px; border: 1px dashed rgba(255,255,255,0.1);">
+                            <p style="color: #64748b; font-size: 15px; margin-bottom: 12px;">No routines found for category "${filter}".</p>
+                            <button onclick="window.openCreateHabitModal()" style="background: #4f46e5; color: #fff; border: none; padding: 8px 18px; border-radius: 8px; font-weight: 600; cursor: pointer;">+ Create Routine</button>
+                        </div>
+                    `;
+                } else {
+                    habits.forEach(habit => window.addHabitCard(habit, grid));
+                }
             }
         };
 
         window.addHabitCard = (habit, gridElement) => {
             const card = document.createElement('div');
             card.className = 'habit-card';
-            card.style.opacity = habit.paused ? '0.5' : '1';
-            
+            card.setAttribute('data-habit-id', habit.id);
+            card.style.cssText = `
+                background: #0d0e14;
+                border: 1px solid rgba(255, 255, 255, 0.07);
+                border-radius: 14px;
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                position: relative;
+                transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+                opacity: ${habit.paused ? '0.6' : '1'};
+            `;
+
+            const accentColor = habit.accentColor || '#6366f1';
+            const icon = habit.icon || '🎯';
+
             card.innerHTML = `
-                <div class="habit-header" style="display:flex; justify-content:space-between; align-items:center;">
-                    <div class="habit-icon" style="background:${habit.accentColor}; padding:8px; border-radius:6px;">${habit.icon}</div>
-                    <div class="habit-actions">
-                    <button class="habit-action-btn" onclick="window.pauseHabit('${habit.id}')">${habit.paused ? '▶️' : '⏸️'}</button>
-                    <button class="habit-action-btn" onclick="window.editHabit('${habit.id}')">✏️</button>
-                    <button class="habit-action-btn" onclick="window.promptDeleteHabit('${habit.id}')">🗑️</button>
+                <div>
+                    <!-- Top row: Icon badge & Action buttons -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <div style="width: 42px; height: 42px; border-radius: 10px; background: ${accentColor}1f; border: 1px solid ${accentColor}33; display: flex; align-items: center; justify-content: center; font-size: 20px; color: ${accentColor};">
+                            ${icon}
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 4px;">
+                            <button onclick="window.pauseHabit('${habit.id}')" title="${habit.paused ? 'Resume Habit' : 'Pause Habit'}" style="width: 32px; height: 32px; border-radius: 8px; background: transparent; border: none; color: #64748b; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.06)'; this.style.color='#ffffff';" onmouseout="this.style.background='transparent'; this.style.color='#64748b';">
+                                ${habit.paused ? `
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                ` : `
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                                `}
+                            </button>
+                            <button onclick="window.editHabit('${habit.id}')" title="Edit Habit" style="width: 32px; height: 32px; border-radius: 8px; background: transparent; border: none; color: #64748b; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.06)'; this.style.color='#ffffff';" onmouseout="this.style.background='transparent'; this.style.color='#64748b';">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+                            </button>
+                            <button onclick="window.promptDeleteHabit('${habit.id}')" title="Delete Habit" style="width: 32px; height: 32px; border-radius: 8px; background: transparent; border: none; color: #64748b; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.background='rgba(239,68,68,0.15)'; this.style.color='#ef4444';" onmouseout="this.style.background='transparent'; this.style.color='#64748b';">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Title & Description -->
+                    <div style="font-size: 16px; font-weight: 700; color: #ffffff; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
+                        <span>${habit.name}</span>
+                        ${habit.paused ? '<span style="font-size: 11px; font-weight: 700; color: #ef4444; background: rgba(239, 68, 68, 0.12); padding: 2px 8px; border-radius: 4px; text-transform: uppercase;">Paused</span>' : ''}
+                    </div>
+                    <div style="font-size: 13.5px; color: #94a3b8; line-height: 1.4; margin-bottom: 20px; min-height: 38px;">
+                        ${habit.description || 'No description provided'}
                     </div>
                 </div>
-                <div class="habit-name" style="font-weight:700; margin-top:8px;">${habit.name} ${habit.paused ? '<span style="color:#ef4444; font-size:12px; margin-left:4px;">[PAUSED]</span>' : ''}</div>
-                <div class="habit-desc" style="color:#a0aec0; font-size:14px; margin-top:4px;">${habit.description}</div>
-                <hr style="margin:12px 0; border-color:#555;" />
-                <div class="habit-stats" style="display:flex; gap:12px; font-size:14px;">
-                    <div class="habit-stat"><strong>🔥 ${habit.streak || 0}</strong></div>
-                    <div class="habit-stat"><strong>🏆 ${habit.bestStreak || 0}</strong></div>
-                    <div class="habit-stat"><strong>📅 ${habit.frequencyLabel || 'Daily'}</strong></div>
+
+                <!-- Footer / Metrics Bar matching reference screenshot -->
+                <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 14px; font-size: 12px; font-weight: 600; color: #64748b;">
+                    <div>
+                        <span style="font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-right: 4px;">STREAK</span>
+                        <span style="color: #ffffff; font-weight: 700;">🔥 ${habit.streak || 0}</span>
+                    </div>
+                    <div>
+                        <span style="font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-right: 4px;">BEST</span>
+                        <span style="color: #ffffff; font-weight: 700;">${habit.bestStreak || habit.streak || 0}d</span>
+                    </div>
+                    <div>
+                        <span style="font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-right: 4px;">SCHEDULE</span>
+                        <span style="color: #ffffff; font-weight: 700;">${habit.frequencyLabel || habit.frequency || 'Daily'}</span>
+                    </div>
                 </div>
-                ${habit.startTime && habit.endTime ? `<div style="font-size:13px; color:#a0aec0; margin-top:4px;">${habit.startTime} - ${habit.endTime}</div>` : ''}
-                ${habit.frequency === 'Weekdays' && habit.weekdays && habit.weekdays.length ? `<div style="font-size:13px; color:#a0aec0; margin-top:4px;">Days: ${habit.weekdays.join(', ')}</div>` : ''}
             `;
+
             gridElement.appendChild(card);
         };
 

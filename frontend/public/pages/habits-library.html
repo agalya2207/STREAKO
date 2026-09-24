@@ -1,6 +1,7 @@
 <div class="page active" id="habits-library">
     <div class="sidebar-layout">
-                <div class="sidebar">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
             <div class="sidebar-logo" onclick="app.router.navigate('/dashboard')">
                 <div class="sidebar-logo-icon">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -26,7 +27,7 @@
                     <span>Habits</span>
                 </div>
                 <div class="nav-item " onclick="app.router.navigate('/timeline')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 16 14"/></svg>
                     <span>Planner</span>
                 </div>
                 <div class="nav-item " onclick="app.router.navigate('/calendar')">
@@ -64,53 +65,152 @@
                     </svg>
                 </button>
             </div>
-        </div><!-- /#habit-modal-body -->
+        </div>
 
-    <!-- ── FOOTER (pinned, never scrolls) ── -->
-    <div id="habit-modal-footer" style="
-        flex-shrink: 0;
-        padding: 14px 20px;
-        border-top: 1px solid rgba(255,255,255,0.09);
-        display: flex;
-        justify-content: flex-end;
-        gap: 10px;
-        background: #1a1e2b;
-    ">
-      <button
-        onclick="window.closeHabitModal()"
-        style="background: transparent; border:1px solid #4a5568; color:#a0aec0; padding:8px 20px; border-radius:8px; cursor:pointer; font-size:14px; font-weight:500; transition: all 0.2s;"
-        onmouseover="this.style.background='rgba(255,255,255,0.06)'"
-        onmouseout="this.style.background='transparent'"
-      >Cancel</button>
-      <button
-        id="create-habit-btn"
-        onclick="window.createHabit()"
-        style="background: linear-gradient(135deg, #4F46E5, #7C3AED); border:none; color:#fff; padding:8px 20px; border-radius:8px; cursor:pointer; font-size:14px; font-weight:700; transition: opacity 0.2s;"
-        onmouseover="this.style.opacity='0.88'"
-        onmouseout="this.style.opacity='1'"
-      >Create Routine</button>
+        <!-- Main Content Layout -->
+        <div class="main-content" style="padding: 32px 40px; background: #07080a; min-height: 100vh;">
+            <!-- Header section matching reference image -->
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 28px;">
+                <div>
+                    <h1 style="font-size: 28px; font-weight: 800; color: #ffffff; letter-spacing: -0.02em; margin-bottom: 6px;">Routine Library</h1>
+                    <p style="font-size: 14.5px; color: #94a3b8; margin: 0;">Configure and manage your daily habits & routines.</p>
+                </div>
+                <button onclick="window.openCreateHabitModal()" style="display: flex; align-items: center; gap: 8px; background: #4f46e5; color: #ffffff; border: none; padding: 10px 20px; border-radius: 9999px; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);" onmouseover="this.style.background='#4338ca'; this.style.transform='translateY(-1px)';" onmouseout="this.style.background='#4f46e5'; this.style.transform='none';">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    Create Habit
+                </button>
+            </div>
+
+            <!-- Category Filter Tabs matching reference image -->
+            <div id="habit-category-tabs" style="display: flex; gap: 8px; margin-bottom: 28px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none;">
+                <button class="habit-tab active" onclick="window.filterHabitsCategory('All', this)">All</button>
+                <button class="habit-tab" onclick="window.filterHabitsCategory('Health', this)">Health</button>
+                <button class="habit-tab" onclick="window.filterHabitsCategory('Fitness', this)">Fitness</button>
+                <button class="habit-tab" onclick="window.filterHabitsCategory('Learning', this)">Learning</button>
+                <button class="habit-tab" onclick="window.filterHabitsCategory('Career', this)">Career</button>
+                <button class="habit-tab" onclick="window.filterHabitsCategory('Productivity', this)">Productivity</button>
+                <button class="habit-tab" onclick="window.filterHabitsCategory('Finance', this)">Finance</button>
+                <button class="habit-tab" onclick="window.filterHabitsCategory('Personal', this)">Personal</button>
+                <button class="habit-tab" onclick="window.filterHabitsCategory('Mindfulness', this)">Mindfulness</button>
+                <button class="habit-tab" onclick="window.filterHabitsCategory('Social', this)">Social</button>
+                <button class="habit-tab" onclick="window.filterHabitsCategory('Other', this)">Other</button>
+            </div>
+
+            <!-- Habit Cards Grid -->
+            <div class="habits-grid" id="habits-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
+                <!-- Dynamically populated by window.renderHabits() -->
+            </div>
+        </div>
     </div>
+</div>
 
-  </div><!-- /#habit-modal -->
-</div><!-- /#habit-modal-overlay -->
+<!-- Modal Overlay for Create / Edit Habit -->
+<div id="habit-modal-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 9999; align-items: center; justify-content: center; padding: 20px;">
+    <div id="habit-modal" style="background: #12141c; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; width: 100%; max-width: 520px; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.6);">
+        
+        <!-- Modal Header -->
+        <div style="padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; background: #181b26;">
+            <h2 id="habit-modal-title" style="margin: 0; font-size: 18px; font-weight: 700; color: #ffffff;">Define New Routine</h2>
+            <button onclick="window.closeHabitModal()" style="background: transparent; border: none; color: #64748b; font-size: 20px; cursor: pointer; padding: 4px; display: flex; align-items: center; justify-content: center; border-radius: 6px; transition: color 0.2s;" onmouseover="this.style.color='#ffffff'" onmouseout="this.style.color='#64748b'">✕</button>
+        </div>
 
-<button class="btn btn-primary" onclick="window.openCreateHabitModal()">+ Create Habit</button>
-            <div id="habit-modal-container"></div>
+        <!-- Modal Body -->
+        <div id="habit-modal-body" style="padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 18px;">
+            <!-- Name -->
+            <div>
+                <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #94a3b8;">Habit Name *</label>
+                <input id="habit-name" type="text" placeholder="e.g. Read 20 pages" style="width: 100%; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); background: #0c0d12; color: #fff; font-size: 14px; outline: none; box-sizing: border-box;" />
             </div>
 
-            <div style="display: flex; gap: 12px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 8px;">
-                <div class="tag tag-primary" style="background: var(--primary); color: white; cursor: pointer;">All</div>
-                <div class="tag tag-primary" style="cursor: pointer;">&#x1F3CB;&#xFE0F; Fitness</div>
-                <div class="tag tag-primary" style="cursor: pointer;">&#x1F9E0; Learning</div>
-                <div class="tag tag-primary" style="cursor: pointer;">&#x1F4BC; Career</div>
-                <div class="tag tag-primary" style="cursor: pointer;">&#x1F49A; Health</div>
-                <div class="tag tag-primary" style="cursor: pointer;">&#x270D;&#xFE0F; Personal</div>
-                <div class="tag tag-primary" style="cursor: pointer;">&#x1F9D8; Mindfulness</div>
+            <!-- Description -->
+            <div>
+                <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #94a3b8;">Description</label>
+                <textarea id="habit-desc" placeholder="e.g. Non-fiction or professional development" rows="2" style="width: 100%; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); background: #0c0d12; color: #fff; font-size: 14px; resize: vertical; outline: none; box-sizing: border-box;"></textarea>
             </div>
 
-            <div class="habits-grid">
-                <!-- Dynamically populated by renderHabits() in main.js -->
+            <!-- Category + Target -->
+            <div style="display: flex; gap: 14px;">
+                <div style="flex: 1;">
+                    <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #94a3b8;">Category</label>
+                    <select id="habit-category" style="width: 100%; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); background: #0c0d12; color: #fff; font-size: 14px; outline: none; box-sizing: border-box;">
+                        <option>Health</option>
+                        <option>Fitness</option>
+                        <option>Learning</option>
+                        <option>Career</option>
+                        <option>Productivity</option>
+                        <option>Finance</option>
+                        <option>Personal</option>
+                        <option>Mindfulness</option>
+                        <option>Social</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+                <div style="width: 120px;">
+                    <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #94a3b8;">Daily Target</label>
+                    <input id="habit-target" type="number" min="1" value="1" style="width: 100%; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); background: #0c0d12; color: #fff; font-size: 14px; outline: none; box-sizing: border-box;" />
+                </div>
             </div>
+
+            <!-- Sessions container -->
+            <div id="habit-sessions-container" style="display: flex; flex-direction: column; gap: 10px;"></div>
+
+            <!-- Icon Picker -->
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 13px; color: #94a3b8;">Icon</label>
+                <div id="icon-picker" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <button data-icon="☀️" class="icon-btn" style="font-size: 20px; width: 40px; height: 40px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">☀️</button>
+                    <button data-icon="💪" class="icon-btn" style="font-size: 20px; width: 40px; height: 40px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">💪</button>
+                    <button data-icon="📚" class="icon-btn" style="font-size: 20px; width: 40px; height: 40px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">📚</button>
+                    <button data-icon="🎯" class="icon-btn" style="font-size: 20px; width: 40px; height: 40px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">🎯</button>
+                    <button data-icon="💧" class="icon-btn" style="font-size: 20px; width: 40px; height: 40px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">💧</button>
+                    <button data-icon="💼" class="icon-btn" style="font-size: 20px; width: 40px; height: 40px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">💼</button>
+                    <button data-icon="✍️" class="icon-btn" style="font-size: 20px; width: 40px; height: 40px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">✍️</button>
+                    <button data-icon="☕" class="icon-btn" style="font-size: 20px; width: 40px; height: 40px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">☕</button>
+                    <button data-icon="✅" class="icon-btn" style="font-size: 20px; width: 40px; height: 40px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">✅</button>
+                    <button data-icon="🧘" class="icon-btn" style="font-size: 20px; width: 40px; height: 40px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">🧘</button>
+                    <button data-icon="✨" class="icon-btn" style="font-size: 20px; width: 40px; height: 40px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">✨</button>
+                    <button data-icon="🌙" class="icon-btn" style="font-size: 20px; width: 40px; height: 40px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">🌙</button>
+                </div>
+            </div>
+
+            <!-- Color Picker -->
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 13px; color: #94a3b8;">Accent Color</label>
+                <div id="color-picker" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button data-color="#4F46E5" class="color-swatch" style="width: 30px; height: 30px; border-radius: 50%; background: #4F46E5; border: 2px solid transparent; cursor: pointer;"></button>
+                    <button data-color="#EF4444" class="color-swatch" style="width: 30px; height: 30px; border-radius: 50%; background: #EF4444; border: 2px solid transparent; cursor: pointer;"></button>
+                    <button data-color="#00D9FF" class="color-swatch" style="width: 30px; height: 30px; border-radius: 50%; background: #00D9FF; border: 2px solid transparent; cursor: pointer;"></button>
+                    <button data-color="#FBBF24" class="color-swatch" style="width: 30px; height: 30px; border-radius: 50%; background: #FBBF24; border: 2px solid transparent; cursor: pointer;"></button>
+                    <button data-color="#A78BFA" class="color-swatch" style="width: 30px; height: 30px; border-radius: 50%; background: #A78BFA; border: 2px solid transparent; cursor: pointer;"></button>
+                    <button data-color="#EC4899" class="color-swatch" style="width: 30px; height: 30px; border-radius: 50%; background: #EC4899; border: 2px solid transparent; cursor: pointer;"></button>
+                    <button data-color="#14B8A6" class="color-swatch" style="width: 30px; height: 30px; border-radius: 50%; background: #14B8A6; border: 2px solid transparent; cursor: pointer;"></button>
+                    <button data-color="#F97316" class="color-swatch" style="width: 30px; height: 30px; border-radius: 50%; background: #F97316; border: 2px solid transparent; cursor: pointer;"></button>
+                </div>
+            </div>
+
+            <!-- Frequency -->
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 13px; color: #94a3b8;">Frequency</label>
+                <div style="display: flex; gap: 10px;">
+                    <button id="freq-everyday" class="freq-btn" data-value="Daily" style="flex: 1; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: #0c0d12; color: #fff; font-size: 13.5px; font-weight: 600; cursor: pointer;">Everyday</button>
+                    <button id="freq-weekdays" class="freq-btn" data-value="Weekdays" style="flex: 1; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: #0c0d12; color: #fff; font-size: 13.5px; font-weight: 600; cursor: pointer;">Specific Weekdays</button>
+                </div>
+                <div id="weekday-container" style="display: none; margin-top: 10px; gap: 6px; flex-wrap: wrap;">
+                    <button class="weekday-btn" data-day="Mon" style="padding: 6px 12px; border-radius: 6px; background: #0c0d12; color: #fff; border: 1px solid rgba(255,255,255,0.15); cursor: pointer; font-size: 13px;">Mon</button>
+                    <button class="weekday-btn" data-day="Tue" style="padding: 6px 12px; border-radius: 6px; background: #0c0d12; color: #fff; border: 1px solid rgba(255,255,255,0.15); cursor: pointer; font-size: 13px;">Tue</button>
+                    <button class="weekday-btn" data-day="Wed" style="padding: 6px 12px; border-radius: 6px; background: #0c0d12; color: #fff; border: 1px solid rgba(255,255,255,0.15); cursor: pointer; font-size: 13px;">Wed</button>
+                    <button class="weekday-btn" data-day="Thu" style="padding: 6px 12px; border-radius: 6px; background: #0c0d12; color: #fff; border: 1px solid rgba(255,255,255,0.15); cursor: pointer; font-size: 13px;">Thu</button>
+                    <button class="weekday-btn" data-day="Fri" style="padding: 6px 12px; border-radius: 6px; background: #0c0d12; color: #fff; border: 1px solid rgba(255,255,255,0.15); cursor: pointer; font-size: 13px;">Fri</button>
+                    <button class="weekday-btn" data-day="Sat" style="padding: 6px 12px; border-radius: 6px; background: #0c0d12; color: #fff; border: 1px solid rgba(255,255,255,0.15); cursor: pointer; font-size: 13px;">Sat</button>
+                    <button class="weekday-btn" data-day="Sun" style="padding: 6px 12px; border-radius: 6px; background: #0c0d12; color: #fff; border: 1px solid rgba(255,255,255,0.15); cursor: pointer; font-size: 13px;">Sun</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Footer -->
+        <div style="padding: 16px 24px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: flex-end; gap: 10px; background: #181b26;">
+            <button onclick="window.closeHabitModal()" style="background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #cbd5e1; padding: 9px 20px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s;">Cancel</button>
+            <button id="create-habit-btn" onclick="window.createHabit()" style="background: linear-gradient(135deg, #4F46E5, #6366f1); border: none; color: #fff; padding: 9px 22px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 700; transition: opacity 0.2s;">Create Routine</button>
         </div>
     </div>
 </div>
