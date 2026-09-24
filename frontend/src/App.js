@@ -1692,6 +1692,12 @@ class App {
             if (path === '/calendar') {
                 if (window.renderCalendar) window.renderCalendar();
             }
+            if (path === '/analytics') {
+                // Re-render analytics on navigation (slight delay lets the page HTML render first)
+                setTimeout(() => {
+                    if (window.renderAnalytics) window.renderAnalytics();
+                }, 80);
+            }
 
             // Populate sidebar profile and settings page from localStorage
             const userEmail = localStorage.getItem('user_email') || '';
