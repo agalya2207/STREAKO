@@ -870,6 +870,299 @@ class App {
             }
         };
 
+        // ─────────────────────────────────────────────────────────────────────
+        // PLANNER & TIMELINE PAGE LOGIC
+        // ─────────────────────────────────────────────────────────────────────
+
+        window.isAddingPlannerTask = false;
+
+        window.startAddingTask = () => {
+            window.isAddingPlannerTask = true;
+            window.renderPlannerTasks();
+        };
+
+        window.cancelAddingTask = () => {
+            window.isAddingPlannerTask = false;
+            window.renderPlannerTasks();
+        };
+
+        window.savePlannerTask = () => {
+            const input = document.getElementById('planner-task-input');
+            const prioritySel = document.getElementById('planner-task-priority');
+            const text = input ? input.value.trim() : '';
+            const priority = prioritySel ? prioritySel.value : 'MEDIUM';
+
+            if (text) {
+                const tasks = Storage.get('planner_tasks', []);
+                tasks.push({
+                    id: 'task_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+                    text,
+                    priority,
+                    completed: false,
+                    createdAt: new Date().toISOString()
+                });
+                Storage.set('planner_tasks', tasks);
+                window.isAddingPlannerTask = false;
+                window.renderPlannerTasks();
+            }
+        };
+
+        window.togglePlannerTask = (taskId) => {
+            const tasks = Storage.get('planner_tasks', []);
+            const task = tasks.find(t => t.id === taskId);
+            if (task) {
+                task.completed = !task.completed;
+                Storage.set('planner_tasks', tasks);
+                window.renderPlannerTasks();
+            }
+        };
+
+        window.deletePlannerTask = (taskId) => {
+            let tasks = Storage.get('planner_tasks', []);
+            tasks = tasks.filter(t => t.id !== taskId);
+            Storage.set('planner_tasks', tasks);
+            window.renderPlannerTasks();
+        };
+
+        window.renderPlannerTasks = () => {
+            const container = document.getElementById('planner-tasks-container');
+            if (!container) return;
+
+            let tasks = Storage.get('planner_tasks', []);
+
+            // Migrate legacy priorities if no planner_tasks exist
+            if (tasks.length === 0) {
+                const priorities = Storage.get('priorities', []);
+                if (priorities.length > 0) {
+                    tasks = priorities.map((p, idx) => ({
+                        id: 'task_legacy_' + idx,
+                        text: p.text,
+                        priority: idx === 0 ? 'HIGH' : idx === 1 ? 'MEDIUM' : 'LOW',
+                        completed: !!p.completed,
+                        createdAt: new Date().toISOString()
+                    }));
+                    Storage.set('planner_tasks', tasks);
+                }
+            }
+
+            let html = '';
+
+            if (tasks.length === 0 && !window.isAddingPlannerTask) {
+                // Exact empty state matching reference screenshot
+                html = `
+                    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 48px 20px;">
+                        <div style="width: 56px; height: 56px; border-radius: 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; color: #475569;">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="m9 14 2 2 4-4"/></svg>
+                        </div>
+                        <p style="color: #64748b; font-size: 14px; margin: 0 0 20px 0; font-weight: 500;">Your day is clear. Add your Top 3 priorities.</p>
+                        <button onclick="window.startAddingTask()" style="background: rgba(255,255,255,0.06); color: #ffffff; border: 1px solid rgba(255,255,255,0.15); padding: 9px 22px; border-radius: 8px; font-size: 13.5px; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.06)'">+ Create Task</button>
+                    </div>
+                `;
+            } else {
+                html += `<div style="display: flex; flex-direction: column; gap: 12px; flex: 1;">`;
+
+                tasks.forEach(t => {
+                    const badgeColor = t.priority === 'HIGH' ? '#ef4444' : t.priority === 'MEDIUM' ? '#6366f1' : '#10b981';
+                    const badgeBg = t.priority === 'HIGH' ? 'rgba(239, 68, 68, 0.12)' : t.priority === 'MEDIUM' ? 'rgba(99, 102, 241, 0.12)' : 'rgba(16, 185, 129, 0.12)';
+
+                    html += `
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: #07080a; padding: 14px 18px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); transition: all 0.2s;">
+                            <div style="display: flex; align-items: center; gap: 14px; flex: 1;">
+                                <input type="checkbox" onchange="window.togglePlannerTask('${t.id}')" ${t.completed ? 'checked' : ''} style="width: 18px; height: 18px; accent-color: #6366f1; cursor: pointer; border-radius: 4px;">
+                                <span style="font-size: 14.5px; font-weight: 600; color: ${t.completed ? '#64748b' : '#ffffff'}; text-decoration: ${t.completed ? 'line-through' : 'none'}; transition: all 0.2s;">${t.text}</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <span style="font-size: 11px; font-weight: 700; color: ${badgeColor}; background: ${badgeBg}; padding: 3px 10px; border-radius: 6px; letter-spacing: 0.04em;">${t.priority || 'MEDIUM'}</span>
+                                <button onclick="window.deletePlannerTask('${t.id}')" title="Delete Task" style="background: transparent; border: none; color: #64748b; cursor: pointer; font-size: 14px; padding: 4px; display: flex; align-items: center; justify-content: center; transition: color 0.2s;" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#64748b'">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                if (window.isAddingPlannerTask) {
+                    html += `
+                        <div style="display: flex; flex-direction: column; gap: 10px; background: rgba(99, 102, 241, 0.08); padding: 14px 18px; border-radius: 12px; border: 1px solid rgba(99, 102, 241, 0.3);">
+                            <input type="text" id="planner-task-input" placeholder="Enter task title..." style="width: 100%; background: transparent; border: none; outline: none; color: #fff; font-size: 14.5px; font-weight: 500;" autocomplete="off">
+                            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 10px;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="font-size: 12px; color: #94a3b8; font-weight: 600;">Priority:</span>
+                                    <select id="planner-task-priority" style="background: #0c0d12; color: #fff; border: 1px solid rgba(255,255,255,0.15); padding: 4px 10px; border-radius: 6px; font-size: 12px; outline: none;">
+                                        <option value="HIGH">HIGH</option>
+                                        <option value="MEDIUM" selected>MEDIUM</option>
+                                        <option value="LOW">LOW</option>
+                                    </select>
+                                </div>
+                                <div style="display: flex; gap: 8px;">
+                                    <button onclick="window.cancelAddingTask()" style="background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #94a3b8; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12.5px; font-weight: 500;">Cancel</button>
+                                    <button onclick="window.savePlannerTask()" style="background: #4f46e5; border: none; color: #ffffff; padding: 6px 16px; border-radius: 6px; cursor: pointer; font-size: 12.5px; font-weight: 600;">Add Task</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                html += `</div>`;
+            }
+
+            container.innerHTML = html;
+
+            if (window.isAddingPlannerTask) {
+                const input = document.getElementById('planner-task-input');
+                if (input) {
+                    input.focus();
+                    input.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            window.savePlannerTask();
+                        }
+                        if (e.key === 'Escape') {
+                            e.preventDefault();
+                            window.cancelAddingTask();
+                        }
+                    });
+                }
+            }
+        };
+
+        // Time Blocking Timeline Logic
+        window.openTimeBlockModal = () => {
+            const modal = document.getElementById('timeblock-modal-overlay');
+            if (modal) modal.style.display = 'flex';
+        };
+
+        window.closeTimeBlockModal = () => {
+            const modal = document.getElementById('timeblock-modal-overlay');
+            if (modal) modal.style.display = 'none';
+            const titleInput = document.getElementById('tb-title');
+            if (titleInput) titleInput.value = '';
+        };
+
+        window.saveTimeBlock = () => {
+            const titleInput = document.getElementById('tb-title');
+            const startInput = document.getElementById('tb-start');
+            const endInput = document.getElementById('tb-end');
+            const catInput = document.getElementById('tb-category');
+
+            const title = titleInput ? titleInput.value.trim() : '';
+            const startTime = startInput ? startInput.value : '09:00';
+            const endTime = endInput ? endInput.value : '10:00';
+            const color = catInput ? catInput.value : '#6366f1';
+
+            if (title) {
+                let blocks = Storage.get('planner_blocks', []);
+                blocks.push({
+                    id: 'tb_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+                    title,
+                    startTime,
+                    endTime,
+                    color
+                });
+                Storage.set('planner_blocks', blocks);
+                window.closeTimeBlockModal();
+                window.renderTimelineGrid();
+            }
+        };
+
+        window.deleteTimeBlock = (id) => {
+            let blocks = Storage.get('planner_blocks', []);
+            blocks = blocks.filter(b => b.id !== id);
+            Storage.set('planner_blocks', blocks);
+            window.renderTimelineGrid();
+        };
+
+        window.renderTimelineGrid = () => {
+            const container = document.getElementById('timeline-grid-container');
+            if (!container) return;
+
+            let blocks = Storage.get('planner_blocks', null);
+
+            // Default initial time blocks if none exist
+            if (!blocks) {
+                blocks = [
+                    { id: 'tb_1', title: '🧘 Meditation', startTime: '05:00', endTime: '05:30', color: '#10b981' },
+                    { id: 'tb_2', title: '💪 Workout Session', startTime: '06:00', endTime: '07:00', color: '#ef4444' },
+                    { id: 'tb_3', title: '💼 Deep Work Session', startTime: '09:00', endTime: '11:30', color: '#6366f1' },
+                    { id: 'tb_4', title: '📚 Reading & Study', startTime: '14:00', endTime: '15:00', color: '#3b82f6' },
+                    { id: 'tb_5', title: '✍️ Evening Reflection', startTime: '19:00', endTime: '19:30', color: '#ec4899' }
+                ];
+                Storage.set('planner_blocks', blocks);
+            }
+
+            const hours = [
+                '05:00', '06:00', '07:00', '08:00', '09:00', '10:00',
+                '11:00', '12:00', '13:00', '14:00', '15:00', '16:00',
+                '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'
+            ];
+
+            let gridHtml = `<div style="display: flex; flex-direction: column; gap: 0; position: relative;">`;
+
+            hours.forEach(hour => {
+                gridHtml += `
+                    <div style="display: flex; align-items: flex-start; height: 56px; border-bottom: 1px solid rgba(255,255,255,0.04); position: relative;">
+                        <span style="font-size: 12px; font-weight: 600; color: #64748b; width: 60px; flex-shrink: 0; margin-top: -6px;">${hour}</span>
+                        <div style="flex: 1; height: 100%; border-left: 1px solid rgba(255,255,255,0.06); position: relative;"></div>
+                    </div>
+                `;
+            });
+
+            gridHtml += `</div>`;
+            container.innerHTML = gridHtml;
+
+            // Overlay blocks on top of timeline container
+            const gridWrapper = container.firstElementChild;
+            if (!gridWrapper) return;
+
+            blocks.forEach(block => {
+                // Calculate position relative to 05:00 start (300 mins)
+                const [sH, sM] = block.startTime.split(':').map(Number);
+                const [eH, eM] = block.endTime.split(':').map(Number);
+                
+                const startMins = sH * 60 + (sM || 0);
+                const endMins = eH * 60 + (eM || 0);
+                const baseMins = 5 * 60; // 05:00 AM
+
+                const topOffset = Math.max(0, ((startMins - baseMins) / 60) * 56);
+                const durationMins = Math.max(20, endMins - startMins);
+                const height = Math.max(36, (durationMins / 60) * 56);
+
+                const blockEl = document.createElement('div');
+                blockEl.style.cssText = `
+                    position: absolute;
+                    top: ${topOffset}px;
+                    left: 70px;
+                    right: 8px;
+                    height: ${height - 4}px;
+                    background: ${block.color || '#6366f1'}1f;
+                    border-left: 4px solid ${block.color || '#6366f1'};
+                    border-radius: 8px;
+                    padding: 6px 12px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    color: #ffffff;
+                    font-size: 13px;
+                    font-weight: 600;
+                    box-sizing: border-box;
+                    z-index: 10;
+                    backdrop-filter: blur(4px);
+                    transition: transform 0.2s, box-shadow 0.2s;
+                    cursor: pointer;
+                `;
+
+                blockEl.innerHTML = `
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">${window.to12h(block.startTime)} - ${window.to12h(block.endTime)}</span>
+                        <span style="font-size: 13.5px; font-weight: 700; color: #ffffff;">${block.title}</span>
+                    </div>
+                    <button onclick="event.stopPropagation(); window.deleteTimeBlock('${block.id}')" title="Delete Block" style="background: transparent; border: none; color: #64748b; cursor: pointer; font-size: 13px; opacity: 0.7; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'; this.style.color='#ef4444';" onmouseout="this.style.opacity='0.7'; this.style.color='#64748b';">✕</button>
+                `;
+
+                gridWrapper.appendChild(blockEl);
+            });
+        };
+
         window.renderDashboardHabits = () => {
             const container = document.getElementById('routine-checklist-container');
             if (!container || !Storage) return;
@@ -1192,6 +1485,10 @@ class App {
             }
             if (path === '/habits-library') {
                 window.renderHabits();
+            }
+            if (path === '/timeline') {
+                if (window.renderPlannerTasks) window.renderPlannerTasks();
+                if (window.renderTimelineGrid) window.renderTimelineGrid();
             }
 
             // Populate sidebar profile and settings page from localStorage
