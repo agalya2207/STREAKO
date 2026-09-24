@@ -207,7 +207,26 @@ export class Storage {
      * Get all habits
      */
     static getHabits() {
-        return this.get('habits', []);
+        let habits = this.get('habits', []);
+        let modified = false;
+        const seenIds = new Set();
+
+        habits = habits.map((h, idx) => {
+            if (!h || typeof h !== 'object') return h;
+            if (!h.id || seenIds.has(h.id)) {
+                modified = true;
+                const uniqueId = 'habit_' + Date.now() + '_' + idx + '_' + Math.random().toString(36).substr(2, 6);
+                return { ...h, id: uniqueId };
+            }
+            seenIds.add(h.id);
+            return h;
+        });
+
+        if (modified) {
+            this.setHabits(habits);
+        }
+
+        return habits;
     }
 
     /**
@@ -215,14 +234,16 @@ export class Storage {
      */
     static addHabit(habit) {
         const habits = this.getHabits();
-        habits.push({
-            id: 'habit_' + Date.now(),
-            ...habit,
+        const id = habit.id || ('habit_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9));
+        const newHabit = {
             completions: [],
-            createdAt: new Date().toISOString()
-        });
+            ...habit,
+            id,
+            createdAt: habit.createdAt || new Date().toISOString()
+        };
+        habits.push(newHabit);
         this.setHabits(habits);
-        return habits[habits.length - 1];
+        return newHabit;
     }
 
     /**
