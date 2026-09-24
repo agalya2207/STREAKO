@@ -1730,10 +1730,94 @@ class App {
             if (path === '/settings') {
                 const nameInput = document.getElementById('settings-fullname');
                 const emailInput = document.getElementById('settings-email');
-                if (nameInput) nameInput.value = userName;
-                if (emailInput) emailInput.value = userEmail;
+                const avatarInput = document.getElementById('settings-avatar');
+                const tzSelect = document.getElementById('settings-timezone');
+
+                let userObj = null;
+                try { userObj = JSON.parse(userJson); } catch(e){}
+
+                if (nameInput) nameInput.value = userName || 'Jack';
+                if (emailInput) emailInput.value = userEmail || 'jack@dailyos.io';
+                if (avatarInput) avatarInput.value = (userObj && userObj.avatar) ? userObj.avatar : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb';
+                if (tzSelect && userObj && userObj.timezone) tzSelect.value = userObj.timezone;
             }
         });
+
+        // ─────────────────────────────────────────────────────────────────────
+        // SYSTEM SETTINGS & LOGOUT LOGIC
+        // ─────────────────────────────────────────────────────────────────────
+
+        window.saveSettings = () => {
+            const nameInput = document.getElementById('settings-fullname');
+            const emailInput = document.getElementById('settings-email');
+            const avatarInput = document.getElementById('settings-avatar');
+            const tzSelect = document.getElementById('settings-timezone');
+
+            const fullName = nameInput ? nameInput.value.trim() : 'User';
+            const email = emailInput ? emailInput.value.trim() : 'user@email.com';
+            const avatar = avatarInput ? avatarInput.value.trim() : '';
+            const timezone = tzSelect ? tzSelect.value : 'UTC';
+
+            const userObj = {
+                fullName,
+                full_name: fullName,
+                name: fullName,
+                email,
+                avatar,
+                timezone
+            };
+
+            localStorage.setItem('user', JSON.stringify(userObj));
+            localStorage.setItem('streako_user', JSON.stringify(userObj));
+            localStorage.setItem('user_email', email);
+
+            // Update sidebar user profile elements instantly across current DOM
+            const sidebarName = document.getElementById('sidebar-name');
+            const sidebarEmail = document.getElementById('sidebar-email');
+            const sidebarAvatar = document.getElementById('sidebar-avatar');
+
+            if (sidebarName) sidebarName.textContent = fullName;
+            if (sidebarEmail) sidebarEmail.textContent = email;
+            if (sidebarAvatar) {
+                const initials = fullName.split(' ').filter(Boolean).map(n => n[0]).join('').toUpperCase().slice(0, 2);
+                sidebarAvatar.textContent = initials || 'ST';
+            }
+
+            if (window.showNotification) {
+                window.showNotification('✅ Settings saved successfully!', 'success');
+            }
+        };
+
+        window.logout = () => {
+            if (confirm('Are you sure you want to log out?')) {
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('streako_auth_token');
+                localStorage.removeItem('refresh_token');
+                localStorage.removeItem('user');
+                localStorage.removeItem('streako_user');
+                localStorage.removeItem('user_email');
+                localStorage.removeItem('user_id');
+                if (window.showNotification) {
+                    window.showNotification('👋 Logged out successfully.', 'info');
+                }
+                setTimeout(() => {
+                    if (window.app && window.app.router) window.app.router.navigate('/login');
+                    else window.location.href = '/login';
+                }, 300);
+            }
+        };
+
+        window.resetAllData = () => {
+            if (confirm('⚠️ Are you sure you want to reset all data? All habits, tasks, and journals will be permanently erased.')) {
+                localStorage.clear();
+                if (window.showNotification) {
+                    window.showNotification('Data reset completed.', 'info');
+                }
+                setTimeout(() => {
+                    window.location.reload();
+                }, 500);
+            }
+        };
 
         // Initialize default habits if needed
         window.seedHabits();
