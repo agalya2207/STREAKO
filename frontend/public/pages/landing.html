@@ -8,28 +8,14 @@
         <!-- NAVBAR -->
         <nav class="navbar landing-navbar">
             <div class="navbar-container">
-                <div class="navbar-brand" onclick="app.router.navigate('/landing')" role="button" tabindex="0">
-                    <svg class="brand-logo-svg" width="34" height="34" viewBox="0 0 100 100" fill="none">
-                        <defs>
-                            <linearGradient id="logoHexGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#168CFF"/>
-                                <stop offset="100%" stop-color="#27DFFF"/>
-                            </linearGradient>
-                            <filter id="logoGlow" x="-20%" y="-20%" width="140%" height="140%">
-                                <feGaussianBlur stdDeviation="3" result="blur"/>
-                                <feMerge>
-                                    <feMergeNode in="blur"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                        </defs>
-                        <!-- Hexagon outline -->
-                        <polygon points="50,6 90,28 90,72 50,94 10,72 10,28" stroke="url(#logoHexGrad)" stroke-width="6" fill="rgba(6, 27, 50, 0.6)" filter="url(#logoGlow)"/>
-                        <!-- S streak -->
-                        <path d="M64 36 C64 30 58 26 50 26 C40 26 36 32 36 38 C36 48 64 48 64 60 C64 68 58 74 50 74 C40 74 34 68 34 62" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" fill="none"/>
-                        <circle cx="50" cy="50" r="4" fill="#27DFFF"/>
-                    </svg>
-                    <span class="brand-name">STREAKO</span>
+                <div class="navbar-brand" onclick="app.router.navigate('/landing')" role="button" tabindex="0" style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
+                    <div class="sidebar-logo-icon" style="width: 38px; height: 38px;">
+                        <img src="/assets/images/logo.png" alt="STREAKO Logo" style="width: 38px; height: 38px; object-fit: contain; mix-blend-mode: screen;">
+                    </div>
+                    <div class="sidebar-logo-text">
+                        <span class="sidebar-logo-title" style="font-size: 19px; font-weight: 800; letter-spacing: 1.5px;">STREAKO</span>
+                        <span class="sidebar-logo-sub" style="font-size: 8px; letter-spacing: 1.8px;">PREMIUM PRODUCTIVITY</span>
+                    </div>
                 </div>
 
 
@@ -176,13 +162,14 @@
 
                 <!-- LEFT: Brand + Description -->
                 <div class="footer-left">
-                    <div class="footer-brand" onclick="app.router.navigate('/landing')" role="button" tabindex="0">
-                        <svg class="brand-logo-svg" width="24" height="24" viewBox="0 0 100 100" fill="none" style="vertical-align:middle;margin-right:8px;">
-                            <polygon points="50,6 90,28 90,72 50,94 10,72 10,28" stroke="#168CFF" stroke-width="8" fill="rgba(6, 27, 50, 0.6)"/>
-                            <path d="M64 36 C64 30 58 26 50 26 C40 26 36 32 36 38 C36 48 64 48 64 60 C64 68 58 74 50 74 C40 74 34 68 34 62" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round" fill="none"/>
-                            <circle cx="50" cy="50" r="4" fill="#27DFFF"/>
-                        </svg>
-                        <span>STREAKO</span>
+                    <div class="footer-brand" onclick="app.router.navigate('/landing')" role="button" tabindex="0" style="display: flex; align-items: center; gap: 10px; cursor: pointer; margin-bottom: 12px;">
+                        <div class="sidebar-logo-icon" style="width: 32px; height: 32px;">
+                            <img src="/assets/images/logo.png" alt="STREAKO Logo" style="width: 32px; height: 32px; object-fit: contain; mix-blend-mode: screen;">
+                        </div>
+                        <div class="sidebar-logo-text">
+                            <span class="sidebar-logo-title" style="font-size: 16px; font-weight: 800; letter-spacing: 1.2px;">STREAKO</span>
+                            <span class="sidebar-logo-sub" style="font-size: 7.5px; letter-spacing: 1.5px;">PREMIUM PRODUCTIVITY</span>
+                        </div>
                     </div>
                     <p class="footer-tagline">The intelligent habit-building platform designed for real human lives.</p>
                 </div>

@@ -1,7 +1,15 @@
 <div class="page active" id="onboarding">
     <div class="sidebar-layout">
         <div class="sidebar">
-            <div class="sidebar-logo"><svg width="30" height="30" viewBox="0 0 100 100" style="vertical-align:middle;margin-right:8px;flex-shrink:0;"><path d="M85.45 43.75 A36 36 0 1 1 56.25 14.55" fill="none" stroke="#4F46E5" stroke-width="11" stroke-linecap="round"/><path d="M30 58 L46 74 L83.7 21.72" fill="none" stroke="#4F46E5" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/><circle cx="46" cy="74" r="4" fill="#2DD4BF"/></svg><span>Streako</span></div>
+            <div class="sidebar-logo" onclick="app.router.navigate('/dashboard')">
+                <div class="sidebar-logo-icon">
+                    <img src="/assets/images/logo.png" alt="STREAKO Logo">
+                </div>
+                <div class="sidebar-logo-text">
+                    <span class="sidebar-logo-title">STREAKO</span>
+                    <span class="sidebar-logo-sub">PREMIUM PRODUCTIVITY</span>
+                </div>
+            </div>
             <div class="sidebar-nav">
                 <div class="nav-item active">⚙️ Setup</div>
             </div>

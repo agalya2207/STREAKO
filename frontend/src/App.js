@@ -1674,26 +1674,6 @@ class App {
                     window.renderDashboardHabits();
                 }
 
-                // Setup mobile sidebar toggle & overlay
-                const hamburger = document.getElementById('hamburger-toggle');
-                const sidebar = document.querySelector('.sidebar');
-                const overlay = document.getElementById('sidebar-overlay');
-                if (hamburger && sidebar && overlay) {
-                    hamburger.onclick = () => {
-                        sidebar.classList.toggle('open');
-                        overlay.classList.toggle('show');
-                    };
-                    overlay.onclick = () => {
-                        sidebar.classList.remove('open');
-                        overlay.classList.remove('show');
-                    };
-                    document.querySelectorAll('.sidebar-nav .nav-item').forEach(item => {
-                        item.addEventListener('click', () => {
-                            sidebar.classList.remove('open');
-                            overlay.classList.remove('show');
-                        });
-                    });
-                }
             }
             if (path === '/habits-library') {
                 window.renderHabits();
@@ -1711,6 +1691,38 @@ class App {
                     if (window.renderAnalytics) window.renderAnalytics();
                 }, 80);
             }
+
+            // Setup mobile sidebar toggle & overlay for all pages
+            const hamburger = document.getElementById('hamburger-toggle');
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            if (hamburger && sidebar && overlay) {
+                hamburger.onclick = () => {
+                    sidebar.classList.toggle('open');
+                    overlay.classList.toggle('show');
+                };
+                overlay.onclick = () => {
+                    sidebar.classList.remove('open');
+                    overlay.classList.remove('show');
+                };
+                document.querySelectorAll('.sidebar-nav .nav-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        sidebar.classList.remove('open');
+                        overlay.classList.remove('show');
+                    });
+                });
+            }
+
+            // Dynamically update active nav item in sidebar matching current route
+            const currentPath = path === '/' ? '/dashboard' : path;
+            document.querySelectorAll('.sidebar-nav .nav-item').forEach(item => {
+                const onclickAttr = item.getAttribute('onclick') || '';
+                if (onclickAttr.includes(`'${currentPath}'`)) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
 
             // Populate sidebar profile and settings page from localStorage
             const userEmail = localStorage.getItem('user_email') || '';

@@ -1,18 +1,26 @@
-<div class="page active" id="goals">
+﻿<div class="page active" id="goals">
+    <!-- Mobile Header (screens < 768px) -->
+    <header class="mobile-header">
+      <button class="hamburger-btn" id="hamburger-toggle" aria-label="Toggle navigation" style="background: none; border: none; color: white; font-size: 28px; cursor: pointer; line-height:1;">
+        &#9776;
+      </button>
+      <img src="/assets/images/logo.png" alt="STREAKO logo" style="height: 36px; width: 36px; object-fit: contain; background: transparent;">
+      <div class="mobile-header-brand">
+        <span>STREAKO</span>
+        <span>Premium Productivity</span>
+      </div>
+    </header>
+
+    <div class="overlay" id="sidebar-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 998;"></div>
+
     <div class="sidebar-layout">
                 <div class="sidebar">
             <div class="sidebar-logo" onclick="app.router.navigate('/dashboard')">
                 <div class="sidebar-logo-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
-                        <path d="M5 3v4"/>
-                        <path d="M19 17v4"/>
-                        <path d="M3 5h4"/>
-                        <path d="M17 19h4"/>
-                    </svg>
+                    <img src="/assets/images/logo.png" alt="STREAKO Logo">
                 </div>
                 <div class="sidebar-logo-text">
-                    <span class="sidebar-logo-title">Streako<span>.ai</span></span>
+                    <span class="sidebar-logo-title">STREAKO</span>
                     <span class="sidebar-logo-sub">PREMIUM PRODUCTIVITY</span>
                 </div>
             </div>
