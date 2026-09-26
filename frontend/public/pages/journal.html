@@ -1,7 +1,7 @@
-﻿<div class="page active" id="journal">
+<div class="page active" id="journal">
     <!-- Mobile Header (screens < 768px) -->
     <header class="mobile-header">
-      <button class="hamburger-btn" id="hamburger-toggle" aria-label="Toggle navigation" style="background: none; border: none; color: white; font-size: 28px; cursor: pointer; line-height:1;">
+      <button type="button" class="hamburger-btn" id="hamburger-toggle" aria-label="Toggle navigation" style="background: none; border: none; color: white; font-size: 28px; cursor: pointer; line-height:1;">
         &#9776;
       </button>
       <img src="/assets/images/logo.png" alt="STREAKO logo" style="height: 36px; width: 36px; object-fit: contain; background: transparent;">
@@ -14,7 +14,7 @@
     <div class="overlay" id="sidebar-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 998;"></div>
 
     <div class="sidebar-layout">
-                <div class="sidebar">
+        <div class="sidebar">
             <div class="sidebar-logo" onclick="app.router.navigate('/dashboard')">
                 <div class="sidebar-logo-icon">
                     <img src="/assets/images/logo.png" alt="STREAKO Logo">
@@ -64,7 +64,7 @@
                     <p id="sidebar-name">User</p>
                     <p id="sidebar-email">user@email.com</p>
                 </div>
-                <button class="profile-action-btn" onclick="window.logout()" title="Log Out">
+                <button type="button" class="profile-action-btn" onclick="window.logout()" title="Log Out">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
                         <polyline points="16 17 21 12 16 7"/>
@@ -74,11 +74,60 @@
             </div>
         </div>
 
+        <div class="main-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
+                <div>
+                    <h1 class="header-title">Reflections Log</h1>
+                    <p class="header-subtitle">Your daily journal and reflections.</p>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="window.showNotification('Coming soon!', 'info')">+ New Journal Entry</button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 250px 1fr; gap: 32px;">
+                <div>
+                    <h3 style="margin-bottom: 16px; font-size: 14px; font-weight: 600;">Historical Entries</h3>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="padding: 16px; background: var(--bg-card); border-radius: 12px; cursor: pointer; border-left: 4px solid var(--primary);">
+                            <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">Aug 28, 2026</div>
+                            <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+                                <span class="tag tag-primary" style="font-size: 10px;">🌅 Morning</span>
+                                <span class="tag tag-warning" style="font-size: 10px;">🌙 Evening</span>
+                            </div>
+                            <p style="font-size: 12px; color: var(--text-secondary); font-style: italic;">"Started strong today with my morning routine..."</p>
+                        </div>
+
+                        <div style="padding: 16px; background: var(--bg-card); border-radius: 12px; cursor: pointer;">
+                            <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">Aug 27, 2026</div>
+                            <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+                                <span class="tag tag-primary" style="font-size: 10px;">🌅 Morning</span>
+                            </div>
+                            <p style="font-size: 12px; color: var(--text-secondary); font-style: italic;">"Feeling productive and focused on goals..."</p>
+                        </div>
+
+                        <div style="padding: 16px; background: var(--bg-card); border-radius: 12px; cursor: pointer;">
+                            <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">Aug 26, 2026</div>
+                            <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+                                <span class="tag tag-warning" style="font-size: 10px;">🌙 Evening</span>
+                            </div>
+                            <p style="font-size: 12px; color: var(--text-secondary); font-style: italic;">"Reflection on today's lessons and growth..."</p>
+                        </div>
+
+                        <div style="padding: 16px; background: var(--bg-card); border-radius: 12px; cursor: pointer;">
+                            <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">Aug 25, 2026</div>
+                            <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+                                <span class="tag tag-primary" style="font-size: 10px;">🌅 Morning</span>
+                                <span class="tag tag-warning" style="font-size: 10px;">🌙 Evening</span>
+                            </div>
+                            <p style="font-size: 12px; color: var(--text-secondary); font-style: italic;">"Gratitude for consistency and small wins..."</p>
+                        </div>
+                    </div>
+                </div>
+
                 <div style="background: var(--bg-card); border-radius: 16px; padding: 40px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;">
                     <div style="font-size: 48px; margin-bottom: 16px;">📖</div>
                     <h2 style="font-size: 18px; margin-bottom: 8px;">Select an entry</h2>
                     <p style="color: var(--text-secondary); margin-bottom: 24px;">Click on any historical entry to view or edit it.</p>
-                    <button class="btn btn-primary" onclick="window.showNotification('Coming soon!', 'info')">+ Create Journal Entry</button>
+                    <button type="button" class="btn btn-primary" onclick="window.showNotification('Coming soon!', 'info')">+ Create Journal Entry</button>
                 </div>
             </div>
         </div>

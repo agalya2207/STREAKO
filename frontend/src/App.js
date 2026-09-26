@@ -1146,6 +1146,7 @@ class App {
                     font-weight: 600;
                     box-sizing: border-box;
                     z-index: 10;
+                    -webkit-backdrop-filter: blur(4px);
                     backdrop-filter: blur(4px);
                     transition: transform 0.2s, box-shadow 0.2s;
                     cursor: pointer;

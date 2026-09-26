@@ -1,0 +1,11 @@
+{
+  "connector": {
+    "name": "local"
+  },
+  "extends": [
+    "development"
+  ],
+  "hints": {
+    "no-inline-styles": "off"
+  }
+}

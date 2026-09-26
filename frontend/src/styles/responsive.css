@@ -154,13 +154,14 @@
         box-sizing: border-box;
         align-items: center;
         justify-content: flex-start;
-        gap: 16px;
+        gap: 0;
     }
 
     .mobile-header .hamburger-btn {
         font-size: 28px !important;
         line-height: 1;
         flex-shrink: 0;
+        margin-right: 19px;
     }
 
     .mobile-header img {
@@ -169,6 +170,10 @@
         object-fit: contain;
         background: transparent;
         mix-blend-mode: screen;
+    }
+
+    .mobile-header img + .mobile-header-brand {
+        margin-left: 1px;
     }
 
     .mobile-header-brand {
