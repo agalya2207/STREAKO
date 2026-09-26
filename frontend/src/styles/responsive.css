@@ -224,6 +224,10 @@
         left: 0 !important;
     }
 
+    .sidebar-logo {
+        display: none !important;
+    }
+
     .sidebar-nav {
         flex-direction: column !important;
         overflow-y: auto !important;
