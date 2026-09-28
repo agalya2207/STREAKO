@@ -1878,15 +1878,21 @@ class App {
                             try {
                                 data = JSON.parse(responseText);
                             } catch (jsonErr) {
-                                data = { error: 'Server error. Please try again.' };
+                                // Backend returned HTML (proxy/deployment error)
+                                if (response.status === 502 || response.status === 503 || response.status === 504) {
+                                    throw new Error('❌ Cannot reach server. Please try again in a moment.');
+                                }
+                                throw new Error('❌ Unexpected server response. Please try again.');
                             }
 
                             if (!response.ok) {
                                 let errMsg = data.error || 'Login failed. Please check your credentials.';
-                                if (errMsg.includes('Invalid login credentials')) {
+                                if (errMsg.includes('Invalid login credentials') || errMsg.includes('invalid_credentials')) {
                                     errMsg = '❌ Incorrect email or password. Please try again.';
                                 } else if (errMsg.includes('Email not confirmed')) {
                                     errMsg = '❌ Email not confirmed. Please check your inbox.';
+                                } else if (errMsg.includes('Backend service unavailable') || errMsg.includes('unavailable')) {
+                                    errMsg = '❌ Server is temporarily unavailable. Please try again in a moment.';
                                 }
                                 throw new Error(errMsg);
                             }

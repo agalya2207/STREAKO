@@ -84,7 +84,7 @@ app.use('/api', async (req, res, next) => {
     }
   } catch (proxyErr) {
     console.error(`[API Proxy Error] ${req.method} ${req.originalUrl}:`, proxyErr.message);
-    res.status(502).json({ error: 'Backend API service unavailable. Please ensure backend is running on http://localhost:5000.' });
+    res.status(502).json({ error: `Backend service unavailable: ${proxyErr.message}. Please try again in a moment.` });
   }
 });
 
