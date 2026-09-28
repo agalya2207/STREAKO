@@ -43,9 +43,49 @@ app.use('/src', express.static(path.join(__dirname, 'src')));
 // Serve page templates from public/pages
 app.use('/pages', express.static(path.join(__dirname, 'public', 'pages')));
 
-// Health check endpoint
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'Frontend OK', timestamp: new Date().toISOString() });
+// Backend API URL (defaults to http://localhost:5000 in local dev)
+const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:5000';
+
+// Reverse proxy /api to backend server
+app.use('/api', async (req, res, next) => {
+  if (req.path === '/health') {
+    return res.json({ status: 'Frontend OK', timestamp: new Date().toISOString() });
+  }
+
+  try {
+    const targetUrl = `${BACKEND_URL}${req.originalUrl}`;
+    const headers = {};
+    for (const [key, value] of Object.entries(req.headers)) {
+      if (key.toLowerCase() !== 'host' && key.toLowerCase() !== 'content-length') {
+        headers[key] = value;
+      }
+    }
+
+    const fetchOptions = {
+      method: req.method,
+      headers
+    };
+
+    if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method) && req.body && Object.keys(req.body).length > 0) {
+      fetchOptions.body = JSON.stringify(req.body);
+      headers['content-type'] = 'application/json';
+    }
+
+    const backendRes = await fetch(targetUrl, fetchOptions);
+    const contentType = backendRes.headers.get('content-type') || '';
+
+    res.status(backendRes.status);
+    if (contentType.includes('application/json')) {
+      const data = await backendRes.json();
+      return res.json(data);
+    } else {
+      const text = await backendRes.text();
+      return res.send(text);
+    }
+  } catch (proxyErr) {
+    console.error(`[API Proxy Error] ${req.method} ${req.originalUrl}:`, proxyErr.message);
+    res.status(502).json({ error: 'Backend API service unavailable. Please ensure backend is running on http://localhost:5000.' });
+  }
 });
 
 // 🔧 CRITICAL: SPA fallback - serve index.html for unknown routes

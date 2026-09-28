@@ -2,6 +2,27 @@ import { Router } from './utils/router.js';
 import { state } from './utils/state.js';
 import { Storage } from './utils/storage.js';
 
+// Smart API helper that handles both proxied /api and fallback to localhost:5000 in dev
+async function authApiRequest(endpoint, options = {}) {
+    let res = null;
+    let fallbackNeeded = false;
+    try {
+        res = await fetch(endpoint, options);
+        const cType = res.headers.get('content-type') || '';
+        if (res.ok && cType.includes('text/html') && endpoint.startsWith('/api')) {
+            fallbackNeeded = true;
+        }
+    } catch (netErr) {
+        fallbackNeeded = true;
+    }
+
+    if (fallbackNeeded && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+        const directUrl = `http://localhost:5000${endpoint}`;
+        return await fetch(directUrl, options);
+    }
+    return res;
+}
+
 class App {
     constructor() {
         this.router = new Router();
@@ -12,11 +33,26 @@ class App {
     init() {
         // Expose global app instance for legacy inline handlers (onclick)
         window.app = this;
+
+        window.handleForgotPasswordClick = () => {
+            const emailInput = document.getElementById('login-email');
+            if (emailInput && emailInput.value.trim()) {
+                sessionStorage.setItem('streako_forgot_email', emailInput.value.trim());
+            }
+            if (window.app && window.app.router) {
+                window.app.router.navigate('/forgot-password');
+            } else {
+                window.location.href = '/forgot-password';
+            }
+        };
+
         window.goToPage = (pageId) => {
             const routeMap = {
                 'landing': '/landing',
                 'signup': '/signup',
                 'login': '/login',
+                'forgot-password': '/forgot-password',
+                'reset-password': '/forgot-password',
                 'role-selection': '/role-selection',
                 'onboarding': '/onboarding',
                 'dashboard': '/dashboard',
@@ -1499,6 +1535,14 @@ class App {
             const path = e.detail.path;
             
             if (path === '/login') {
+                const forgotLink = document.getElementById('forgot-password-link');
+                if (forgotLink) {
+                    forgotLink.onclick = (e) => {
+                        e.preventDefault();
+                        window.handleForgotPasswordClick();
+                    };
+                }
+
                 const loginForm = document.getElementById('login-form');
                 if (loginForm) {
                     loginForm.onsubmit = async (e) => {
@@ -1521,7 +1565,7 @@ class App {
                         loginBtn.textContent = 'Logging in...';
 
                         try {
-                            const response = await fetch('/api/auth/login', {
+                            const response = await authApiRequest('/api/auth/login', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ email, password }),
@@ -1571,6 +1615,196 @@ class App {
                             loginBtn.disabled = false;
                             loginBtn.textContent = 'Log In';
                         }
+                    };
+                }
+            }
+
+            if (path === '/forgot-password' || path === '/reset-password') {
+                const step1Form = document.getElementById('forgot-step1-form');
+                const step2Form = document.getElementById('forgot-step2-form');
+                const emailInput = document.getElementById('forgot-email');
+                const sendBtn = document.getElementById('forgot-send-btn');
+                const errorDiv = document.getElementById('forgot-error');
+                const successDiv = document.getElementById('forgot-success');
+                const otpCard = document.getElementById('otp-info-card');
+                const displayOtp = document.getElementById('display-otp-code');
+                const codeInput = document.getElementById('forgot-code');
+                const newPassInput = document.getElementById('forgot-new-password');
+                const confirmPassInput = document.getElementById('forgot-confirm-password');
+                const submitBtn = document.getElementById('forgot-submit-btn');
+                const resendBtn = document.getElementById('forgot-resend-btn');
+
+                const showError = (msg) => {
+                    if (successDiv) successDiv.style.display = 'none';
+                    if (errorDiv) {
+                        errorDiv.textContent = msg;
+                        errorDiv.style.display = 'block';
+                    }
+                };
+
+                const showSuccess = (msg) => {
+                    if (errorDiv) errorDiv.style.display = 'none';
+                    if (successDiv) {
+                        successDiv.textContent = msg;
+                        successDiv.style.display = 'block';
+                    }
+                };
+
+                const hideMessages = () => {
+                    if (errorDiv) errorDiv.style.display = 'none';
+                    if (successDiv) successDiv.style.display = 'none';
+                };
+
+                // Preset email if user previously typed it on login page
+                const presetEmail = sessionStorage.getItem('streako_forgot_email');
+                if (presetEmail && emailInput) {
+                    emailInput.value = presetEmail;
+                }
+
+                // Check for Supabase recovery link in URL hash
+                const hash = window.location.hash;
+                if (hash && (hash.includes('type=recovery') || hash.includes('access_token='))) {
+                    if (step1Form && step2Form) {
+                        step1Form.style.display = 'none';
+                        step2Form.style.display = 'block';
+                        if (otpCard) otpCard.style.display = 'none';
+                        if (codeInput) {
+                            codeInput.value = 'VERIFIED_LINK';
+                            codeInput.parentElement.style.display = 'none';
+                        }
+                        showSuccess('✅ Email recovery link verified! Please enter your new password below.');
+                    }
+                }
+
+                // Step 1: Send Reset Code
+                if (step1Form) {
+                    step1Form.onsubmit = async (evt) => {
+                        evt.preventDefault();
+                        const email = emailInput ? emailInput.value.trim() : '';
+
+                        if (!email) {
+                            showError('Please enter your email address');
+                            return;
+                        }
+
+                        hideMessages();
+                        if (sendBtn) {
+                            sendBtn.disabled = true;
+                            sendBtn.textContent = 'Verifying account...';
+                        }
+
+                        try {
+                            const response = await authApiRequest('/api/auth/forgot-password', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ email })
+                            });
+
+                            const data = await response.json().catch(() => ({}));
+
+                            if (!response.ok) {
+                                throw new Error(data.error || 'Failed to process password reset request');
+                            }
+
+                            // Show Step 2
+                            step1Form.style.display = 'none';
+                            step2Form.style.display = 'block';
+
+                            // Keep verification code field blank for user to enter from email
+                            if (codeInput) {
+                                codeInput.value = '';
+                                codeInput.focus();
+                            }
+
+                            showSuccess(`✉️ Verification code sent to ${data.email || email}! Check your inbox (or spam) and enter the code below.`);
+                            if (codeInput) codeInput.focus();
+                        } catch (err) {
+                            showError(err.message || 'Error requesting password reset');
+                        } finally {
+                            if (sendBtn) {
+                                sendBtn.disabled = false;
+                                sendBtn.textContent = 'Send Reset Code';
+                            }
+                        }
+                    };
+                }
+
+                // Step 2: Reset Password
+                if (step2Form) {
+                    step2Form.onsubmit = async (evt) => {
+                        evt.preventDefault();
+                        const email = emailInput ? emailInput.value.trim() : '';
+                        const code = codeInput ? codeInput.value.trim() : '';
+                        const newPassword = newPassInput ? newPassInput.value : '';
+                        const confirmPassword = confirmPassInput ? confirmPassInput.value : '';
+
+                        hideMessages();
+
+                        if (!code) {
+                            showError('Please enter the verification code');
+                            return;
+                        }
+
+                        if (newPassword.length < 6) {
+                            showError('Password must be at least 6 characters long');
+                            return;
+                        }
+
+                        if (newPassword !== confirmPassword) {
+                            showError('Passwords do not match. Please verify and try again.');
+                            return;
+                        }
+
+                        if (submitBtn) {
+                            submitBtn.disabled = true;
+                            submitBtn.textContent = 'Updating password...';
+                        }
+
+                        try {
+                            const response = await authApiRequest('/api/auth/reset-password', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ email, code, newPassword })
+                            });
+
+                            const data = await response.json().catch(() => ({}));
+
+                            if (!response.ok) {
+                                throw new Error(data.error || 'Failed to reset password');
+                            }
+
+                            sessionStorage.removeItem('streako_forgot_email');
+                            step2Form.style.display = 'none';
+                            showSuccess('🎉 Password reset successfully! Redirecting to login...');
+
+                            if (window.showNotification) {
+                                window.showNotification('Password updated successfully!', 'success');
+                            }
+
+                            setTimeout(() => {
+                                if (window.app && window.app.router) {
+                                    window.app.router.navigate('/login');
+                                } else {
+                                    window.location.href = '/login';
+                                }
+                            }, 1200);
+                        } catch (err) {
+                            showError(err.message || 'Failed to reset password');
+                            if (submitBtn) {
+                                submitBtn.disabled = false;
+                                submitBtn.textContent = 'Update Password';
+                            }
+                        }
+                    };
+                }
+
+                // Resend or switch back to Step 1
+                if (resendBtn) {
+                    resendBtn.onclick = () => {
+                        hideMessages();
+                        step2Form.style.display = 'none';
+                        step1Form.style.display = 'block';
+                        if (emailInput) emailInput.focus();
                     };
                 }
             }

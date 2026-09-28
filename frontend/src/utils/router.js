@@ -21,6 +21,8 @@ export class Router {
             '/landing': 'landing.html',
             '/signup': 'signup.html',
             '/login': 'login.html',
+            '/forgot-password': 'forgot-password.html',
+            '/reset-password': 'forgot-password.html',
             '/role-selection': 'role-selection.html',
             '/onboarding': 'onboarding.html',
             '/dashboard': 'dashboard.html',

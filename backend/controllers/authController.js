@@ -262,5 +262,203 @@ const updateProfile = async (req, res, next) => {
   }
 };
 
-module.exports = { signup, login, logout, getCurrentUser, updateProfile };
+// FORGOT PASSWORD - Generate recovery OTP and link for real user
+const forgotPassword = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    if (!email || !email.trim()) {
+      return res.status(400).json({ error: 'Please enter your registered email address' });
+    }
+
+    const cleanEmail = email.trim().toLowerCase();
+
+    // 1. Verify user exists in Supabase Auth
+    let targetUser = null;
+    try {
+      const { data: usersData, error: listError } = await supabase.auth.admin.listUsers();
+      if (listError) throw listError;
+      targetUser = usersData?.users?.find(u => u.email && u.email.toLowerCase() === cleanEmail);
+    } catch (findErr) {
+      console.error('Error looking up user for password reset:', findErr);
+    }
+
+    if (!targetUser) {
+      return res.status(404).json({ error: 'No account found with this email address. Please check the spelling or sign up.' });
+    }
+
+    // 2. Generate Supabase recovery link & OTP
+    let otpCode = null;
+    let actionLink = null;
+    try {
+      const origin = req.get('origin') || `${req.protocol}://${req.get('host')}`;
+      const linkRes = await supabase.auth.admin.generateLink({
+        type: 'recovery',
+        email: cleanEmail,
+        options: {
+          redirectTo: `${origin}/forgot-password`
+        }
+      });
+
+      if (linkRes.data?.properties) {
+        otpCode = linkRes.data.properties.email_otp || null;
+        actionLink = linkRes.data.properties.action_link || null;
+      }
+    } catch (linkError) {
+      console.warn('generateLink recovery notice:', linkError.message);
+    }
+
+    // Fallback 6-digit OTP if generateLink didn't provide one
+    if (!otpCode) {
+      otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+    }
+
+    // 3. Attempt to trigger Supabase recovery email
+    let emailSent = false;
+    try {
+      const origin = req.get('origin') || `${req.protocol}://${req.get('host')}`;
+      const resetRes = await supabaseAuthClient.auth.resetPasswordForEmail(cleanEmail, {
+        redirectTo: `${origin}/forgot-password`
+      });
+      if (!resetRes.error) {
+        emailSent = true;
+      } else {
+        console.warn('resetPasswordForEmail note:', resetRes.error.message);
+      }
+    } catch (mailErr) {
+      console.warn('Email dispatch warning:', mailErr.message);
+    }
+
+    // Store recovery OTP in user_metadata for reliable validation
+    try {
+      await supabase.auth.admin.updateUserById(targetUser.id, {
+        user_metadata: {
+          ...(targetUser.user_metadata || {}),
+          recovery_otp: otpCode,
+          recovery_otp_created_at: new Date().toISOString()
+        }
+      });
+    } catch (metaErr) {
+      console.warn('Could not store recovery_otp in user_metadata:', metaErr.message);
+    }
+
+    return res.status(200).json({
+      message: 'A verification code has been sent to your email address.',
+      email: cleanEmail,
+      emailSent
+    });
+  } catch (err) {
+    console.error('forgotPassword error:', err);
+    return res.status(500).json({ error: err.message || 'Failed to process password reset request' });
+  }
+};
+
+// RESET PASSWORD - Verify code and update password in Supabase in real-time
+const resetPassword = async (req, res, next) => {
+  try {
+    const { email, code, newPassword } = req.body;
+
+    if (!email || !email.trim()) {
+      return res.status(400).json({ error: 'Email address is required' });
+    }
+
+    if (!newPassword || newPassword.length < 6) {
+      return res.status(400).json({ error: 'Password must be at least 6 characters long' });
+    }
+
+    const cleanEmail = email.trim().toLowerCase();
+
+    // 1. Find user in Supabase
+    const { data: usersData, error: listError } = await supabase.auth.admin.listUsers();
+    if (listError) throw listError;
+    const user = usersData?.users?.find(u => u.email && u.email.toLowerCase() === cleanEmail);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User account not found' });
+    }
+
+    // 2. Validate verification code if supplied
+    if (code) {
+      const storedOtp = user.user_metadata?.recovery_otp;
+      let valid = false;
+
+      if (storedOtp && String(storedOtp).trim() === String(code).trim()) {
+        valid = true;
+      }
+
+      if (!valid) {
+        try {
+          const verifyRes = await supabaseAuthClient.auth.verifyOtp({
+            email: cleanEmail,
+            token: String(code).trim(),
+            type: 'recovery'
+          });
+          if (!verifyRes.error) {
+            valid = true;
+          }
+        } catch (vErr) {
+          // ignore
+        }
+      }
+
+      if (!valid) {
+        return res.status(400).json({ error: 'Invalid or expired verification code. Please check and try again.' });
+      }
+    }
+
+    // 3. Update password in Supabase Auth
+    const { error: updateError } = await supabase.auth.admin.updateUserById(user.id, {
+      password: newPassword,
+      user_metadata: {
+        ...(user.user_metadata || {}),
+        recovery_otp: null
+      }
+    });
+
+    if (updateError) {
+      return res.status(400).json({ error: updateError.message });
+    }
+
+    // 4. Automatically establish session with new password
+    let session = null;
+    try {
+      const signInResult = await supabaseAuthClient.auth.signInWithPassword({
+        email: cleanEmail,
+        password: newPassword
+      });
+      if (signInResult.data && signInResult.data.session) {
+        session = signInResult.data.session;
+      }
+    } catch (loginErr) {
+      console.warn('Auto-login after reset warning:', loginErr.message);
+    }
+
+    return res.status(200).json({
+      message: 'Password has been reset successfully! You can now log in.',
+      user: {
+        id: user.id,
+        email: user.email,
+        fullName: user.user_metadata?.full_name || ''
+      },
+      session: session ? {
+        access_token: session.access_token,
+        refresh_token: session.refresh_token,
+        expires_at: session.expires_at
+      } : null
+    });
+  } catch (err) {
+    console.error('resetPassword error:', err);
+    return res.status(500).json({ error: err.message || 'Failed to reset password' });
+  }
+};
+
+module.exports = {
+  signup,
+  login,
+  logout,
+  getCurrentUser,
+  updateProfile,
+  forgotPassword,
+  resetPassword
+};
 
