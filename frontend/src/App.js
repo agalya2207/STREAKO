@@ -1649,7 +1649,7 @@ class App {
                                 <input type="checkbox" class="custom-check habit-checkbox" data-habit-id="${habit.id}" onchange="window.toggleHabitCompletion('${habit.id}', event)" ${isCompleted ? 'checked' : ''}>
                                 <div style="display: flex; flex-direction: column;">
                                     <span class="routine-name" style="font-size: 14px; font-weight: 600; color: ${isCompleted ? '#64748b' : '#ffffff'}; transition: all 0.2s ease;">${habit.name}</span>
-                                    <span style="font-size: 12px; color: #64748b; margin-top: 3px;">${habit.category} • Streak: 🔥 ${habit.streak || 0}</span>
+                                    <span style="font-size: 12px; color: #64748b; margin-top: 3px;">${habit.category}</span>
                                 </div>
                             </div>
                             <span class="routine-target-badge">Target: ${habit.dailyTarget || 1}x</span>
@@ -1685,11 +1685,63 @@ class App {
                 tasksVal.textContent = `${compTasks}/${plannerBlocks.length} Planner Tasks`;
             }
 
+            // ── Daily Streak: real consecutive-day count ──────────────────────
+            // A "daily streak" adds 1 fire each day ALL habits were completed.
+            // Missing a day resets it back to 0.
+
+            window.getDailyStreak = () => Storage.get('daily_full_streak', { count: 0, lastDate: '' });
+
             const streakCount = document.getElementById('metric-streak-count');
-            if (streakCount) {
-                const maxStreak = habits.reduce((max, h) => Math.max(max, h.streak || 0), 0);
-                streakCount.textContent = completedCount > 0 ? (maxStreak > 0 ? maxStreak : 1) : 0;
+            const streakLevel = document.getElementById('metric-streak-level');
+
+            const streakData = window.getDailyStreak();
+
+            // Check whether yesterday was a break (if so, reset streak)
+            const yesterday = (() => {
+                const d = new Date(today);
+                d.setDate(d.getDate() - 1);
+                return d.toISOString().split('T')[0];
+            })();
+
+            const allDoneToday = totalCount > 0 && completedCount === totalCount;
+
+            if (allDoneToday) {
+                // Only record once per day
+                if (streakData.lastDate !== today) {
+                    // Did they complete yesterday? If not, reset streak
+                    const newCount = (streakData.lastDate === yesterday)
+                        ? streakData.count + 1
+                        : 1;
+                    const updated = { count: newCount, lastDate: today };
+                    Storage.set('daily_full_streak', updated);
+                    streakData.count = newCount;
+                    streakData.lastDate = today;
+                }
+            } else {
+                // Not all done yet today – if last recorded day was before yesterday, streak is broken
+                if (streakData.lastDate && streakData.lastDate < yesterday) {
+                    Storage.set('daily_full_streak', { count: 0, lastDate: streakData.lastDate });
+                    streakData.count = 0;
+                }
             }
+
+            if (streakCount) {
+                streakCount.textContent = streakData.count;
+            }
+
+            const levelMap = [
+                [0,  'Just Started 🌱'],
+                [3,  'Building Up 💪'],
+                [7,  'On Fire 🔥'],
+                [14, 'Unstoppable ⚡'],
+                [30, 'Legendary 🏆'],
+                [60, 'Elite 💎']
+            ];
+            let levelLabel = 'Just Started 🌱';
+            for (const [threshold, label] of levelMap) {
+                if (streakData.count >= threshold) levelLabel = label;
+            }
+            if (streakLevel) streakLevel.textContent = levelLabel;
 
             const prodScore = document.getElementById('metric-productivity-score');
             if (prodScore) {
@@ -1748,20 +1800,36 @@ class App {
             const willBeCompleted = !Storage.isCompleted(id, today);
             if (willBeCompleted) {
                 Storage.markCompleted(id, today);
-                if (window.launchConfetti) {
-                    const checkbox = event && event.target ? event.target : document.querySelector(`[data-habit-id="${id}"]`);
-                    if (checkbox) {
-                        const rect = checkbox.getBoundingClientRect();
-                        window.launchConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2);
-                    }
-                }
                 if (window.showNotification) {
                     window.showNotification('✅ Great job! Keep going!', 'success');
                 }
             } else {
                 Storage.unmarkCompleted(id, today);
             }
+
+            // Check if ALL habits are now complete – if so, celebrate!
+            const allHabits = Storage.getHabits().filter(h => !h.paused);
+            const allDoneNow = allHabits.length > 0 &&
+                allHabits.every(h => Storage.isCompleted(h.id, today));
+
             window.renderDashboardHabits();
+
+            if (allDoneNow && willBeCompleted) {
+                // Only fire confetti once per day (check if streak was already recorded today)
+                const streakData = window.getDailyStreak ? window.getDailyStreak() : Storage.get('daily_full_streak', { count: 0, lastDate: '' });
+                const alreadyCelebrated = streakData.lastDate === today && streakData.count > 0;
+
+                if (!alreadyCelebrated && window.launchConfetti) {
+                    // Big burst from centre of screen
+                    window.launchConfetti(window.innerWidth / 2, window.innerHeight * 0.35);
+                    setTimeout(() => window.launchConfetti(window.innerWidth * 0.25, window.innerHeight * 0.4), 120);
+                    setTimeout(() => window.launchConfetti(window.innerWidth * 0.75, window.innerHeight * 0.4), 240);
+                }
+
+                if (window.showNotification) {
+                    window.showNotification('🎉 All habits complete! Amazing streak!', 'success');
+                }
+            }
         };
 
         // Page Load Event Listener
