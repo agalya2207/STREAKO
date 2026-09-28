@@ -363,8 +363,11 @@ class App {
             const morningBtn = document.getElementById('btn-morning-ref');
             const eveningBtn = document.getElementById('btn-evening-ref');
 
+            const hasMorning = !!(stored.morning && stored.morning.trim());
+            const hasEvening = !!(stored.evening && stored.evening.trim());
+
             if (morningStatus) {
-                if (stored.morning && stored.morning.trim()) {
+                if (hasMorning) {
                     morningStatus.textContent = '✅ Done';
                     morningStatus.style.color = '#34d399';
                     if (morningBtn) {
@@ -382,7 +385,7 @@ class App {
             }
 
             if (eveningStatus) {
-                if (stored.evening && stored.evening.trim()) {
+                if (hasEvening) {
                     eveningStatus.textContent = '✅ Done';
                     eveningStatus.style.color = '#34d399';
                     if (eveningBtn) {
@@ -395,6 +398,31 @@ class App {
                     if (eveningBtn) {
                         eveningBtn.textContent = 'Record Evening';
                         eveningBtn.classList.remove('done');
+                    }
+                }
+            }
+
+            // Dynamic Daily Insight banner handling
+            const insightBanner = document.getElementById('today-insight-banner') || document.querySelector('.today-insight-banner');
+            const insightText = document.getElementById('daily-insight-text') || (insightBanner ? insightBanner.querySelector('.insight-text') : null);
+
+            if (insightBanner) {
+                if (hasMorning && hasEvening) {
+                    insightBanner.style.display = 'none';
+                } else if (hasMorning && !hasEvening) {
+                    insightBanner.style.display = 'flex';
+                    if (insightText) {
+                        insightText.textContent = 'Plan your evening: Writing down reflections increases habit completion rate by 22%.';
+                    }
+                } else if (!hasMorning && hasEvening) {
+                    insightBanner.style.display = 'flex';
+                    if (insightText) {
+                        insightText.textContent = 'Plan your morning: Writing down reflections increases habit completion rate by 22%.';
+                    }
+                } else {
+                    insightBanner.style.display = 'flex';
+                    if (insightText) {
+                        insightText.textContent = 'Plan your morning: Writing down reflections increases habit completion rate by 22%.';
                     }
                 }
             }
