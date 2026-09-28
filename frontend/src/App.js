@@ -117,6 +117,73 @@ class App {
         };
 
 
+        // ── Confetti burst animation ──────────────────────────────────────────
+        window.launchConfetti = (originX, originY) => {
+            const colors = [
+                '#6366f1', '#818cf8', '#a5b4fc',  // indigo
+                '#f59e0b', '#fbbf24', '#fcd34d',  // amber
+                '#10b981', '#34d399', '#6ee7b7',  // emerald
+                '#ef4444', '#f87171', '#fca5a5',  // red
+                '#3b82f6', '#60a5fa', '#93c5fd',  // blue
+                '#ec4899', '#f472b6', '#f9a8d4',  // pink
+                '#ffffff', '#cbd5e1', '#94a3b8'   // neutral
+            ];
+            const shapes = ['rect', 'rect', 'rect', 'circle', 'strip'];
+            const count = 60;
+
+            for (let i = 0; i < count; i++) {
+                const el = document.createElement('div');
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const shape = shapes[Math.floor(Math.random() * shapes.length)];
+                const size = Math.random() * 8 + 5;
+                const angle = Math.random() * 360;
+                const rad = ((Math.random() * 360) * Math.PI) / 180;
+                const spread = Math.random() * 180 + 80;
+                const vx = Math.cos(rad) * spread;
+                const vy = Math.sin(rad) * spread - 120;
+                const rotation = Math.random() * 720 - 360;
+                const duration = Math.random() * 600 + 700;
+                const delay = Math.random() * 120;
+
+                el.style.cssText = `
+                    position: fixed;
+                    left: ${originX}px;
+                    top: ${originY}px;
+                    width: ${shape === 'strip' ? Math.round(size * 0.4) : size}px;
+                    height: ${shape === 'strip' ? size * 2.5 : size}px;
+                    background: ${color};
+                    border-radius: ${shape === 'circle' ? '50%' : '2px'};
+                    pointer-events: none;
+                    z-index: 99999;
+                    opacity: 1;
+                    transform: translate(-50%, -50%) rotate(${angle}deg);
+                `;
+                document.body.appendChild(el);
+
+                const startTime = performance.now() + delay;
+                const animate = (now) => {
+                    if (now < startTime) { requestAnimationFrame(animate); return; }
+                    const elapsed = now - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const easeOut = 1 - Math.pow(1 - progress, 3);
+                    const gravity = 250 * progress * progress;
+                    const x = originX + vx * easeOut;
+                    const y = originY + vy * easeOut + gravity;
+                    const opacity = progress < 0.6 ? 1 : 1 - ((progress - 0.6) / 0.4);
+                    el.style.left = x + 'px';
+                    el.style.top = y + 'px';
+                    el.style.opacity = opacity;
+                    el.style.transform = `translate(-50%, -50%) rotate(${angle + rotation * progress}deg)`;
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        el.remove();
+                    }
+                };
+                requestAnimationFrame(animate);
+            }
+        };
+
         window.markRecovered = () => {
             const card = document.getElementById('recovery-card');
             if (!card) return;
@@ -223,7 +290,7 @@ class App {
                         <div style="display: flex; justify-content: space-between; align-items: center; background: #0c0d11; padding: 13px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); transition: all 0.2s;">
                             <div style="display: flex; align-items: center; gap: 14px;">
                                 <span style="color: #64748b; font-weight: 700; font-size: 13.5px; min-width: 16px;">${index + 1}</span>
-                                <input type="checkbox" onchange="window.togglePriority(${index})" ${p.completed ? 'checked' : ''} style="width: 18px; height: 18px; accent-color: #6366f1; cursor: pointer; border-radius: 4px;">
+                                <input type="checkbox" onchange="window.togglePriority(${index}, event)" ${p.completed ? 'checked' : ''} style="width: 18px; height: 18px; accent-color: #6366f1; cursor: pointer; border-radius: 4px;">
                                 <span style="font-size: 14px; font-weight: 500; color: ${p.completed ? '#64748b' : '#ffffff'}; text-decoration: ${p.completed ? 'line-through' : 'none'}; transition: all 0.2s;">${p.text}</span>
                             </div>
                             <button onclick="window.deletePriority(${index})" style="background: transparent; border: none; color: #64748b; cursor: pointer; font-size: 14px; padding: 4px; display: flex; align-items: center; justify-content: center; transition: color 0.2s;" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#64748b'">
@@ -300,9 +367,17 @@ class App {
             window.renderPriorities();
         };
 
-        window.togglePriority = (index) => {
-            window.prioritiesData[index].completed = !window.prioritiesData[index].completed;
+        window.togglePriority = (index, event) => {
+            const willComplete = !window.prioritiesData[index].completed;
+            window.prioritiesData[index].completed = willComplete;
             Storage.set('priorities', window.prioritiesData);
+            if (willComplete && window.launchConfetti) {
+                const checkbox = event && event.target ? event.target : document.querySelector(`[onchange="window.togglePriority(${index})"]`);
+                if (checkbox) {
+                    const rect = checkbox.getBoundingClientRect();
+                    window.launchConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2);
+                }
+            }
             window.renderPriorities();
         };
 
@@ -971,12 +1046,19 @@ class App {
             }
         };
 
-        window.togglePlannerTask = (taskId) => {
+        window.togglePlannerTask = (taskId, event) => {
             const tasks = Storage.get('planner_tasks', []);
             const task = tasks.find(t => t.id === taskId);
             if (task) {
                 task.completed = !task.completed;
                 Storage.set('planner_tasks', tasks);
+                if (task.completed && window.launchConfetti) {
+                    const el = event && event.target ? event.target : document.getElementById(`task-cb-${taskId}`);
+                    if (el) {
+                        const rect = el.getBoundingClientRect();
+                        window.launchConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2);
+                    }
+                }
                 window.renderPlannerTasks();
             }
         };
@@ -1162,12 +1244,21 @@ class App {
             }
         };
 
-        window.togglePlannerBlockCompletion = (id) => {
+        window.togglePlannerBlockCompletion = (id, event) => {
             let blocks = window.getPlannerBlocks();
             const block = blocks.find(b => b.id === id);
             if (block) {
                 block.completed = !block.completed;
                 Storage.set('planner_blocks', blocks);
+                if (block.completed && window.launchConfetti) {
+                    const el = event && event.target ? event.target : null;
+                    if (el) {
+                        const rect = el.getBoundingClientRect();
+                        window.launchConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2);
+                    } else {
+                        window.launchConfetti(window.innerWidth / 2, window.innerHeight / 2);
+                    }
+                }
                 if (window.renderTodaySchedule) window.renderTodaySchedule();
                 if (window.renderDashboardHabits) window.renderDashboardHabits();
                 if (window.renderTimelineGrid) window.renderTimelineGrid();
@@ -1235,7 +1326,7 @@ class App {
 
                 item.innerHTML = `
                     <div style="display: flex; align-items: center; gap: 14px;">
-                        <input type="checkbox" class="custom-check" ${isCompleted ? 'checked' : ''} onchange="window.togglePlannerBlockCompletion('${block.id}')" title="Mark completed" style="cursor: pointer;">
+                        <input type="checkbox" class="custom-check" ${isCompleted ? 'checked' : ''} onchange="window.togglePlannerBlockCompletion('${block.id}', event)" title="Mark completed" style="cursor: pointer;">
                         <div style="display: flex; flex-direction: column;">
                             <span style="font-size: 14px; font-weight: 600; color: ${isCompleted ? '#64748b' : '#ffffff'}; text-decoration: ${isCompleted ? 'line-through' : 'none'}; transition: all 0.2s;">${block.title}</span>
                             <span style="font-size: 12px; color: #818cf8; font-weight: 500; margin-top: 3px; display: flex; align-items: center; gap: 5px;">
@@ -1555,7 +1646,7 @@ class App {
                     const html = `
                         <div class="routine-item ${isCompleted ? 'completed' : ''}" data-habit-id="${habit.id}">
                             <div style="display: flex; align-items: center; gap: 14px;">
-                                <input type="checkbox" class="custom-check habit-checkbox" data-habit-id="${habit.id}" onchange="window.toggleHabitCompletion('${habit.id}')" ${isCompleted ? 'checked' : ''}>
+                                <input type="checkbox" class="custom-check habit-checkbox" data-habit-id="${habit.id}" onchange="window.toggleHabitCompletion('${habit.id}', event)" ${isCompleted ? 'checked' : ''}>
                                 <div style="display: flex; flex-direction: column;">
                                     <span class="routine-name" style="font-size: 14px; font-weight: 600; color: ${isCompleted ? '#64748b' : '#ffffff'}; transition: all 0.2s ease;">${habit.name}</span>
                                     <span style="font-size: 12px; color: #64748b; margin-top: 3px;">${habit.category} • Streak: 🔥 ${habit.streak || 0}</span>
@@ -1651,12 +1742,19 @@ class App {
             if (window.updateReflectionUI) window.updateReflectionUI();
         };
 
-        window.toggleHabitCompletion = (id) => {
+        window.toggleHabitCompletion = (id, event) => {
             if (!Storage) return;
             const today = new Date().toISOString().split('T')[0];
             const willBeCompleted = !Storage.isCompleted(id, today);
             if (willBeCompleted) {
                 Storage.markCompleted(id, today);
+                if (window.launchConfetti) {
+                    const checkbox = event && event.target ? event.target : document.querySelector(`[data-habit-id="${id}"]`);
+                    if (checkbox) {
+                        const rect = checkbox.getBoundingClientRect();
+                        window.launchConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2);
+                    }
+                }
                 if (window.showNotification) {
                     window.showNotification('✅ Great job! Keep going!', 'success');
                 }
