@@ -1103,6 +1103,21 @@ class App {
             if (titleInput) titleInput.value = '';
         };
 
+        window.getPlannerBlocks = () => {
+            let blocks = Storage.get('planner_blocks', null);
+            if (!blocks) {
+                blocks = [
+                    { id: 'tb_1', title: '🧘 Meditation', startTime: '05:00', endTime: '05:30', color: '#10b981', completed: false },
+                    { id: 'tb_2', title: '💪 Workout Session', startTime: '06:00', endTime: '07:00', color: '#ef4444', completed: false },
+                    { id: 'tb_3', title: '💼 Deep Work Session', startTime: '09:00', endTime: '11:30', color: '#6366f1', completed: false },
+                    { id: 'tb_4', title: '📚 Reading & Study', startTime: '14:00', endTime: '15:00', color: '#3b82f6', completed: false },
+                    { id: 'tb_5', title: '✍️ Evening Reflection', startTime: '19:00', endTime: '19:30', color: '#ec4899', completed: false }
+                ];
+                Storage.set('planner_blocks', blocks);
+            }
+            return blocks;
+        };
+
         window.saveTimeBlock = () => {
             const titleInput = document.getElementById('tb-title');
             const startInput = document.getElementById('tb-start');
@@ -1115,44 +1130,134 @@ class App {
             const color = catInput ? catInput.value : '#6366f1';
 
             if (title) {
-                let blocks = Storage.get('planner_blocks', []);
+                let blocks = window.getPlannerBlocks();
                 blocks.push({
                     id: 'tb_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
                     title,
                     startTime,
                     endTime,
-                    color
+                    color,
+                    completed: false
                 });
                 Storage.set('planner_blocks', blocks);
                 window.closeTimeBlockModal();
-                window.renderTimelineGrid();
+                if (window.renderTimelineGrid) window.renderTimelineGrid();
+                if (window.renderTodaySchedule) window.renderTodaySchedule();
+                if (window.renderDashboardHabits) window.renderDashboardHabits();
+                if (window.showNotification) {
+                    window.showNotification('Time block added to your schedule!', 'success');
+                }
             }
         };
 
         window.deleteTimeBlock = (id) => {
-            let blocks = Storage.get('planner_blocks', []);
+            let blocks = window.getPlannerBlocks();
             blocks = blocks.filter(b => b.id !== id);
             Storage.set('planner_blocks', blocks);
-            window.renderTimelineGrid();
+            if (window.renderTimelineGrid) window.renderTimelineGrid();
+            if (window.renderTodaySchedule) window.renderTodaySchedule();
+            if (window.renderDashboardHabits) window.renderDashboardHabits();
+            if (window.showNotification) {
+                window.showNotification('Time block removed.', 'info');
+            }
+        };
+
+        window.togglePlannerBlockCompletion = (id) => {
+            let blocks = window.getPlannerBlocks();
+            const block = blocks.find(b => b.id === id);
+            if (block) {
+                block.completed = !block.completed;
+                Storage.set('planner_blocks', blocks);
+                if (window.renderTodaySchedule) window.renderTodaySchedule();
+                if (window.renderDashboardHabits) window.renderDashboardHabits();
+                if (window.renderTimelineGrid) window.renderTimelineGrid();
+                if (window.showNotification && block.completed) {
+                    window.showNotification('Time block completed! 🎉', 'success');
+                }
+            }
+        };
+
+        window.renderTodaySchedule = () => {
+            const container = document.getElementById('schedule-container');
+            if (!container || !Storage) return;
+
+            const blocks = window.getPlannerBlocks();
+            container.innerHTML = '';
+
+            if (!blocks || blocks.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state-box">
+                        <p class="empty-state-text">No time blocks scheduled for today.</p>
+                        <button type="button" class="btn-subtle-create" onclick="app.router.navigate('/timeline')">+ Add Time Block</button>
+                    </div>
+                `;
+                return;
+            }
+
+            // Sort chronologically by start time
+            const sorted = [...blocks].sort((a, b) => (a.startTime || '').localeCompare(b.startTime || ''));
+
+            const listWrapper = document.createElement('div');
+            listWrapper.className = 'schedule-list';
+            listWrapper.style.cssText = 'display: flex; flex-direction: column; gap: 10px; max-height: 480px; overflow-y: auto; padding-right: 4px;';
+
+            sorted.forEach(block => {
+                const isCompleted = !!block.completed;
+
+                let durationText = '';
+                if (block.startTime && block.endTime) {
+                    const [sH, sM] = block.startTime.split(':').map(Number);
+                    const [eH, eM] = block.endTime.split(':').map(Number);
+                    const mins = (eH * 60 + (eM || 0)) - (sH * 60 + (sM || 0));
+                    if (mins >= 60) {
+                        const hrs = Math.floor(mins / 60);
+                        const remMins = mins % 60;
+                        durationText = remMins > 0 ? `${hrs}h ${remMins}m` : `${hrs} hr`;
+                    } else if (mins > 0) {
+                        durationText = `${mins} min`;
+                    }
+                }
+
+                const item = document.createElement('div');
+                item.className = `schedule-item ${isCompleted ? 'completed' : ''}`;
+                item.style.cssText = `
+                    background: #0c0d11;
+                    border: 1px solid rgba(255, 255, 255, 0.05);
+                    border-left: 3.5px solid ${block.color || '#6366f1'};
+                    border-radius: 10px;
+                    padding: 12px 16px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    transition: all 0.25s ease;
+                    opacity: ${isCompleted ? '0.5' : '1'};
+                `;
+
+                item.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 14px;">
+                        <input type="checkbox" class="custom-check" ${isCompleted ? 'checked' : ''} onchange="window.togglePlannerBlockCompletion('${block.id}')" title="Mark completed" style="cursor: pointer;">
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="font-size: 14px; font-weight: 600; color: ${isCompleted ? '#64748b' : '#ffffff'}; text-decoration: ${isCompleted ? 'line-through' : 'none'}; transition: all 0.2s;">${block.title}</span>
+                            <span style="font-size: 12px; color: #818cf8; font-weight: 500; margin-top: 3px; display: flex; align-items: center; gap: 5px;">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                ${window.to12h(block.startTime)} – ${window.to12h(block.endTime)}
+                            </span>
+                        </div>
+                    </div>
+                    ${durationText ? `<span style="font-size: 11px; font-weight: 600; color: ${block.color || '#818cf8'}; background: ${block.color || '#818cf8'}1a; border: 1px solid ${block.color || '#818cf8'}33; padding: 4px 10px; border-radius: 6px; white-space: nowrap;">${durationText}</span>` : ''}
+                `;
+
+                listWrapper.appendChild(item);
+            });
+
+            container.appendChild(listWrapper);
         };
 
         window.renderTimelineGrid = () => {
             const container = document.getElementById('timeline-grid-container');
             if (!container) return;
 
-            let blocks = Storage.get('planner_blocks', null);
-
-            // Default initial time blocks if none exist
-            if (!blocks) {
-                blocks = [
-                    { id: 'tb_1', title: '🧘 Meditation', startTime: '05:00', endTime: '05:30', color: '#10b981' },
-                    { id: 'tb_2', title: '💪 Workout Session', startTime: '06:00', endTime: '07:00', color: '#ef4444' },
-                    { id: 'tb_3', title: '💼 Deep Work Session', startTime: '09:00', endTime: '11:30', color: '#6366f1' },
-                    { id: 'tb_4', title: '📚 Reading & Study', startTime: '14:00', endTime: '15:00', color: '#3b82f6' },
-                    { id: 'tb_5', title: '✍️ Evening Reflection', startTime: '19:00', endTime: '19:30', color: '#ec4899' }
-                ];
-                Storage.set('planner_blocks', blocks);
-            }
+            const blocks = window.getPlannerBlocks();
 
             const hours = [
                 '05:00', '06:00', '07:00', '08:00', '09:00', '10:00',
@@ -1191,6 +1296,7 @@ class App {
                 const durationMins = Math.max(20, endMins - startMins);
                 const height = Math.max(36, (durationMins / 60) * 56);
 
+                const isCompleted = !!block.completed;
                 const blockEl = document.createElement('div');
                 blockEl.style.cssText = `
                     position: absolute;
@@ -1214,12 +1320,13 @@ class App {
                     backdrop-filter: blur(4px);
                     transition: transform 0.2s, box-shadow 0.2s;
                     cursor: pointer;
+                    opacity: ${isCompleted ? '0.6' : '1'};
                 `;
 
                 blockEl.innerHTML = `
                     <div style="display: flex; flex-direction: column;">
                         <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">${window.to12h(block.startTime)} - ${window.to12h(block.endTime)}</span>
-                        <span style="font-size: 13.5px; font-weight: 700; color: #ffffff;">${block.title}</span>
+                        <span style="font-size: 13.5px; font-weight: 700; color: #ffffff; text-decoration: ${isCompleted ? 'line-through' : 'none'};">${block.title} ${isCompleted ? '✓' : ''}</span>
                     </div>
                     <button onclick="event.stopPropagation(); window.deleteTimeBlock('${block.id}')" title="Delete Block" style="background: transparent; border: none; color: #64748b; cursor: pointer; font-size: 13px; opacity: 0.7; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'; this.style.color='#ef4444';" onmouseout="this.style.opacity='0.7'; this.style.color='#64748b';">✕</button>
                 `;
@@ -1482,9 +1589,9 @@ class App {
 
             const tasksVal = document.getElementById('metric-tasks-val');
             if (tasksVal) {
-                const plannerTasks = Storage.get('planner_tasks', []);
-                const compTasks = plannerTasks.filter(t => t.completed).length;
-                tasksVal.textContent = `${compTasks}/${plannerTasks.length} Planner Tasks`;
+                const plannerBlocks = window.getPlannerBlocks ? window.getPlannerBlocks() : Storage.get('planner_blocks', []);
+                const compTasks = plannerBlocks.filter(t => t.completed).length;
+                tasksVal.textContent = `${compTasks}/${plannerBlocks.length} Planner Tasks`;
             }
 
             const streakCount = document.getElementById('metric-streak-count');
@@ -1540,6 +1647,7 @@ class App {
 
             window.renderPriorities();
             window.renderDashboardHabits();
+            if (window.renderTodaySchedule) window.renderTodaySchedule();
             if (window.updateReflectionUI) window.updateReflectionUI();
         };
 
@@ -1935,6 +2043,7 @@ class App {
                 } else {
                     window.renderPriorities();
                     window.renderDashboardHabits();
+                    if (window.renderTodaySchedule) window.renderTodaySchedule();
                 }
 
             }

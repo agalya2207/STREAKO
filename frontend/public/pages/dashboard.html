@@ -502,6 +502,28 @@
         white-space: nowrap;
       }
 
+      /* Schedule items */
+      #dashboard .schedule-item {
+        background: #0c0d11;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        padding: 12px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.25s ease;
+      }
+
+      #dashboard .schedule-item:hover {
+        border-color: rgba(255, 255, 255, 0.12);
+        background: #0e1016;
+      }
+
+      #dashboard .schedule-item.completed {
+        opacity: 0.5;
+        background: rgba(255, 255, 255, 0.02);
+      }
+
       /* Reflection blocks */
       #dashboard .reflection-block {
         background: #0c0d11;
