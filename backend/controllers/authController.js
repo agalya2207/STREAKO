@@ -1,5 +1,7 @@
 const supabaseAuthClient = require('../config/supabaseAuthClient');
 const supabase = require('../config/supabase'); // service_role client for profile creation
+const { Resend } = require('resend');
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // SIGNUP
 const signup = async (req, res, next) => {
@@ -313,17 +315,20 @@ const forgotPassword = async (req, res, next) => {
       otpCode = Math.floor(100000 + Math.random() * 900000).toString();
     }
 
-    // 3. Attempt to trigger Supabase recovery email
+    // 3. Attempt to send email via Resend
     let emailSent = false;
     try {
-      const origin = req.get('origin') || `${req.protocol}://${req.get('host')}`;
-      const resetRes = await supabaseAuthClient.auth.resetPasswordForEmail(cleanEmail, {
-        redirectTo: `${origin}/forgot-password`
+      const { data, error } = await resend.emails.send({
+        from: 'onboarding@resend.dev',
+        to: cleanEmail,
+        subject: 'STREAKO Password Reset Code',
+        html: `<h2>STREAKO Password Reset</h2><p>Your verification code is: <strong>${otpCode}</strong></p><p>Please enter this code on the password reset page.</p>`
       });
-      if (!resetRes.error) {
-        emailSent = true;
+
+      if (error) {
+        console.error('Resend error:', error);
       } else {
-        console.warn('resetPasswordForEmail note:', resetRes.error.message);
+        emailSent = true;
       }
     } catch (mailErr) {
       console.warn('Email dispatch warning:', mailErr.message);
