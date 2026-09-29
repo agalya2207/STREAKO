@@ -117,63 +117,110 @@ class App {
         };
 
 
-        // ── Confetti burst animation ──────────────────────────────────────────
+        // ── Confetti paper blast animation ──────────────────────────────────
         window.launchConfetti = (originX, originY) => {
+            const startX = (originX !== undefined && originX !== null) ? originX : window.innerWidth / 2;
+            const startY = (originY !== undefined && originY !== null) ? originY : window.innerHeight / 2;
+
             const colors = [
-                '#6366f1', '#818cf8', '#a5b4fc',  // indigo
-                '#f59e0b', '#fbbf24', '#fcd34d',  // amber
-                '#10b981', '#34d399', '#6ee7b7',  // emerald
-                '#ef4444', '#f87171', '#fca5a5',  // red
-                '#3b82f6', '#60a5fa', '#93c5fd',  // blue
-                '#ec4899', '#f472b6', '#f9a8d4',  // pink
-                '#ffffff', '#cbd5e1', '#94a3b8'   // neutral
+                '#00D9FF', '#38BDF8', '#0EA5E9',  // Vibrant Cyan & Sky Blue
+                '#FF7A00', '#FB923C', '#FF5722',  // Vivid Orange & Amber
+                '#FBBF24', '#F59E0B', '#FACC15',  // Bright Golden Yellow
+                '#EC4899', '#F43F5E', '#E11D48',  // Hot Pink & Rose
+                '#10B981', '#34D399', '#059669',  // Emerald Green
+                '#8B5CF6', '#6366F1'               // Purple & Indigo
             ];
-            const shapes = ['rect', 'rect', 'rect', 'circle', 'strip'];
-            const count = 60;
+            const shapes = ['rect', 'square', 'circle', 'strip', 'diamond'];
+            const count = 80;
 
             for (let i = 0; i < count; i++) {
                 const el = document.createElement('div');
                 const color = colors[Math.floor(Math.random() * colors.length)];
                 const shape = shapes[Math.floor(Math.random() * shapes.length)];
-                const size = Math.random() * 8 + 5;
-                const angle = Math.random() * 360;
-                const rad = ((Math.random() * 360) * Math.PI) / 180;
-                const spread = Math.random() * 180 + 80;
-                const vx = Math.cos(rad) * spread;
-                const vy = Math.sin(rad) * spread - 120;
-                const rotation = Math.random() * 720 - 360;
-                const duration = Math.random() * 600 + 700;
-                const delay = Math.random() * 120;
+                const size = Math.random() * 8 + 6;
+
+                // Spread upward & outward fan
+                const spreadAngle = (Math.random() * 150 - 165) * (Math.PI / 180);
+                const velocity = Math.random() * 280 + 110;
+                
+                const vx = Math.cos(spreadAngle) * velocity;
+                const vy = Math.sin(spreadAngle) * velocity;
+                
+                const rotX = Math.random() * 360;
+                const rotY = Math.random() * 360;
+                const rotZ = Math.random() * 360;
+                const rotSpeedX = (Math.random() - 0.5) * 800;
+                const rotSpeedY = (Math.random() - 0.5) * 800;
+                const rotSpeedZ = (Math.random() - 0.5) * 400;
+
+                const wobbleSpeed = Math.random() * 8 + 4;
+                const wobbleMag = Math.random() * 25 + 8;
+                const duration = Math.random() * 700 + 850;
+                const delay = Math.random() * 70;
+
+                let width = size;
+                let height = size;
+                let borderRadius = '2px';
+                let clipPath = 'none';
+
+                if (shape === 'rect') {
+                    width = size * 1.7;
+                    height = size * 0.8;
+                } else if (shape === 'strip') {
+                    width = Math.max(3, size * 0.45);
+                    height = size * 2.8;
+                    borderRadius = '1px';
+                } else if (shape === 'circle') {
+                    borderRadius = '50%';
+                } else if (shape === 'diamond') {
+                    clipPath = 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)';
+                }
 
                 el.style.cssText = `
                     position: fixed;
-                    left: ${originX}px;
-                    top: ${originY}px;
-                    width: ${shape === 'strip' ? Math.round(size * 0.4) : size}px;
-                    height: ${shape === 'strip' ? size * 2.5 : size}px;
+                    left: ${startX}px;
+                    top: ${startY}px;
+                    width: ${Math.round(width)}px;
+                    height: ${Math.round(height)}px;
                     background: ${color};
-                    border-radius: ${shape === 'circle' ? '50%' : '2px'};
+                    border-radius: ${borderRadius};
+                    ${clipPath !== 'none' ? `clip-path: ${clipPath};` : ''}
                     pointer-events: none;
-                    z-index: 99999;
+                    z-index: 999999;
                     opacity: 1;
-                    transform: translate(-50%, -50%) rotate(${angle}deg);
+                    transform-origin: center center;
+                    will-change: transform, opacity;
+                    box-shadow: 0 0 4px ${color}77;
                 `;
                 document.body.appendChild(el);
 
                 const startTime = performance.now() + delay;
                 const animate = (now) => {
-                    if (now < startTime) { requestAnimationFrame(animate); return; }
+                    if (now < startTime) {
+                        requestAnimationFrame(animate);
+                        return;
+                    }
                     const elapsed = now - startTime;
                     const progress = Math.min(elapsed / duration, 1);
-                    const easeOut = 1 - Math.pow(1 - progress, 3);
-                    const gravity = 250 * progress * progress;
-                    const x = originX + vx * easeOut;
-                    const y = originY + vy * easeOut + gravity;
-                    const opacity = progress < 0.6 ? 1 : 1 - ((progress - 0.6) / 0.4);
-                    el.style.left = x + 'px';
-                    el.style.top = y + 'px';
-                    el.style.opacity = opacity;
-                    el.style.transform = `translate(-50%, -50%) rotate(${angle + rotation * progress}deg)`;
+                    const easeOut = 1 - Math.pow(1 - progress, 2.5);
+                    
+                    const gravity = 340 * progress * progress;
+                    const wobble = Math.sin(progress * wobbleSpeed) * wobbleMag;
+
+                    const currentX = startX + vx * easeOut + wobble;
+                    const currentY = startY + vy * easeOut + gravity;
+
+                    const rx = rotX + rotSpeedX * progress;
+                    const ry = rotY + rotSpeedY * progress;
+                    const rz = rotZ + rotSpeedZ * progress;
+
+                    const opacity = progress < 0.65 ? 1 : 1 - ((progress - 0.65) / 0.35);
+
+                    el.style.left = currentX + 'px';
+                    el.style.top = currentY + 'px';
+                    el.style.opacity = opacity.toFixed(2);
+                    el.style.transform = `translate(-50%, -50%) rotateX(${rx}deg) rotateY(${ry}deg) rotateZ(${rz}deg) scale(${1 - progress * 0.15})`;
+
                     if (progress < 1) {
                         requestAnimationFrame(animate);
                     } else {
@@ -1802,6 +1849,17 @@ class App {
                 Storage.markCompleted(id, today);
                 if (window.showNotification) {
                     window.showNotification('✅ Great job! Keep going!', 'success');
+                }
+                if (window.launchConfetti) {
+                    let originX = window.innerWidth / 2;
+                    let originY = window.innerHeight / 2;
+                    if (event && (event.target || event.currentTarget)) {
+                        const el = event.target || event.currentTarget;
+                        const rect = el.getBoundingClientRect();
+                        originX = rect.left + rect.width / 2;
+                        originY = rect.top + rect.height / 2;
+                    }
+                    window.launchConfetti(originX, originY);
                 }
             } else {
                 Storage.unmarkCompleted(id, today);
