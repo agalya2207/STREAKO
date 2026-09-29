@@ -1,7 +1,17 @@
 const supabaseAuthClient = require('../config/supabaseAuthClient');
 const supabase = require('../config/supabase'); // service_role client for profile creation
 const { Resend } = require('resend');
-const resend = new Resend(process.env.RESEND_API_KEY);
+
+// Safely initialize Resend without crashing if API key is missing
+let resend = null;
+try {
+  const apiKey = (process.env.RESEND_API_KEY || '').trim().replace(/^["']|["']$/g, '');
+  if (apiKey) {
+    resend = new Resend(apiKey);
+  }
+} catch (resendErr) {
+  console.warn('Resend initialization warning:', resendErr.message);
+}
 
 // SIGNUP
 const signup = async (req, res, next) => {
@@ -317,21 +327,23 @@ const forgotPassword = async (req, res, next) => {
 
     // 3. Attempt to send email via Resend
     let emailSent = false;
-    try {
-      const { data, error } = await resend.emails.send({
-        from: 'onboarding@resend.dev',
-        to: cleanEmail,
-        subject: 'STREAKO Password Reset Code',
-        html: `<h2>STREAKO Password Reset</h2><p>Your verification code is: <strong>${otpCode}</strong></p><p>Please enter this code on the password reset page.</p>`
-      });
+    if (resend) {
+      try {
+        const { data, error } = await resend.emails.send({
+          from: 'onboarding@resend.dev',
+          to: cleanEmail,
+          subject: 'STREAKO Password Reset Code',
+          html: `<h2>STREAKO Password Reset</h2><p>Your verification code is: <strong>${otpCode}</strong></p><p>Please enter this code on the password reset page.</p>`
+        });
 
-      if (error) {
-        console.error('Resend error:', error);
-      } else {
-        emailSent = true;
+        if (error) {
+          console.error('Resend error:', error);
+        } else {
+          emailSent = true;
+        }
+      } catch (mailErr) {
+        console.warn('Email dispatch warning:', mailErr.message);
       }
-    } catch (mailErr) {
-      console.warn('Email dispatch warning:', mailErr.message);
     }
 
     // Store recovery OTP in user_metadata for reliable validation

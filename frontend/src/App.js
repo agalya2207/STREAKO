@@ -9,7 +9,7 @@ async function authApiRequest(endpoint, options = {}) {
     try {
         res = await fetch(endpoint, options);
         const cType = res.headers.get('content-type') || '';
-        if (res.ok && cType.includes('text/html') && endpoint.startsWith('/api')) {
+        if ((!res.ok || cType.includes('text/html')) && endpoint.startsWith('/api')) {
             fallbackNeeded = true;
         }
     } catch (netErr) {
@@ -1882,6 +1882,9 @@ class App {
                                 if (response.status === 502 || response.status === 503 || response.status === 504) {
                                     throw new Error('❌ Cannot reach server. Please try again in a moment.');
                                 }
+                                if (response.status >= 500) {
+                                    throw new Error('❌ Server error (' + response.status + '). Please try again in a moment.');
+                                }
                                 throw new Error('❌ Unexpected server response. Please try again.');
                             }
 
@@ -2161,7 +2164,7 @@ class App {
                         signupBtn.textContent = 'Creating account...';
                         
                         try {
-                            const response = await fetch('/api/auth/signup', {
+                            const response = await authApiRequest('/api/auth/signup', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ email, password, fullName }),
