@@ -2364,24 +2364,86 @@ class App {
 
             // Settings page fields
             if (path === '/settings') {
-                const nameInput = document.getElementById('settings-fullname');
-                const emailInput = document.getElementById('settings-email');
-                const avatarInput = document.getElementById('settings-avatar');
-                const tzSelect = document.getElementById('settings-timezone');
-
-                let userObj = null;
-                try { userObj = JSON.parse(userJson); } catch(e){}
-
-                if (nameInput) nameInput.value = userName || 'Jack';
-                if (emailInput) emailInput.value = userEmail || 'jack@dailyos.io';
-                if (avatarInput) avatarInput.value = (userObj && userObj.avatar) ? userObj.avatar : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb';
-                if (tzSelect && userObj && userObj.timezone) tzSelect.value = userObj.timezone;
+                if (window.syncSettingsDisplay) window.syncSettingsDisplay();
             }
         });
 
         // ─────────────────────────────────────────────────────────────────────
-        // SYSTEM SETTINGS & LOGOUT LOGIC
+        // SYSTEM SETTINGS & MODALS LOGIC
         // ─────────────────────────────────────────────────────────────────────
+
+        window.syncSettingsDisplay = () => {
+            const userEmail = localStorage.getItem('user_email') || '';
+            const userJson = localStorage.getItem('user') || localStorage.getItem('streako_user') || '{}';
+            let userName = '';
+            let userObj = null;
+            try {
+                userObj = JSON.parse(userJson);
+                userName = userObj.fullName || userObj.full_name || userObj.name || '';
+            } catch (e) { /* ignore */ }
+
+            if (!userName && userEmail) {
+                const prefix = userEmail.split('@')[0];
+                userName = prefix.charAt(0).toUpperCase() + prefix.slice(1);
+            }
+
+            const displayName = userName || 'Agalya G';
+            const displayEmail = userEmail || 'agalya@gmail.com';
+            const displayAvatar = (userObj && userObj.avatar) ? userObj.avatar : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb';
+
+            // Card Header UI
+            const cardName = document.getElementById('settings-card-name');
+            const cardAvatar = document.getElementById('settings-card-avatar');
+            if (cardName) cardName.innerHTML = `<span>${displayName}</span>`;
+            if (cardAvatar) cardAvatar.src = displayAvatar;
+
+            // Form inputs
+            const nameInput = document.getElementById('settings-fullname');
+            const emailInput = document.getElementById('settings-email');
+            const tzSelect = document.getElementById('settings-timezone');
+
+            if (nameInput) nameInput.value = displayName;
+            if (emailInput) emailInput.value = displayEmail;
+            if (tzSelect && userObj && userObj.timezone) tzSelect.value = userObj.timezone;
+        };
+
+        window.openSettingsModal = (modalId) => {
+            const modal = document.getElementById(modalId);
+            if (modal) modal.classList.add('active');
+        };
+
+        window.closeSettingsModal = (modalId) => {
+            const modal = document.getElementById(modalId);
+            if (modal) modal.classList.remove('active');
+        };
+
+        window.recommendToFriends = () => {
+            const shareData = {
+                title: 'STREAKO - Habit Tracker',
+                text: 'Track your daily streaks and level up with STREAKO!',
+                url: window.location.origin
+            };
+            if (navigator.share) {
+                navigator.share(shareData).catch(() => {});
+            } else if (navigator.clipboard) {
+                navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`);
+                if (window.showNotification) window.showNotification('🔗 Link copied to clipboard! Share it with your friends.', 'success');
+            } else {
+                if (window.showNotification) window.showNotification('🎉 Share STREAKO with your friends at ' + window.location.origin, 'info');
+            }
+        };
+
+        window.submitFeedback = () => {
+            const msg = document.getElementById('feedback-message');
+            if (msg) msg.value = '';
+            window.closeSettingsModal('helpModal');
+            if (window.showNotification) window.showNotification('💌 Thank you! Your feedback has been sent.', 'success');
+        };
+
+        window.saveNotificationPreferences = () => {
+            window.closeSettingsModal('notificationModal');
+            if (window.showNotification) window.showNotification('🔔 Alarm & notification preferences updated!', 'success');
+        };
 
         window.saveSettings = async () => {
             const nameInput = document.getElementById('settings-fullname');
@@ -2391,8 +2453,22 @@ class App {
 
             const fullName = nameInput ? nameInput.value.trim() : 'User';
             const email = emailInput ? emailInput.value.trim() : 'user@email.com';
-            const avatar = avatarInput ? avatarInput.value.trim() : '';
-            const timezone = tzSelect ? tzSelect.value : 'UTC';
+            const timezone = tzSelect ? tzSelect.value : 'Asia/Kolkata';
+
+            let avatar = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb';
+            try {
+                const existingUser = JSON.parse(localStorage.getItem('user') || '{}');
+                if (existingUser.avatar) avatar = existingUser.avatar;
+            } catch(e) {}
+
+            if (avatarInput && avatarInput.files && avatarInput.files[0]) {
+                const file = avatarInput.files[0];
+                avatar = await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => resolve(e.target.result);
+                    reader.readAsDataURL(file);
+                });
+            }
 
             const userObj = {
                 fullName,
@@ -2424,6 +2500,9 @@ class App {
                 }
             }
 
+            // Sync card UI
+            if (window.syncSettingsDisplay) window.syncSettingsDisplay();
+
             // Update sidebar user profile elements instantly across current DOM
             const sidebarName = document.getElementById('sidebar-name');
             const sidebarEmail = document.getElementById('sidebar-email');
@@ -2435,6 +2514,10 @@ class App {
                 const initials = fullName.split(' ').filter(Boolean).map(n => n[0]).join('').toUpperCase().slice(0, 2);
                 sidebarAvatar.textContent = initials || 'ST';
             }
+
+            // Close open modals
+            window.closeSettingsModal('profileModal');
+            window.closeSettingsModal('dateTimeModal');
 
             if (window.showNotification) {
                 window.showNotification('✅ Settings saved successfully!', 'success');

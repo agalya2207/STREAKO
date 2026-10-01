@@ -8,7 +8,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Unbounded:wght@600;800&display=swap" rel="stylesheet">
     
     <!-- CSS Files -->
     <link rel="stylesheet" href="/styles/variables.css">
@@ -17,8 +17,152 @@
     <link rel="stylesheet" href="/styles/layout.css">
     <link rel="stylesheet" href="/styles/animations.css">
     <link rel="stylesheet" href="/styles/responsive.css">
+
+    <style>
+        /* ===== SPLASH SCREEN ===== */
+        html, body { margin: 0; padding: 0; }
+        html.splash-active,
+        html.splash-active body {
+            overflow: hidden !important;
+            width: 100% !important;
+        }
+
+        #splash {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 99999;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            overflow: hidden;
+            transition: opacity 0.55s ease, visibility 0.55s;
+        }
+        #splash.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* Radial green glow background */
+        .s-glow {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70vmin; height: 70vmin;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(16,185,129,0.18) 0%, rgba(52,211,153,0.08) 45%, transparent 70%);
+            animation: splashPulse 2.5s ease-in-out infinite;
+            pointer-events: none;
+        }
+        @keyframes splashPulse {
+            0%, 100% { transform: translate(-50%,-50%) scale(1); opacity: 0.8; }
+            50% { transform: translate(-50%,-50%) scale(1.12); opacity: 1; }
+        }
+
+        /* Logo wrapper */
+        .s-logo-wrap {
+            position: relative;
+            z-index: 1;
+            width: min(55vw, 240px);
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: splashFadeUp 0.8s cubic-bezier(0.2,0.9,0.25,1) both;
+        }
+        @keyframes splashFadeUp {
+            from { opacity: 0; transform: scale(0.75) translateY(20px); filter: blur(12px); }
+            to   { opacity: 1; transform: scale(1) translateY(0);    filter: blur(0px); }
+        }
+
+        .s-logo-wrap svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Wordmark */
+        .s-wordmark {
+            position: relative;
+            z-index: 1;
+            margin-top: 18px;
+            font-family: 'Unbounded', 'Trebuchet MS', sans-serif;
+            font-weight: 800;
+            font-size: min(9vw, 42px);
+            letter-spacing: 0.05em;
+            background: linear-gradient(180deg, #6EE7B7 0%, #34D399 35%, #10B981 70%, #047857 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px rgba(16,185,129,0.3));
+            animation: splashFadeUp 0.8s cubic-bezier(0.2,0.9,0.25,1) 0.25s both;
+        }
+    </style>
 </head>
 <body>
+
+    <!-- Splash Screen -->
+    <div id="splash" role="img" aria-label="STREAKO loading">
+        <div class="s-glow"></div>
+
+        <div class="s-logo-wrap">
+            <svg viewBox="12 12 396 396" xmlns="http://www.w3.org/2000/svg">
+                <!-- S-curve thick stroke (outline) -->
+                <path d="M285 117.5 H170 A46.25 46.25 0 0 0 170 210 H250 A46.25 46.25 0 0 1 250 302.5 H135"
+                      fill="none" stroke="#0E9F6E" stroke-width="46"
+                      stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- S-curve white fill -->
+                <path d="M285 117.5 H170 A46.25 46.25 0 0 0 170 210 H250 A46.25 46.25 0 0 1 250 302.5 H135"
+                      fill="none" stroke="#FFFFFF" stroke-width="34"
+                      stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Diamond decorators -->
+                <g fill="none" stroke="#0E9F6E" stroke-width="6"
+                   stroke-linejoin="miter" stroke-miterlimit="10">
+                    <!-- Top triangle -->
+                    <path d="M135 95 L210 20 L285 95 Z"/>
+                    <!-- Bottom triangle -->
+                    <path d="M135 325 L210 400 L285 325 Z"/>
+                    <!-- Left arrow line -->
+                    <path d="M255 280 H90 L20 210 L90 140"/>
+                    <!-- Right arrow line -->
+                    <path d="M165 140 H330 L400 210 L330 280"/>
+                </g>
+            </svg>
+        </div>
+
+        <div class="s-wordmark">STREAKO</div>
+    </div>
+
+    <script>
+    (function(){
+        var splash = document.getElementById('splash');
+
+        // Only show once per session
+        if (sessionStorage.getItem('splashShown')) {
+            splash.style.display = 'none';
+            return;
+        }
+        sessionStorage.setItem('splashShown', 'true');
+
+        // Lock scroll
+        document.documentElement.classList.add('splash-active');
+
+        // Hide after animations complete (~1.4s total)
+        setTimeout(function() {
+            splash.classList.add('hidden');
+            document.documentElement.classList.remove('splash-active');
+        }, 2200);
+
+        // Click to dismiss early
+        splash.addEventListener('click', function() {
+            splash.classList.add('hidden');
+            document.documentElement.classList.remove('splash-active');
+        });
+    })();
+    </script>
 
     <div id="app"></div>
 

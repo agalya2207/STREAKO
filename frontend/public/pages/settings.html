@@ -1,4 +1,450 @@
 <div class="page active" id="settings">
+    <style>
+        /* Scoped styles for Settings page */
+        #settings {
+            background-color: #0b0c10;
+            color: #f1f5f9;
+            min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        #settings .sidebar-layout {
+            background: #0b0c10;
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        #settings .main-content {
+            flex: 1;
+            padding: 32px 40px 60px;
+            background: #090a0f;
+            min-height: 100vh;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            overflow-y: auto;
+        }
+
+        .settings-container {
+            width: 100%;
+            max-width: 580px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .settings-top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .settings-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.01em;
+            margin: 0;
+        }
+
+        /* Profile Header Card */
+        .settings-profile-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 4px 12px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .settings-profile-card:hover {
+            opacity: 0.95;
+        }
+
+        .settings-profile-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .settings-avatar-wrap {
+            position: relative;
+            width: 58px;
+            height: 58px;
+            flex-shrink: 0;
+        }
+
+        .settings-avatar-img {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            background: #1c1e28;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .settings-avatar-crown {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #3b3f4e;
+            border: 1.5px solid #232634;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+        }
+
+        .settings-user-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .settings-user-name {
+            font-size: 19px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .settings-badges-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .badge-pill-lvl {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 9px;
+            border-radius: 999px;
+            background: #34d399;
+            color: #064e3b;
+            font-size: 11.5px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .badge-pill-lvl svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        .badge-pill-award {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 10px;
+            border-radius: 999px;
+            background: #93c5fd;
+            color: #1e3a8a;
+            font-size: 11.5px;
+            font-weight: 700;
+        }
+
+        .badge-pill-award svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        /* Premium Account Banner */
+        .premium-banner-card {
+            background: #181920;
+            border-radius: 18px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .premium-banner-card:hover {
+            border-color: rgba(249, 115, 22, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .premium-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .premium-icon-box {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #f59e0b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
+        }
+
+        .premium-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 2px;
+        }
+
+        .premium-sub {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .btn-upgrade-now {
+            background: transparent;
+            color: #f97316;
+            border: 1.5px solid #ea580c;
+            padding: 8px 18px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-upgrade-now:hover {
+            background: rgba(249, 115, 22, 0.12);
+            color: #fb923c;
+            border-color: #f97316;
+            box-shadow: 0 0 16px rgba(249, 115, 22, 0.25);
+        }
+
+        /* Settings Rounded Box Groups */
+        .settings-card-group {
+            background: #181920;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .settings-row-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            cursor: pointer;
+            transition: background 0.15s ease;
+            user-select: none;
+            position: relative;
+        }
+
+        .settings-row-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 56px;
+            right: 18px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .settings-row-item:hover {
+            background: #20222c;
+        }
+
+        .settings-row-item:active {
+            background: #252834;
+        }
+
+        .settings-item-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .settings-item-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .settings-item-label {
+            font-size: 15px;
+            font-weight: 600;
+            color: #e2e8f0;
+            letter-spacing: -0.1px;
+        }
+
+        .settings-item-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #64748b;
+        }
+
+        .settings-item-right svg {
+            stroke: #475569;
+            transition: transform 0.15s, stroke 0.15s;
+        }
+
+        .settings-row-item:hover .settings-item-right svg {
+            stroke: #94a3b8;
+            transform: translateX(2px);
+        }
+
+        /* Specific row styling for logout / danger */
+        .settings-row-logout .settings-item-label {
+            color: #f87171;
+        }
+        .settings-row-logout:hover {
+            background: rgba(239, 68, 68, 0.08);
+        }
+
+        /* Modal Sheet */
+        .settings-modal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeInModal 0.2s ease;
+        }
+
+        .settings-modal-backdrop.active {
+            display: flex;
+        }
+
+        @keyframes fadeInModal {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .settings-modal-content {
+            background: #14161f;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 480px;
+            padding: 26px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            color: #fff;
+            position: relative;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .settings-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .settings-modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .settings-close-btn {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 4px;
+            line-height: 1;
+            transition: color 0.15s;
+        }
+
+        .settings-close-btn:hover {
+            color: #fff;
+        }
+
+        .settings-input-group {
+            margin-bottom: 18px;
+        }
+
+        .settings-input-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .settings-input-field {
+            width: 100%;
+            padding: 12px 14px;
+            background: #0a0b10;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .settings-input-field:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .settings-modal-btn {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            border: none;
+            border-radius: 12px;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 14.5px;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.2s;
+            margin-top: 10px;
+        }
+
+        .settings-modal-btn:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 767px) {
+            #settings .main-content {
+                padding: 18px 16px 80px;
+            }
+            .settings-container {
+                gap: 14px;
+            }
+        }
+    </style>
+
     <!-- Mobile Header (screens < 768px) -->
     <header class="mobile-header">
       <button type="button" class="hamburger-btn" id="hamburger-toggle" aria-label="Toggle navigation" style="background: none; border: none; color: white; font-size: 28px; cursor: pointer; line-height:1;">
@@ -75,142 +521,458 @@
             </div>
         </div>
 
-        <!-- Main Content Layout -->
-        <div class="main-content" style="padding: 32px 36px; background: #07080a; min-height: 100vh;">
-            <!-- Header section matching reference image -->
-            <div style="margin-bottom: 28px;">
-                <h1 style="font-size: 28px; font-weight: 800; color: #ffffff; letter-spacing: -0.02em; margin: 0 0 6px 0;">System Settings</h1>
-                <p style="font-size: 14px; color: #94a3b8; margin: 0;">Configure profile, timezone reminders, theme preferences, and data backups.</p>
-            </div>
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <div class="settings-container">
 
-            <!-- 1. Profile Details Card -->
-            <div style="background: #0d0e14; border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 16px; padding: 24px; margin-bottom: 24px;">
-                <div style="display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; color: #ffffff; margin-bottom: 20px;">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    Profile Details
+                <!-- Header Title -->
+                <div class="settings-top-bar">
+                    <h1 class="settings-title">Settings</h1>
                 </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
-                    <div>
-                        <label style="display: block; font-size: 11px; font-weight: 700; color: #64748b; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 6px;">FULL NAME</label>
-                        <input id="settings-fullname" type="text" value="Jack" style="width: 100%; padding: 11px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); background: #12141d; color: #ffffff; font-size: 14px; outline: none; box-sizing: border-box;" />
-                    </div>
-                    <div>
-                        <label style="display: block; font-size: 11px; font-weight: 700; color: #64748b; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 6px;">EMAIL ADDRESS</label>
-                        <input id="settings-email" type="email" value="jack@dailyos.io" style="width: 100%; padding: 11px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); background: #12141d; color: #ffffff; font-size: 14px; outline: none; box-sizing: border-box;" />
-                    </div>
-                    <div>
-                        <label style="display: block; font-size: 11px; font-weight: 700; color: #64748b; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 6px;">AVATAR IMAGE URL</label>
-                        <input id="settings-avatar" type="text" value="https://images.unsplash.com/photo-1534528741775-53994a69daeb" style="width: 100%; padding: 11px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); background: #12141d; color: #ffffff; font-size: 14px; outline: none; box-sizing: border-box;" />
-                    </div>
-                    <div>
-                        <label style="display: block; font-size: 11px; font-weight: 700; color: #64748b; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 6px;">LOCAL TIMEZONE</label>
-                        <select id="settings-timezone" style="width: 100%; padding: 11px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); background: #12141d; color: #ffffff; font-size: 14px; outline: none; box-sizing: border-box;">
-                            <option value="UTC">UTC</option>
-                            <option value="Asia/Kolkata">Asia/Kolkata</option>
-                            <option value="America/New_York">America/New_York</option>
-                            <option value="Europe/London">Europe/London</option>
-                            <option value="Asia/Tokyo">Asia/Tokyo</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 2. Appearance & Preferences Card -->
-            <div style="background: #0d0e14; border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 16px; padding: 24px; margin-bottom: 24px;">
-                <div style="display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; color: #ffffff; margin-bottom: 20px;">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="21" y2="21"/><line x1="4" x2="20" y1="14" y2="14"/><line x1="4" x2="20" y1="7" y2="7"/></svg>
-                    Appearance & Preferences
-                </div>
-
-                <div style="display: flex; flex-direction: column; gap: 20px;">
-                    <div>
-                        <label style="display: block; font-size: 11px; font-weight: 700; color: #64748b; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 8px;">INTERFACE MODE</label>
-                        <div style="display: flex; gap: 10px;">
-                            <button type="button" class="settings-pill active" style="flex: 1; padding: 10px; border-radius: 10px; background: #181b26; border: 1px solid rgba(99,102,241,0.5); color: #fff; font-size: 13.5px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                                🌙 Dark Mode
-                            </button>
-                            <button type="button" class="settings-pill" style="flex: 1; padding: 10px; border-radius: 10px; background: #07080a; border: 1px solid rgba(255,255,255,0.08); color: #94a3b8; font-size: 13.5px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="window.showNotification('Dark mode is currently set as standard theme', 'info')">
-                                ☀️ Light Mode
-                            </button>
-                            <button type="button" class="settings-pill" style="flex: 1; padding: 10px; border-radius: 10px; background: #07080a; border: 1px solid rgba(255,255,255,0.08); color: #94a3b8; font-size: 13.5px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="window.showNotification('System preference active', 'info')">
-                                🖥️ System
-                            </button>
+                <!-- 1. Profile Header Row: User Photo, Crown, Name, Badges -->
+                <div class="settings-profile-card" onclick="window.openSettingsModal('profileModal')">
+                    <div class="settings-profile-left">
+                        <div class="settings-avatar-wrap">
+                            <img id="settings-card-avatar" class="settings-avatar-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb" alt="Profile Photo">
                         </div>
-                    </div>
-
-                    <div>
-                        <label style="display: block; font-size: 11px; font-weight: 700; color: #64748b; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 8px;">CALENDAR WEEK START</label>
-                        <div style="display: flex; gap: 10px;">
-                            <button type="button" class="settings-pill active" style="flex: 1; padding: 10px; border-radius: 10px; background: #181b26; border: 1px solid rgba(99,102,241,0.5); color: #fff; font-size: 13.5px; font-weight: 600; cursor: pointer;">
-                                Monday
-                            </button>
-                            <button type="button" class="settings-pill" style="flex: 1; padding: 10px; border-radius: 10px; background: #07080a; border: 1px solid rgba(255,255,255,0.08); color: #94a3b8; font-size: 13.5px; font-weight: 600; cursor: pointer;" onclick="window.showNotification('Week start preference set to Monday', 'info')">
-                                Sunday
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 3. Notification & Reminders Card -->
-            <div style="background: #0d0e14; border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 16px; padding: 24px; margin-bottom: 24px;">
-                <div style="display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; color: #ffffff; margin-bottom: 20px;">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
-                    Notification & Reminders
-                </div>
-
-                <div style="display: flex; flex-direction: column; gap: 14px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; background: #07080a; padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
-                        <div style="display: flex; align-items: flex-start; gap: 14px;">
-                            <input type="checkbox" checked style="width: 18px; height: 18px; accent-color: #6366f1; cursor: pointer; margin-top: 2px;">
-                            <div>
-                                <div style="font-size: 14px; font-weight: 600; color: #ffffff;">Morning Intentions Planning</div>
-                                <div style="font-size: 12.5px; color: #64748b; margin-top: 2px;">Prompt to organize Top 3 priorities.</div>
+                        <div class="settings-user-meta">
+                            <div class="settings-user-name" id="settings-card-name">
+                                <span>Agalya G</span>
                             </div>
                         </div>
-                        <input type="time" value="08:00" style="padding: 6px 12px; border-radius: 8px; background: #12141d; border: 1px solid rgba(255,255,255,0.1); color: #fff; font-size: 13px;">
                     </div>
+                    <div class="settings-item-right">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                    </div>
+                </div>
 
-                    <div style="display: flex; justify-content: space-between; align-items: center; background: #07080a; padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
-                        <div style="display: flex; align-items: flex-start; gap: 14px;">
-                            <input type="checkbox" checked style="width: 18px; height: 18px; accent-color: #6366f1; cursor: pointer; margin-top: 2px;">
-                            <div>
-                                <div style="font-size: 14px; font-weight: 600; color: #ffffff;">Habit Completion Reminder</div>
-                                <div style="font-size: 12.5px; color: #64748b; margin-top: 2px;">Periodic checks on active routines.</div>
+
+                <!-- 3. BOX 1: User Profile, Name, Badge, Date & Time, Alarm & Notification, Widget, General -->
+                <div class="settings-card-group">
+                    <!-- Profile & Name -->
+                    <div class="settings-row-item" onclick="window.openSettingsModal('profileModal')">
+                        <div class="settings-item-left">
+                            <div class="settings-item-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                             </div>
+                            <span class="settings-item-label">User Profile & Name</span>
                         </div>
-                        <input type="time" value="20:00" style="padding: 6px 12px; border-radius: 8px; background: #12141d; border: 1px solid rgba(255,255,255,0.1); color: #fff; font-size: 13px;">
+                        <div class="settings-item-right">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                        </div>
+                    </div>
+
+
+                    <!-- Date & Time -->
+                    <div class="settings-row-item" onclick="window.openSettingsModal('dateTimeModal')">
+                        <div class="settings-item-left">
+                            <div class="settings-item-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            </div>
+                            <span class="settings-item-label">Date & Time</span>
+                        </div>
+                        <div class="settings-item-right">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                        </div>
+                    </div>
+
+                    <!-- Alarm & Notification -->
+                    <div class="settings-row-item" onclick="window.openSettingsModal('notificationModal')">
+                        <div class="settings-item-left">
+                            <div class="settings-item-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/><circle cx="18" cy="4" r="2" fill="#ef4444" stroke="none"/></svg>
+                            </div>
+                            <span class="settings-item-label">Alarm & Notifications</span>
+                        </div>
+                        <div class="settings-item-right">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                        </div>
+                    </div>
+
+                    <!-- Widgets -->
+                    <div class="settings-row-item" onclick="window.openSettingsModal('widgetModal')">
+                        <div class="settings-item-left">
+                            <div class="settings-item-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+                            </div>
+                            <span class="settings-item-label">Widgets</span>
+                        </div>
+                        <div class="settings-item-right">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                        </div>
+                    </div>
+
+                    <!-- General -->
+                    <div class="settings-row-item" onclick="window.openSettingsModal('generalModal')">
+                        <div class="settings-item-left">
+                            <div class="settings-item-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+                            </div>
+                            <span class="settings-item-label">General</span>
+                        </div>
+                        <div class="settings-item-right">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- 4. Data Management & Backup -->
-            <div style="background: #0d0e14; border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 16px; padding: 24px; margin-bottom: 28px;">
-                <div style="display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; color: #ffffff; margin-bottom: 16px;">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    Data & Backups
+                <!-- 4. BOX 2: Recommend to Friends, Help & Feedback, Follow Us, About, Sign Out -->
+                <div class="settings-card-group">
+                    <!-- Recommend to Friends -->
+                    <div class="settings-row-item" onclick="window.recommendToFriends()">
+                        <div class="settings-item-left">
+                            <div class="settings-item-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+                            </div>
+                            <span class="settings-item-label">Recommend to Friends</span>
+                        </div>
+                        <div class="settings-item-right">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                        </div>
+                    </div>
+
+                    <!-- Help & Feedback -->
+                    <div class="settings-row-item" onclick="window.openSettingsModal('helpModal')">
+                        <div class="settings-item-left">
+                            <div class="settings-item-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                            </div>
+                            <span class="settings-item-label">Help & Feedback</span>
+                        </div>
+                        <div class="settings-item-right">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                        </div>
+                    </div>
+
+                    <!-- Follow Us -->
+                    <div class="settings-row-item" onclick="window.openSettingsModal('followModal')">
+                        <div class="settings-item-left">
+                            <div class="settings-item-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+                            </div>
+                            <span class="settings-item-label">Follow Us</span>
+                        </div>
+                        <div class="settings-item-right">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                        </div>
+                    </div>
+
+                    <!-- About -->
+                    <div class="settings-row-item" onclick="window.openSettingsModal('aboutModal')">
+                        <div class="settings-item-left">
+                            <div class="settings-item-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a1a1aa" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                            </div>
+                            <span class="settings-item-label">About</span>
+                        </div>
+                        <div class="settings-item-right">
+                            <span style="font-size: 13px; color: #64748b;">v2.4.0</span>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                        </div>
+                    </div>
+
+                    <!-- Sign Out -->
+                    <div class="settings-row-item settings-row-logout" onclick="window.logout()">
+                        <div class="settings-item-left">
+                            <div class="settings-item-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                            </div>
+                            <span class="settings-item-label">Sign Out</span>
+                        </div>
+                        <div class="settings-item-right">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                        </div>
+                    </div>
                 </div>
 
-                <div style="display: flex; gap: 12px;">
-                    <button type="button" onclick="Storage.exportAsFile()" style="background: rgba(255,255,255,0.06); color: #ffffff; border: 1px solid rgba(255,255,255,0.12); padding: 9px 18px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.2s;">
-                        Export JSON Backup
-                    </button>
-                    <button type="button" onclick="window.resetAllData()" style="background: rgba(239, 68, 68, 0.12); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); padding: 9px 18px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.2s;">
-                        Reset All Data
-                    </button>
-                </div>
-            </div>
-
-            <!-- 5. Bottom Action Bar: Log Out on Left, Save Settings on Right -->
-            <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 8px;">
-                <button type="button" onclick="window.logout()" style="background: #ef4444; color: #ffffff; border: none; padding: 11px 24px; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 14px rgba(239,68,68,0.3);" onmouseover="this.style.background='#dc2626'" onmouseout="this.style.background='#ef4444'">
-                    Log Out
-                </button>
-                <button type="button" onclick="window.saveSettings()" style="background: linear-gradient(135deg, #4f46e5, #6366f1); color: #ffffff; border: none; padding: 11px 28px; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 14px rgba(99,102,241,0.35);" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='none'">
-                    Save Settings
-                </button>
             </div>
         </div>
     </div>
+
+    <!-- ==================== MODALS ==================== -->
+
+    <!-- 1. Profile & Name Modal -->
+    <div class="settings-modal-backdrop" id="profileModal" onclick="if(event.target===this) window.closeSettingsModal('profileModal')">
+        <div class="settings-modal-content">
+            <div class="settings-modal-header">
+                <h3 class="settings-modal-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    User Profile & Name
+                </h3>
+                <button type="button" class="settings-close-btn" onclick="window.closeSettingsModal('profileModal')">&times;</button>
+            </div>
+            <div class="settings-input-group">
+                <label class="settings-input-label" for="settings-fullname">Full Name</label>
+                <input type="text" id="settings-fullname" class="settings-input-field" placeholder="Your name (e.g. Agalya G)" value="Agalya G" />
+            </div>
+            <div class="settings-input-group">
+                <label class="settings-input-label" for="settings-email">Email Address</label>
+                <input type="email" id="settings-email" class="settings-input-field" placeholder="name@example.com" value="agalya@gmail.com" />
+            </div>
+            <div class="settings-input-group">
+                <label class="settings-input-label" for="settings-avatar">Profile Picture</label>
+                <input type="file" id="settings-avatar" class="settings-input-field" accept="image/*" />
+            </div>
+            <button type="button" class="settings-modal-btn" onclick="window.saveSettings()">Save Profile Changes</button>
+        </div>
+    </div>
+
+    <!-- 2. Badges & Level Modal -->
+    <div class="settings-modal-backdrop" id="badgeModal" onclick="if(event.target===this) window.closeSettingsModal('badgeModal')">
+        <div class="settings-modal-content">
+            <div class="settings-modal-header">
+                <h3 class="settings-modal-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+                    Badges & Level
+                </h3>
+                <button type="button" class="settings-close-btn" onclick="window.closeSettingsModal('badgeModal')">&times;</button>
+            </div>
+            <div style="text-align: center; padding: 10px 0 20px;">
+                <div style="width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, #a855f7, #6366f1); margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(168, 85, 247, 0.4);">
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="#fff"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><path d="m12 7 1.5 3 3.5.5-2.5 2.5.5 3.5-3-1.5-3 1.5.5-3.5-2.5-2.5 3.5-.5z"/></svg>
+                </div>
+                <h4 style="margin: 0 0 4px; font-size: 18px; color: #fff;">Streak Novice - Level 1</h4>
+                <p style="margin: 0; font-size: 13px; color: #94a3b8;">Earned 1 Badge by keeping consecutive 7-day habits!</p>
+            </div>
+            <div style="background: #0d0f17; border-radius: 14px; padding: 14px; border: 1px solid rgba(255,255,255,0.06); margin-bottom: 16px;">
+                <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px;">
+                    <span style="color: #94a3b8;">Level Progress</span>
+                    <span style="color: #34d399; font-weight: 700;">350 / 500 XP</span>
+                </div>
+                <div style="width: 100%; height: 8px; background: #1e2230; border-radius: 999px; overflow: hidden;">
+                    <div style="width: 70%; height: 100%; background: linear-gradient(90deg, #10b981, #34d399); border-radius: 999px;"></div>
+                </div>
+            </div>
+            <button type="button" class="settings-modal-btn" onclick="window.closeSettingsModal('badgeModal')">Awesome!</button>
+        </div>
+    </div>
+
+    <!-- 3. Date & Time Modal -->
+    <div class="settings-modal-backdrop" id="dateTimeModal" onclick="if(event.target===this) window.closeSettingsModal('dateTimeModal')">
+        <div class="settings-modal-content">
+            <div class="settings-modal-header">
+                <h3 class="settings-modal-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    Date & Time
+                </h3>
+                <button type="button" class="settings-close-btn" onclick="window.closeSettingsModal('dateTimeModal')">&times;</button>
+            </div>
+            <div class="settings-input-group">
+                <label class="settings-input-label" for="settings-timezone">Timezone</label>
+                <select id="settings-timezone" class="settings-input-field">
+                    <option value="Asia/Kolkata">Asia/Kolkata (GMT +5:30)</option>
+                    <option value="UTC">UTC (GMT +0:00)</option>
+                    <option value="America/New_York">America/New York (EST/EDT)</option>
+                    <option value="Europe/London">Europe/London (GMT/BST)</option>
+                    <option value="Asia/Tokyo">Asia/Tokyo (JST)</option>
+                    <option value="Australia/Sydney">Australia/Sydney (AEST)</option>
+                </select>
+            </div>
+            <div class="settings-input-group">
+                <label class="settings-input-label">Time Format</label>
+                <div style="display: flex; gap: 10px;">
+                    <label style="flex: 1; display: flex; align-items: center; gap: 8px; background: #0a0b10; border: 1px solid rgba(255,255,255,0.1); padding: 10px 14px; border-radius: 10px; cursor: pointer; font-size: 13px;">
+                        <input type="radio" name="timeFormat" value="12" checked style="accent-color: #6366f1;"> 12-Hour (06:46 PM)
+                    </label>
+                    <label style="flex: 1; display: flex; align-items: center; gap: 8px; background: #0a0b10; border: 1px solid rgba(255,255,255,0.1); padding: 10px 14px; border-radius: 10px; cursor: pointer; font-size: 13px;">
+                        <input type="radio" name="timeFormat" value="24" style="accent-color: #6366f1;"> 24-Hour (18:46)
+                    </label>
+                </div>
+            </div>
+            <div class="settings-input-group">
+                <label class="settings-input-label">First Day of Week</label>
+                <div style="display: flex; gap: 10px;">
+                    <label style="flex: 1; display: flex; align-items: center; gap: 8px; background: #0a0b10; border: 1px solid rgba(255,255,255,0.1); padding: 10px 14px; border-radius: 10px; cursor: pointer; font-size: 13px;">
+                        <input type="radio" name="firstDay" value="mon" checked style="accent-color: #6366f1;"> Monday
+                    </label>
+                    <label style="flex: 1; display: flex; align-items: center; gap: 8px; background: #0a0b10; border: 1px solid rgba(255,255,255,0.1); padding: 10px 14px; border-radius: 10px; cursor: pointer; font-size: 13px;">
+                        <input type="radio" name="firstDay" value="sun" style="accent-color: #6366f1;"> Sunday
+                    </label>
+                </div>
+            </div>
+            <button type="button" class="settings-modal-btn" onclick="window.saveSettings()">Save Date & Time</button>
+        </div>
+    </div>
+
+    <!-- 4. Alarm & Notification Modal -->
+    <div class="settings-modal-backdrop" id="notificationModal" onclick="if(event.target===this) window.closeSettingsModal('notificationModal')">
+        <div class="settings-modal-content">
+            <div class="settings-modal-header">
+                <h3 class="settings-modal-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                    Alarm & Notifications
+                </h3>
+                <button type="button" class="settings-close-btn" onclick="window.closeSettingsModal('notificationModal')">&times;</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; background: #0d0f17; padding: 14px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06);">
+                    <div>
+                        <div style="font-size: 14px; font-weight: 600; color: #fff;">Morning Intention Alarm</div>
+                        <div style="font-size: 12px; color: #64748b;">Daily reminder for Top 3 tasks</div>
+                    </div>
+                    <input type="time" value="07:30" style="padding: 6px 10px; border-radius: 8px; background: #181920; border: 1px solid rgba(255,255,255,0.1); color: #fff; font-size: 13px;">
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; background: #0d0f17; padding: 14px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06);">
+                    <div>
+                        <div style="font-size: 14px; font-weight: 600; color: #fff;">Evening Review Reminder</div>
+                        <div style="font-size: 12px; color: #64748b;">Review daily habit completions</div>
+                    </div>
+                    <input type="time" value="21:00" style="padding: 6px 10px; border-radius: 8px; background: #181920; border: 1px solid rgba(255,255,255,0.1); color: #fff; font-size: 13px;">
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; background: #0d0f17; padding: 14px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06);">
+                    <div>
+                        <div style="font-size: 14px; font-weight: 600; color: #fff;">Sound & Vibration</div>
+                        <div style="font-size: 12px; color: #64748b;">Play audio chime for alarms</div>
+                    </div>
+                    <input type="checkbox" checked style="width: 20px; height: 20px; accent-color: #6366f1; cursor: pointer;">
+                </div>
+            </div>
+            <button type="button" class="settings-modal-btn" onclick="window.saveNotificationPreferences()">Save Notification Settings</button>
+        </div>
+    </div>
+
+    <!-- 5. Widget Modal -->
+    <div class="settings-modal-backdrop" id="widgetModal" onclick="if(event.target===this) window.closeSettingsModal('widgetModal')">
+        <div class="settings-modal-content">
+            <div class="settings-modal-header">
+                <h3 class="settings-modal-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+                    Widgets Settings
+                </h3>
+                <button type="button" class="settings-close-btn" onclick="window.closeSettingsModal('widgetModal')">&times;</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
+                <label style="display: flex; align-items: center; justify-content: space-between; background: #0d0f17; padding: 14px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); cursor: pointer;">
+                    <div>
+                        <div style="font-size: 14px; font-weight: 600; color: #fff;">Today's Streak Flame Widget</div>
+                        <div style="font-size: 12px; color: #64748b;">Compact home screen counter</div>
+                    </div>
+                    <input type="checkbox" checked style="width: 18px; height: 18px; accent-color: #6366f1;">
+                </label>
+                <label style="display: flex; align-items: center; justify-content: space-between; background: #0d0f17; padding: 14px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); cursor: pointer;">
+                    <div>
+                        <div style="font-size: 14px; font-weight: 600; color: #fff;">Quick Habit Check-in Widget</div>
+                        <div style="font-size: 12px; color: #64748b;">Check off routine habits directly</div>
+                    </div>
+                    <input type="checkbox" checked style="width: 18px; height: 18px; accent-color: #6366f1;">
+                </label>
+                <label style="display: flex; align-items: center; justify-content: space-between; background: #0d0f17; padding: 14px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); cursor: pointer;">
+                    <div>
+                        <div style="font-size: 14px; font-weight: 600; color: #fff;">Weekly Progress Circle</div>
+                        <div style="font-size: 12px; color: #64748b;">Visual 7-day completion chart</div>
+                    </div>
+                    <input type="checkbox" checked style="width: 18px; height: 18px; accent-color: #6366f1;">
+                </label>
+            </div>
+            <button type="button" class="settings-modal-btn" onclick="window.closeSettingsModal('widgetModal'); window.showNotification('✅ Widget configurations saved!', 'success');">Apply Widget Settings</button>
+        </div>
+    </div>
+
+    <!-- 6. General Modal -->
+    <div class="settings-modal-backdrop" id="generalModal" onclick="if(event.target===this) window.closeSettingsModal('generalModal')">
+        <div class="settings-modal-content">
+            <div class="settings-modal-header">
+                <h3 class="settings-modal-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+                    General Settings
+                </h3>
+                <button type="button" class="settings-close-btn" onclick="window.closeSettingsModal('generalModal')">&times;</button>
+            </div>
+            <div class="settings-input-group">
+                <label class="settings-input-label">Theme Mode</label>
+                <div style="display: flex; gap: 8px;">
+                    <button type="button" style="flex: 1; padding: 10px; border-radius: 10px; background: #1e2235; border: 1px solid #6366f1; color: #fff; font-weight: 600; font-size: 13px; cursor: pointer;">🌙 Dark (Default)</button>
+                    <button type="button" style="flex: 1; padding: 10px; border-radius: 10px; background: #0d0f17; border: 1px solid rgba(255,255,255,0.08); color: #94a3b8; font-weight: 600; font-size: 13px; cursor: pointer;" onclick="window.showNotification('Dark mode is the recommended default for STREAKO.', 'info')">☀️ Light</button>
+                </div>
+            </div>
+            <div class="settings-input-group">
+                <label class="settings-input-label">Data & Backup</label>
+                <div style="display: flex; gap: 10px;">
+                    <button type="button" onclick="Storage.exportAsFile()" style="flex: 1; padding: 10px; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); color: #fff; font-size: 13px; font-weight: 600; cursor: pointer;">Export JSON</button>
+                    <button type="button" onclick="window.resetAllData()" style="padding: 10px 14px; border-radius: 10px; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #ef4444; font-size: 13px; font-weight: 600; cursor: pointer;">Reset Data</button>
+                </div>
+            </div>
+            <button type="button" class="settings-modal-btn" onclick="window.closeSettingsModal('generalModal')">Done</button>
+        </div>
+    </div>
+
+    <!-- 7. Help & Feedback Modal -->
+    <div class="settings-modal-backdrop" id="helpModal" onclick="if(event.target===this) window.closeSettingsModal('helpModal')">
+        <div class="settings-modal-content">
+            <div class="settings-modal-header">
+                <h3 class="settings-modal-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    Help & Feedback
+                </h3>
+                <button type="button" class="settings-close-btn" onclick="window.closeSettingsModal('helpModal')">&times;</button>
+            </div>
+            <div class="settings-input-group">
+                <label class="settings-input-label" for="feedback-topic">Topic</label>
+                <select id="feedback-topic" class="settings-input-field">
+                    <option>General Feedback</option>
+                    <option>Feature Request</option>
+                    <option>Bug Report</option>
+                    <option>Account & Billing</option>
+                </select>
+            </div>
+            <div class="settings-input-group">
+                <label class="settings-input-label" for="feedback-message">Message</label>
+                <textarea id="feedback-message" class="settings-input-field" rows="4" placeholder="How can we make STREAKO even better for you?" style="resize: none;"></textarea>
+            </div>
+            <button type="button" class="settings-modal-btn" onclick="window.submitFeedback()">Submit Feedback</button>
+        </div>
+    </div>
+
+    <!-- 8. Follow Us Modal -->
+    <div class="settings-modal-backdrop" id="followModal" onclick="if(event.target===this) window.closeSettingsModal('followModal')">
+        <div class="settings-modal-content">
+            <div class="settings-modal-header">
+                <h3 class="settings-modal-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+                    Follow STREAKO
+                </h3>
+                <button type="button" class="settings-close-btn" onclick="window.closeSettingsModal('followModal')">&times;</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; justify-content: space-between; background: #0d0f17; padding: 14px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); color: #fff; text-decoration: none;">
+                    <span style="font-weight: 600;">𝕏 Twitter / X</span>
+                    <span style="color: #60a5fa; font-size: 13px;">@streako_app &rarr;</span>
+                </a>
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; justify-content: space-between; background: #0d0f17; padding: 14px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); color: #fff; text-decoration: none;">
+                    <span style="font-weight: 600;">📸 Instagram</span>
+                    <span style="color: #ec4899; font-size: 13px;">@streako.official &rarr;</span>
+                </a>
+                <a href="https://discord.com" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; justify-content: space-between; background: #0d0f17; padding: 14px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); color: #fff; text-decoration: none;">
+                    <span style="font-weight: 600;">💬 Discord Community</span>
+                    <span style="color: #818cf8; font-size: 13px;">Join 12,000+ members &rarr;</span>
+                </a>
+            </div>
+            <button type="button" class="settings-modal-btn" onclick="window.closeSettingsModal('followModal')">Close</button>
+        </div>
+    </div>
+
+    <!-- 9. About Modal -->
+    <div class="settings-modal-backdrop" id="aboutModal" onclick="if(event.target===this) window.closeSettingsModal('aboutModal')">
+        <div class="settings-modal-content">
+            <div class="settings-modal-header">
+                <h3 class="settings-modal-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a1a1aa" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                    About STREAKO
+                </h3>
+                <button type="button" class="settings-close-btn" onclick="window.closeSettingsModal('aboutModal')">&times;</button>
+            </div>
+            <div style="text-align: center; padding: 8px 0 16px;">
+                <img src="/assets/images/logo.png" alt="STREAKO" style="width: 56px; height: 56px; margin-bottom: 12px; object-fit: contain;">
+                <h4 style="margin: 0 0 4px; font-size: 18px; color: #fff;">STREAKO Premium Productivity</h4>
+                <p style="margin: 0; font-size: 13px; color: #94a3b8;">Version 2.4.0 (Build 2026.1)</p>
+            </div>
+            <div style="font-size: 13px; line-height: 1.6; color: #94a3b8; background: #0d0f17; padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); margin-bottom: 20px;">
+                STREAKO is your companion for building consistent daily routines, hitting long-term goals, and mastering your productivity. Crafted with care for high achievers.
+            </div>
+            <button type="button" class="settings-modal-btn" onclick="window.closeSettingsModal('aboutModal')">Close</button>
+        </div>
+    </div>
+
+    <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" onload="if(window.syncSettingsDisplay) window.syncSettingsDisplay();" style="display:none;">
 </div>
