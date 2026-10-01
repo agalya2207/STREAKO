@@ -45,7 +45,17 @@ export class Router {
             const html = await response.text();
             console.log(`[Router] Successfully fetched ${pageFile} (${html.length} bytes)`);
 
-            this.container.innerHTML = html;
+            let contentToInject = html;
+            if (html.includes('<!DOCTYPE html>') || html.includes('<html')) {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                doc.head.querySelectorAll('link[rel="stylesheet"], style').forEach(el => {
+                    document.head.appendChild(el.cloneNode(true));
+                });
+                contentToInject = doc.body.innerHTML;
+            }
+
+            this.container.innerHTML = contentToInject;
 
             // Ensure any top-level .page element inside #app has the 'active' class so it is visible
             const pages = this.container.querySelectorAll('.page');
@@ -54,6 +64,15 @@ export class Router {
             } else if (this.container.firstElementChild) {
                 this.container.firstElementChild.classList.add('active');
             }
+
+            // Re-run any scripts in the newly inserted DOM
+            const scripts = this.container.querySelectorAll('script');
+            scripts.forEach(oldScript => {
+                const newScript = document.createElement('script');
+                Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                newScript.textContent = oldScript.textContent;
+                oldScript.parentNode.replaceChild(newScript, oldScript);
+            });
 
             window.scrollTo(0, 0);
             

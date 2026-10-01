@@ -1893,6 +1893,12 @@ class App {
         // Page Load Event Listener
         window.addEventListener('page-loaded', (e) => {
             const path = e.detail.path;
+
+            if (path === '/' || path === '/landing') {
+                if (typeof window.initLandingCarousel === 'function') {
+                    window.initLandingCarousel();
+                }
+            }
             
             if (path === '/login') {
                 const forgotLink = document.getElementById('forgot-password-link');

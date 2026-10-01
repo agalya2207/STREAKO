@@ -1,187 +1,598 @@
-<div class="page active" id="landing">
-    <div class="landing-page">
-        <!-- AMBIENT BACKGROUND GLOWS -->
-        <div class="landing-bg-glow top-glow"></div>
-        <div class="landing-bg-glow mid-glow"></div>
-        <div class="landing-bg-glow cta-glow"></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Streako - Build Habits That Stick</title>
+<meta name="description" content="Streako helps you build habits that stick. Track streaks, visualize progress, and reach your goals.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@800&display=swap" rel="stylesheet">
+<style>
+/* ═══ TOKENS ═══════════════════════════════════════════════════════════════ */
+:root{
+  --bg-top:#e8f5ee;
+  --bg-bot:#ceeadb;
+  --ink:#1a2e22;
+  --muted:#5a7a69;
+  --acc:#10b981;
+  --acc2:#059669;
+  --chip-bg:rgba(255,255,255,0.75);
+  --chip-border:rgba(16,185,129,0.30);
+  --nav-bg:rgba(255,255,255,0.65);
+  --nav-border:rgba(16,185,129,0.28);
+}
 
-        <!-- NAVBAR -->
-        <nav class="navbar landing-navbar">
-            <div class="navbar-container">
-                <div class="navbar-brand" onclick="app.router.navigate('/landing')" role="button" tabindex="0" style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
-                    <div class="sidebar-logo-icon" style="width: 38px; height: 38px;">
-                        <img src="/assets/images/logo.png" alt="STREAKO Logo" style="width: 38px; height: 38px; object-fit: contain; mix-blend-mode: screen;">
-                    </div>
-                    <div class="sidebar-logo-text">
-                        <span class="sidebar-logo-title" style="font-size: 19px; font-weight: 800; letter-spacing: 1.5px;">STREAKO</span>
-                        <span class="sidebar-logo-sub" style="font-size: 8px; letter-spacing: 1.8px;">PREMIUM PRODUCTIVITY</span>
-                    </div>
-                </div>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{
+  height:100%;
+  width:100%;
+  overflow:hidden;
+  font-family:Inter,system-ui,-apple-system,sans-serif;
+}
 
+/* ═══ WRAPPER — phone card ══════════════════════════════════════════════════ */
+.lp-root{
+  width:100%;
+  height:100vh;
+  height:100dvh;
+  background:linear-gradient(175deg, #e2f4ec 0%, #c6e8d5 100%);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  overflow:hidden;
+  position:relative;
+}
 
+/* subtle radial glow top-center */
+.lp-root::before{
+  content:'';
+  position:absolute;
+  top:-80px;left:50%;
+  transform:translateX(-50%);
+  width:320px;height:320px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(255,255,255,0.5) 0%, transparent 70%);
+  pointer-events:none;
+}
 
-                <div class="navbar-buttons">
-                    <button type="button" class="btn btn-ghost btn-nav-login" onclick="app.router.navigate('/login')">Log In</button>
-                    <button type="button" class="btn btn-primary btn-nav-signup" onclick="app.router.navigate('/signup')">Sign Up</button>
-                </div>
-            </div>
-        </nav>
+/* ═══ LOGO ═══════════════════════════════════════════════════════════════════ */
+.lp-logo{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  padding-top:max(28px, env(safe-area-inset-top, 20px));
+  padding-bottom:4px;
+  z-index:2;
+  flex-shrink:0;
+}
+.lp-logo svg{
+  width:56px;
+  height:56px;
+  drop-shadow:0 4px 12px rgba(16,185,129,.3);
+}
+.lp-logo-name{
+  font-family:'Unbounded',sans-serif;
+  font-weight:800;
+  font-size:22px;
+  letter-spacing:.05em;
+  background:linear-gradient(135deg,#059669,#34d399);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  line-height:1;
+}
 
-        <!-- 1. HERO SECTION -->
-        <header class="landing-hero" id="hero">
-            <div class="hero-container">
-                <!-- Top Badge Pill -->
-                <div class="hero-badge-pill" role="status">
-                    <span class="badge-sparkle-icon">💡</span>
-                    <span>AI-POWERED HABIT COACHING</span>
-                </div>
+/* ═══ CAROUSEL STAGE ════════════════════════════════════════════════════════ */
+.lp-stage{
+  flex:1;
+  width:100%;
+  overflow:hidden;
+  position:relative;
+  min-height:0;
+}
+.lp-track{
+  display:flex;
+  height:100%;
+  width:100%;
+  transition:transform .44s cubic-bezier(.3,.85,.3,1);
+  will-change:transform;
+}
 
-                <!-- Main Headline -->
-                <h1 class="hero-headline">
-                    Build habits that fit your <span class="hero-highlight">real life.</span>
-                </h1>
+/* ═══ EACH SLIDE ════════════════════════════════════════════════════════════ */
+.lp-slide{
+  min-width:100%;
+  flex:0 0 100%;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:space-evenly;
+  padding:8px 28px 8px;
+  text-align:center;
+  gap:0;
+}
 
-                <!-- Supporting Paragraph -->
-                <p class="hero-subtext">
-                    STREAKO adapts to your schedule, understands missed days, and helps you build consistent habits without the pressure of perfection.
-                </p>
+/* Illustration */
+.lp-art{
+  width:100%;
+  max-width:280px;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.lp-art svg{
+  width:100%;
+  height:auto;
+  max-height:230px;
+  filter:drop-shadow(0 10px 20px rgba(16,185,129,.15));
+}
 
-                <!-- Dual CTA Buttons -->
-                <div class="hero-buttons">
-                    <button type="button" class="btn btn-primary btn-hero-primary" onclick="app.router.navigate('/signup')">
-                        <span>Start Building Habits</span>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </button>
+/* Text block */
+.lp-text{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+  flex-shrink:0;
+}
+.lp-h1{
+  font-size:30px;
+  font-weight:800;
+  line-height:1.18;
+  letter-spacing:-.6px;
+  color:var(--ink);
+}
+.lp-h1 em{
+  font-style:normal;
+  background:linear-gradient(90deg,#059669,#34d399);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+.lp-desc{
+  font-size:15px;
+  line-height:1.62;
+  color:var(--muted);
+  max-width:290px;
+}
 
-                </div>
-            </div>
-        </header>
+/* Chips */
+.lp-chips{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  flex-wrap:wrap;
+  flex-shrink:0;
+}
+.lp-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  background:var(--chip-bg);
+  border:1.5px solid var(--chip-border);
+  color:var(--acc2);
+  font:600 13.5px Inter;
+  padding:9px 16px;
+  border-radius:99px;
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  white-space:nowrap;
+}
+.lp-chip svg{width:15px;height:15px;flex-shrink:0}
 
-        <!-- 2. MAIN HERO VISUAL (STREAKO DASHBOARD SHOWCASE) -->
-        <section class="hero-product-section" aria-label="STREAKO Platform Preview">
-            <div class="hero-product-container">
-                <div class="hero-panel-outer-glow"></div>
-                
-                <div class="hero-panel-card">
-                    <!-- Top Window Bar -->
-                    <div class="panel-window-bar">
-                        <div class="window-controls">
-                            <span class="ctrl-dot red"></span>
-                            <span class="ctrl-dot yellow"></span>
-                            <span class="ctrl-dot green"></span>
-                            <span class="window-title">STREAKO INTELLIGENCE • LIVE ENGINE v2.4</span>
-                        </div>
-                        <div class="window-status-pill">
-                            <span class="pulse-indicator"></span>
-                            <span>✓ Adaptive Flow Active</span>
-                        </div>
-                    </div>
+/* ═══ NAVIGATION BAR ════════════════════════════════════════════════════════ */
+.lp-nav{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  padding:10px 0 max(20px, env(safe-area-inset-bottom, 16px));
+  flex-shrink:0;
+  z-index:2;
+}
+.lp-arrow{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  border:1.5px solid var(--nav-border);
+  background:var(--nav-bg);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  color:var(--acc2);
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  transition:all .18s;
+  flex-shrink:0;
+}
+.lp-arrow:hover:not([disabled]){
+  background:rgba(255,255,255,0.9);
+  transform:scale(1.06);
+}
+.lp-arrow[disabled]{opacity:.32;cursor:default}
+.lp-arrow svg{width:18px;height:18px}
+.lp-dots{display:flex;gap:7px;align-items:center}
+.lp-dot{
+  width:9px;height:9px;
+  border-radius:99px;
+  background:rgba(16,185,129,.28);
+  border:0;padding:0;
+  cursor:pointer;
+  transition:all .28s;
+}
+.lp-dot.on{width:34px;background:linear-gradient(90deg,#34d399,#10b981)}
 
-                    <!-- Centered Dashboard Visual Image -->
-                    <div class="panel-image-container">
-                        <img src="/assets/images/landing.png" alt="STREAKO AI Habit Tracker Dashboard with Neural Flow Visualization" class="hero-dashboard-image" loading="eager">
-                    </div>
+/* ═══ GET STARTED BUTTON (last slide only) ═══════════════════════════════════ */
+.lp-cta{
+  width:100%;
+  max-width:320px;
+  height:52px;
+  border:none;
+  border-radius:99px;
+  background:linear-gradient(90deg,#059669,#34d399);
+  color:#fff;
+  font:800 17px Inter;
+  letter-spacing:.02em;
+  cursor:pointer;
+  box-shadow:0 8px 24px rgba(16,185,129,.38);
+  transition:all .2s;
+  flex-shrink:0;
+}
+.lp-cta:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(16,185,129,.55)}
+.lp-cta:active{transform:scale(.97)}
 
-                    <!-- Panel Footer Caption -->
-                    <div class="panel-caption-bar">
-                        <h4>Automate Your Habits, Elevate Your Life.</h4>
-                        <p>STREAKO uses neural habit networks to organize, adapt, and reinforce your daily routines effortlessly.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+/* hidden by default, shown only on last slide */
+.lp-cta-wrap{
+  display:none;
+  width:100%;
+  align-items:center;
+  justify-content:center;
+  padding-bottom:max(22px, env(safe-area-inset-bottom, 16px));
+  flex-shrink:0;
+}
+.last-slide .lp-cta-wrap{display:flex}
+.last-slide .lp-nav{display:none}
 
-        <!-- 3. WHY STREAKO WORKS (3 FEATURE CARDS) -->
-        <section class="features-section" id="features" aria-labelledby="featuresHeading">
-            <div class="section-header">
-                <h2 id="featuresHeading" class="section-title">Why STREAKO works</h2>
-                <p class="section-subtitle">Build consistency around your life — not the other way around.</p>
-            </div>
+/* ═══ DESKTOP OVERRIDES (≥ 769px) ═══════════════════════════════════════════ */
+@media (min-width:769px){
+  body{
+    background:#0f1a15;
+  }
+  .lp-root{
+    max-width:430px;
+    height:100vh;
+    height:100dvh;
+    margin:0 auto;
+    border-radius:0;
+    box-shadow:0 0 80px rgba(0,0,0,.4);
+  }
+}
 
-            <div class="features-grid-3">
-                <!-- Card 1: Adapts to your schedule -->
-                <div class="feature-card">
-                    <div class="feature-icon-container">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                            <line x1="16" y1="2" x2="16" y2="6"></line>
-                            <line x1="8" y1="2" x2="8" y2="6"></line>
-                            <line x1="3" y1="10" x2="21" y2="10"></line>
-                            <circle cx="12" cy="15" r="2"></circle>
-                        </svg>
-                    </div>
-                    <h3 class="feature-title">Adapts to your schedule</h3>
-                    <p class="feature-desc">
-                        STREAKO adjusts your habits around your real schedule, helping you stay consistent even when your day changes.
-                    </p>
-                </div>
+/* Very small phones */
+@media (max-height:680px){
+  .lp-art svg{max-height:170px}
+  .lp-h1{font-size:26px}
+  .lp-desc{font-size:14px}
+}
+</style>
+</head>
+<body>
+<div class="lp-root" id="lp-root">
 
-                <!-- Card 2: AI understands your progress -->
-                <div class="feature-card">
-                    <div class="feature-icon-container">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 2a4 4 0 0 1 4 4c0 1.5-.8 2.8-2 3.5v1.5h-4v-1.5C8.8 8.8 8 7.5 8 6a4 4 0 0 1 4-4z"/>
-                            <path d="M10 11v2a2 2 0 1 0 4 0v-2"/>
-                            <circle cx="12" cy="18" r="3"/>
-                            <path d="M12 15v-2"/>
-                            <path d="M9 18H5M19 18h-4"/>
-                        </svg>
-                    </div>
-                    <h3 class="feature-title">AI understands your progress</h3>
-                    <p class="feature-desc">
-                        STREAKO analyzes missed habits, patterns, and progress to provide smarter and more supportive guidance.
-                    </p>
-                </div>
+  <!-- ── LOGO ──────────────────────────────────────────────────────────── -->
+  <div class="lp-logo">
+    <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Streako logo">
+      <defs>
+        <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#059669"/>
+          <stop offset="1" stop-color="#34d399"/>
+        </linearGradient>
+        <mask id="sm" maskUnits="userSpaceOnUse" x="0" y="0" width="120" height="120">
+          <path d="M82.3 31H47.7A14.25 14.25 0 0 0 47.7 59.5H72.3A14.25 14.25 0 0 1 72.3 88H37.7"
+                fill="none" stroke="#fff" stroke-width="13" stroke-linecap="round"/>
+          <path d="M82.3 31H47.7A14.25 14.25 0 0 0 47.7 59.5H72.3A14.25 14.25 0 0 1 72.3 88H37.7"
+                fill="none" stroke="#000" stroke-width="9" stroke-linecap="round"/>
+        </mask>
+      </defs>
+      <!-- diamond / arrow decorators -->
+      <g fill="none" stroke="url(#lg)" stroke-width="2.2" stroke-linejoin="miter">
+        <path d="M36 24.5L60 1l24 23.5z"/>
+        <path d="M36 94.5L60 118l24-23.5z"/>
+        <path d="M24 37.5L1.5 59.5 24 81.5H37.7"/>
+        <path d="M82.3 37.5H97L118.5 59.5 96 81.5"/>
+      </g>
+      <!-- S letterform -->
+      <path d="M82.3 31H47.7A14.25 14.25 0 0 0 47.7 59.5H72.3A14.25 14.25 0 0 1 72.3 88H37.7"
+            fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+      <rect width="120" height="120" fill="url(#lg)" mask="url(#sm)"/>
+    </svg>
+    <div class="lp-logo-name">STREAKO</div>
+  </div>
 
-                <!-- Card 3: Your personal AI coach -->
-                <div class="feature-card">
-                    <div class="feature-icon-container">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                        </svg>
-                    </div>
-                    <h3 class="feature-title">Your personal AI coach</h3>
-                    <p class="feature-desc">
-                        Get personalized suggestions, gentle reminders, and practical guidance that helps you keep moving forward.
-                    </p>
-                </div>
-            </div>
-        </section>
+  <!-- ── CAROUSEL ──────────────────────────────────────────────────────── -->
+  <div class="lp-stage">
+    <div class="lp-track" id="lp-track">
 
-        <!-- FOOTER -->
-        <footer class="landing-footer">
-            <div class="landing-footer-container">
+      <!-- ══ SLIDE 1 ════════════════════════════════════════════════════ -->
+      <div class="lp-slide" aria-label="Build habits that stick">
 
-                <!-- LEFT: Brand + Description -->
-                <div class="footer-left">
-                    <div class="footer-brand" onclick="app.router.navigate('/landing')" role="button" tabindex="0" style="display: flex; align-items: center; gap: 10px; cursor: pointer; margin-bottom: 12px;">
-                        <div class="sidebar-logo-icon" style="width: 32px; height: 32px;">
-                            <img src="/assets/images/logo.png" alt="STREAKO Logo" style="width: 32px; height: 32px; object-fit: contain; mix-blend-mode: screen;">
-                        </div>
-                        <div class="sidebar-logo-text">
-                            <span class="sidebar-logo-title" style="font-size: 16px; font-weight: 800; letter-spacing: 1.2px;">STREAKO</span>
-                            <span class="sidebar-logo-sub" style="font-size: 7.5px; letter-spacing: 1.5px;">PREMIUM PRODUCTIVITY</span>
-                        </div>
-                    </div>
-                    <p class="footer-tagline">The intelligent habit-building platform designed for real human lives.</p>
-                </div>
+        <!-- Illustration -->
+        <div class="lp-art">
+          <svg viewBox="0 0 280 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Background blob circles -->
+            <circle cx="140" cy="110" r="95" fill="rgba(255,255,255,0.45)"/>
+            <circle cx="80" cy="75" r="30" fill="rgba(255,255,255,0.3)"/>
 
-                <!-- CENTER: Links -->
-                <div class="footer-center">
-                    <a href="#privacy" class="footer-link">Privacy Policy</a>
-                    <a href="#terms" class="footer-link">Terms of Service</a>
-                    <a href="https://linkedin.com" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
-                </div>
+            <!-- Phone frame -->
+            <rect x="82" y="18" width="116" height="178" rx="14" fill="white" stroke="#2d4a38" stroke-width="4.5"/>
 
-                <!-- RIGHT: Copyright -->
-                <div class="footer-right">
-                    <span class="footer-copyright">© 2026 STREAKO. All rights reserved.</span>
-                </div>
+            <!-- Checklist rows -->
+            <!-- Row 1 - checked -->
+            <rect x="98" y="42" width="15" height="15" rx="4" fill="#34d399"/>
+            <path d="M101.5 50l3.5 3.5 5.5-6.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="120" y="46" width="62" height="7" rx="3.5" fill="#cbd5e1"/>
 
-            </div>
-        </footer>
-    </div>
-</div>
+            <!-- Row 2 - checked -->
+            <rect x="98" y="66" width="15" height="15" rx="4" fill="#34d399"/>
+            <path d="M101.5 74l3.5 3.5 5.5-6.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="120" y="70" width="50" height="7" rx="3.5" fill="#cbd5e1"/>
+
+            <!-- Row 3 - unchecked -->
+            <rect x="98" y="90" width="15" height="15" rx="4" fill="none" stroke="#10b981" stroke-width="2"/>
+            <rect x="120" y="94" width="56" height="7" rx="3.5" fill="#cbd5e1"/>
+
+            <!-- Flame in phone -->
+            <path d="M148 122c2 8 10 11 10 21a10 10 0 0 1-20 0c0-4.5 2-7 4.5-8.5 0 4 2.5 6 4 6-1-7.5-2.5-12 1.5-18.5z"
+                  fill="#10b981"/>
+            <path d="M148 137c2 3 5 5 5 8.5a5 5 0 0 1-10 0c0-3 3-5 5-8.5z" fill="#a7f3d0"/>
+
+            <!-- Phone bottom bar -->
+            <rect x="90" y="168" width="100" height="20" rx="10" fill="#2d4a38"/>
+
+            <!-- Green checkmark badge (bottom right) -->
+            <circle cx="212" cy="170" r="24" fill="#10b981"/>
+            <path d="M200 170l9 9 16-18" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <!-- Text -->
+        <div class="lp-text">
+          <h1 class="lp-h1">Build habits that <em>stick</em></h1>
+          <p class="lp-desc">Pick the habits you care about and check them off each day. Small wins add up fast.</p>
+        </div>
+
+        <!-- Chips -->
+        <div class="lp-chips">
+          <div class="lp-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>
+            One-tap check-in
+          </div>
+          <div class="lp-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 8-3 8h18s-3-1-3-8M10 21h4"/></svg>
+            Reminders
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ SLIDE 2 ════════════════════════════════════════════════════ -->
+      <div class="lp-slide" aria-label="Keep your streak alive">
+
+        <!-- Illustration -->
+        <div class="lp-art">
+          <svg viewBox="0 0 280 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Background blob -->
+            <circle cx="140" cy="115" r="90" fill="rgba(255,255,255,0.4)"/>
+
+            <!-- Calendar body -->
+            <rect x="38" y="48" width="204" height="158" rx="16" fill="white" stroke="#2d4a38" stroke-width="4"/>
+            <!-- Calendar header green band -->
+            <rect x="38" y="48" width="204" height="44" rx="16" fill="#34d399"/>
+            <rect x="38" y="72" width="204" height="20" fill="#34d399"/>
+
+            <!-- Flame icon on calendar header -->
+            <path d="M140 36c1.5 6 7 9 7 16a7 7 0 0 1-14 0c0-3.5 1.5-5.5 3-6.5 0 3 2 4.5 3 4.5-.5-5.5-2-9 1-14z"
+                  fill="white"/>
+
+            <!-- Calendar dot grid: 3 rows × 7 cols  -->
+            <!-- Row 1 (all filled = 7) -->
+            <circle cx="68"  cy="115" r="10" fill="#10b981"/>
+            <circle cx="97"  cy="115" r="10" fill="#10b981"/>
+            <circle cx="126" cy="115" r="10" fill="#10b981"/>
+            <circle cx="155" cy="115" r="10" fill="#10b981"/>
+            <circle cx="184" cy="115" r="10" fill="#10b981"/>
+            <circle cx="213" cy="115" r="10" fill="#10b981"/>
+            <circle cx="242" cy="115" r="10" fill="#e5e7eb"/>
+
+            <!-- Row 2 (5 filled, 2 empty) -->
+            <circle cx="68"  cy="144" r="10" fill="#10b981"/>
+            <circle cx="97"  cy="144" r="10" fill="#10b981"/>
+            <circle cx="126" cy="144" r="10" fill="#10b981"/>
+            <circle cx="155" cy="144" r="10" fill="#10b981"/>
+            <circle cx="184" cy="144" r="10" fill="#10b981"/>
+            <circle cx="213" cy="144" r="10" fill="#e5e7eb"/>
+            <circle cx="242" cy="144" r="10" fill="#e5e7eb"/>
+
+            <!-- Row 3 (all empty) -->
+            <circle cx="68"  cy="173" r="10" fill="#e5e7eb"/>
+            <circle cx="97"  cy="173" r="10" fill="#e5e7eb"/>
+            <circle cx="126" cy="173" r="10" fill="#e5e7eb"/>
+            <circle cx="155" cy="173" r="10" fill="#e5e7eb"/>
+            <circle cx="184" cy="173" r="10" fill="#e5e7eb"/>
+            <circle cx="213" cy="173" r="10" fill="#e5e7eb"/>
+            <circle cx="242" cy="173" r="10" fill="#e5e7eb"/>
+          </svg>
+        </div>
+
+        <!-- Text -->
+        <div class="lp-text">
+          <h1 class="lp-h1">Keep your <em>streak</em> alive</h1>
+          <p class="lp-desc">Watch your chain grow day after day. Miss a day and you'll know exactly where to restart.</p>
+        </div>
+
+        <!-- Chips -->
+        <div class="lp-chips">
+          <div class="lp-chip">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c1 4 5 6 5 11a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-4-1-6 1-10z"/></svg>
+            Streak counter
+          </div>
+          <div class="lp-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+            Calendar view
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ SLIDE 3 ════════════════════════════════════════════════════ -->
+      <div class="lp-slide" aria-label="See how far you've come">
+
+        <!-- Illustration -->
+        <div class="lp-art">
+          <svg viewBox="0 0 280 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Background blob -->
+            <circle cx="140" cy="110" r="88" fill="rgba(255,255,255,0.4)"/>
+
+            <!-- Chart card -->
+            <rect x="30" y="38" width="200" height="152" rx="16" fill="white" stroke="#2d4a38" stroke-width="4"/>
+
+            <!-- Bottom baseline -->
+            <line x1="46" y1="168" x2="214" y2="168" stroke="#e2e8f0" stroke-width="2"/>
+
+            <!-- Bar chart bars (light → dark green, increasing height) -->
+            <rect x="54"  y="138" width="26" height="30" rx="5" fill="#a7f3d0"/>
+            <rect x="90"  y="120" width="26" height="48" rx="5" fill="#6ee7b7"/>
+            <rect x="126" y="102" width="26" height="66" rx="5" fill="#34d399"/>
+            <rect x="162" y="80"  width="26" height="88" rx="5" fill="#10b981"/>
+
+            <!-- Dotted trend line -->
+            <path d="M67 132 L103 114 L139 96 L175 74" stroke="#475569" stroke-width="2.5"
+                  stroke-dasharray="4 6" stroke-linecap="round" fill="none"/>
+
+            <!-- Checkmark badge top-right -->
+            <circle cx="224" cy="56" r="22" fill="#10b981"/>
+            <path d="M213 56l7 7 13-14" stroke="white" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+            <!-- Shadow under card -->
+            <rect x="48" y="196" width="184" height="8" rx="4" fill="#2d4a38" opacity=".10"/>
+          </svg>
+        </div>
+
+        <!-- Text -->
+        <div class="lp-text">
+          <h1 class="lp-h1">See how far you've <em>come</em></h1>
+          <p class="lp-desc">Weekly stats and goals show what's working, so you can keep improving.</p>
+        </div>
+
+        <!-- Chips -->
+        <div class="lp-chips">
+          <div class="lp-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18M6 16V10M12 16V5M18 16v-8"/></svg>
+            Insights
+          </div>
+          <div class="lp-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>
+            Goals
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /lp-track -->
+  </div><!-- /lp-stage -->
+
+  <!-- ── NAV (prev / next only) -->
+  <div class="lp-nav" id="lp-nav">
+    <button class="lp-arrow" id="lp-prev" aria-label="Previous" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button class="lp-arrow" id="lp-next" aria-label="Next" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+  </div>
+
+  <!-- ── GET STARTED BUTTON (last slide only) ───────────────────────────── -->
+  <div class="lp-cta-wrap" id="lp-cta-wrap">
+    <button class="lp-cta" type="button" onclick="lpFinish()">Get started</button>
+  </div>
+
+</div><!-- /lp-root -->
+
+<script>
+(function(){
+  var NEXT_URL = "/login";
+
+  /* ── helpers ── */
+  window.lpFinish = function lpFinish(){
+    try{ localStorage.setItem("streako_onboarded","1"); }catch(e){}
+    if(window.app && window.app.router){ window.app.router.navigate(NEXT_URL); }
+    else{ location.href = NEXT_URL; }
+  };
+
+  // Also expose finish() for legacy callers
+  window.finish = window.lpFinish;
+
+  function goToLogin(){
+    if(window.app && window.app.router){ window.app.router.navigate('/login'); }
+    else{ location.href='/login'; }
+  }
+  window.goToLogin = goToLogin;
+
+  /* ── carousel ── */
+  function init(){
+    var root   = document.getElementById("lp-root");
+    var track  = document.getElementById("lp-track");
+    var prevBtn= document.getElementById("lp-prev");
+    var nextBtn= document.getElementById("lp-next");
+    var navEl  = document.getElementById("lp-nav");
+    var ctaWrap= document.getElementById("lp-cta-wrap");
+    if(!root||!track||!prevBtn||!nextBtn) return;
+
+    var i=0, N=3;
+
+    function go(n){
+      i=Math.max(0,Math.min(N-1,n));
+      track.style.transform="translateX("+(-i*100)+"%)";
+      prevBtn.disabled=(i===0);
+      nextBtn.disabled=(i===N-1);
+
+      var isLast=(i===N-1);
+      if(isLast){
+        navEl.style.display="none";
+        ctaWrap.style.display="flex";
+      } else {
+        navEl.style.display="flex";
+        ctaWrap.style.display="none";
+      }
+    }
+    window.go=go;
+
+    prevBtn.onclick=function(){ go(i-1); };
+    nextBtn.onclick=function(){ go(i+1); };
+
+    /* touch swipe */
+    var sx=null;
+    root.addEventListener("touchstart",function(e){ sx=e.touches[0].clientX; },{passive:true});
+    root.addEventListener("touchend",function(e){
+      if(sx===null) return;
+      var dx=e.changedTouches[0].clientX-sx;
+      if(Math.abs(dx)>46) go(i+(dx<0?1:-1));
+      sx=null;
+    });
+
+    /* keyboard */
+    var kh=function(e){
+      if(!document.getElementById("lp-track")){ document.removeEventListener("keydown",kh); return; }
+      if(e.key==="ArrowRight") go(i+1);
+      if(e.key==="ArrowLeft")  go(i-1);
+    };
+    document.addEventListener("keydown",kh);
+
+    go(0);
+  }
+
+  if(document.readyState==="loading"){ document.addEventListener("DOMContentLoaded",init); }
+  else{ init(); }
+})();
+</script>
+</body>
+</html>
