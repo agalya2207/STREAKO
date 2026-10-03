@@ -192,27 +192,29 @@ html,body{
   flex-shrink:0;
   z-index:2;
 }
-.lp-arrow{
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  border:1.5px solid var(--nav-border);
-  background:var(--nav-bg);
-  backdrop-filter:blur(6px);
-  -webkit-backdrop-filter:blur(6px);
-  color:var(--acc2);
-  display:grid;
-  place-items:center;
+.lp-next-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:0 32px;
+  height:48px;
+  border:none;
+  border-radius:99px;
+  background:linear-gradient(90deg,#059669,#34d399);
+  color:#fff;
+  font:700 15px Inter,sans-serif;
+  letter-spacing:.03em;
   cursor:pointer;
-  transition:all .18s;
+  box-shadow:0 6px 20px rgba(16,185,129,.35);
+  transition:all .2s;
   flex-shrink:0;
 }
-.lp-arrow:hover:not([disabled]){
-  background:rgba(255,255,255,0.9);
-  transform:scale(1.06);
+.lp-next-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 26px rgba(16,185,129,.5);
 }
-.lp-arrow[disabled]{opacity:.32;cursor:default}
-.lp-arrow svg{width:18px;height:18px}
+.lp-next-btn:active{transform:scale(.97)}
+.lp-next-btn svg{width:16px;height:16px;flex-shrink:0}
 .lp-dots{display:flex;gap:7px;align-items:center}
 .lp-dot{
   width:9px;height:9px;
@@ -498,13 +500,11 @@ html,body{
     </div><!-- /lp-track -->
   </div><!-- /lp-stage -->
 
-  <!-- ── NAV (prev / next only) -->
+  <!-- ── NAV (next only) -->
   <div class="lp-nav" id="lp-nav">
-    <button class="lp-arrow" id="lp-prev" aria-label="Previous" type="button">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-    </button>
-    <button class="lp-arrow" id="lp-next" aria-label="Next" type="button">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    <button class="lp-next-btn" id="lp-next" aria-label="Next" type="button">
+      Next
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
     </button>
   </div>
 
@@ -539,19 +539,16 @@ html,body{
   function init(){
     var root   = document.getElementById("lp-root");
     var track  = document.getElementById("lp-track");
-    var prevBtn= document.getElementById("lp-prev");
     var nextBtn= document.getElementById("lp-next");
     var navEl  = document.getElementById("lp-nav");
     var ctaWrap= document.getElementById("lp-cta-wrap");
-    if(!root||!track||!prevBtn||!nextBtn) return;
+    if(!root||!track||!nextBtn) return;
 
     var i=0, N=3;
 
     function go(n){
       i=Math.max(0,Math.min(N-1,n));
       track.style.transform="translateX("+(-i*100)+"%)";
-      prevBtn.disabled=(i===0);
-      nextBtn.disabled=(i===N-1);
 
       var isLast=(i===N-1);
       if(isLast){
@@ -564,7 +561,6 @@ html,body{
     }
     window.go=go;
 
-    prevBtn.onclick=function(){ go(i-1); };
     nextBtn.onclick=function(){ go(i+1); };
 
     /* touch swipe */
