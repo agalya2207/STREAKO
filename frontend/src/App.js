@@ -550,6 +550,169 @@ class App {
             }
         };
 
+        
+        // Color Wheel & Emoji Helper Functions (Photo 1 matching)
+        window.hslToHex = (h, s, l) => {
+            l /= 100;
+            const a = s * Math.min(l, 1 - l) / 100;
+            const f = n => {
+                const k = (n + h / 30) % 12;
+                const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+                return Math.round(255 * color).toString(16).padStart(2, '0');
+            };
+            return `#${f(0)}${f(8)}${f(4)}`;
+        };
+
+        window.colorToHue = (hex) => {
+            if (!hex) return 180;
+            let c = hex.replace('#', '');
+            if (c.length === 3) c = c.split('').map(x => x + x).join('');
+            const num = parseInt(c, 16);
+            if (isNaN(num)) return 180;
+            const r = (num >> 16) / 255;
+            const g = ((num >> 8) & 0xff) / 255;
+            const b = (num & 0xff) / 255;
+            const max = Math.max(r, g, b), min = Math.min(r, g, b);
+            let h = 0;
+            if (max === min) h = 0;
+            else if (max === r) h = (60 * ((g - b) / (max - min)) + 360) % 360;
+            else if (max === g) h = (60 * ((b - r) / (max - min)) + 120) % 360;
+            else if (max === b) h = (60 * ((r - g) / (max - min)) + 240) % 360;
+            return Math.round(h);
+        };
+
+        window.initColorWheel = () => {
+            const wrapper = document.getElementById('color-wheel-wrapper');
+            const thumb = document.getElementById('wheel-thumb');
+            const centerBtn = document.getElementById('wheel-center-emoji-btn');
+            const emojiText = document.getElementById('wheel-current-emoji');
+            const quickEmojiRow = document.getElementById('quick-emoji-row');
+            if (!wrapper || !thumb || !centerBtn) return;
+
+            const quickEmojis = ['🔥', '💪', '📚', '🏃', '💧', '🧘', '🎯', '☀️', '✍️', '☕', '🌙', '🥑', '🚀', '💻', '🎨', '🎵', '🚴', '🥗', '🧠', '⚡', '🍎', '💤', '📖', '🏆'];
+
+            if (quickEmojiRow) {
+                quickEmojiRow.innerHTML = quickEmojis.map(emoji => `
+                    <button type="button" class="quick-emoji-btn" data-emoji="${emoji}" style="font-size: 28px; width: 46px; height: 46px; border: none; background: transparent; cursor: pointer; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1); user-select: none; flex-shrink: 0;" onmouseover="this.style.transform='scale(1.25)'" onmouseout="this.style.transform='scale(1)'">${emoji}</button>
+                `).join('');
+
+                quickEmojiRow.querySelectorAll('.quick-emoji-btn').forEach(btn => {
+                    btn.onclick = (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const emoji = btn.getAttribute('data-emoji');
+                        window.setHabitEmoji(emoji);
+                    };
+                });
+            }
+
+            const centerX = 105;
+            const centerY = 105;
+            const ringRadius = 87; // middle of the 70px - 104px ring
+
+            function setWheelColorByAngle(angleDeg, triggerChange = true) {
+                const rad = (angleDeg - 90) * Math.PI / 180;
+                const x = centerX + ringRadius * Math.cos(rad);
+                const y = centerY + ringRadius * Math.sin(rad);
+
+                thumb.style.left = `${x}px`;
+                thumb.style.top = `${y}px`;
+
+                // Calculate matching color
+                // Conic gradient start (0deg) has hue 340 (pink-red)
+                const hue = Math.round((angleDeg + 340) % 360);
+                const hslColor = `hsl(${hue}, 95%, 50%)`;
+                const hslBg = `hsla(${hue}, 95%, 50%, 0.14)`;
+                const hex = window.hslToHex(hue, 95, 50);
+
+                thumb.style.background = hslColor;
+                centerBtn.style.borderColor = hslColor;
+                centerBtn.style.backgroundColor = hslBg;
+                centerBtn.style.boxShadow = `0 6px 22px hsla(${hue}, 95%, 50%, 0.3)`;
+
+                if (triggerChange) {
+                    window.selectedColor = hex;
+                }
+            }
+
+            function handlePointer(e) {
+                const rect = wrapper.getBoundingClientRect();
+                const clientX = e.clientX ?? (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+                const clientY = e.clientY ?? (e.touches && e.touches[0] ? e.touches[0].clientY : 0);
+
+                const dx = clientX - (rect.left + rect.width / 2);
+                const dy = clientY - (rect.top + rect.height / 2);
+
+                const cartesianAngle = Math.atan2(dy, dx) * 180 / Math.PI;
+                const conicAngle = (cartesianAngle + 90 + 360) % 360;
+
+                setWheelColorByAngle(conicAngle, true);
+            }
+
+            let isDragging = false;
+
+            wrapper.onpointerdown = (e) => {
+                if (e.target.closest('#wheel-center-emoji-btn')) return;
+                isDragging = true;
+                wrapper.setPointerCapture(e.pointerId);
+                handlePointer(e);
+            };
+
+            wrapper.onpointermove = (e) => {
+                if (isDragging) {
+                    handlePointer(e);
+                }
+            };
+
+            wrapper.onpointerup = (e) => {
+                if (isDragging) {
+                    isDragging = false;
+                    try { wrapper.releasePointerCapture(e.pointerId); } catch(_) {}
+                }
+            };
+
+            wrapper.onpointercancel = () => {
+                isDragging = false;
+            };
+
+            window.setHabitEmoji = (emoji) => {
+                if (!emoji) return;
+                window.selectedIcon = emoji;
+                if (emojiText) {
+                    emojiText.textContent = emoji;
+                    emojiText.style.transform = 'scale(1.25)';
+                    setTimeout(() => {
+                        if (emojiText) emojiText.style.transform = 'scale(1)';
+                    }, 180);
+                }
+            };
+
+            window.triggerEmojiSelector = () => {
+                const customWrap = document.getElementById('custom-emoji-input-wrap');
+                const customInput = document.getElementById('custom-emoji-input');
+                if (customWrap && customInput) {
+                    customWrap.style.display = customWrap.style.display === 'none' ? 'flex' : 'none';
+                    if (customWrap.style.display === 'flex') {
+                        customInput.focus();
+                    }
+                }
+            };
+
+            window.syncWheelToColorAndEmoji = (color, emoji) => {
+                const activeEmoji = emoji || '🔥';
+                window.setHabitEmoji(activeEmoji);
+
+                let angle = 180; // default cyan / emerald
+                if (color) {
+                    const hue = window.colorToHue(color);
+                    angle = (hue - 340 + 360) % 360;
+                }
+                setWheelColorByAngle(angle, false);
+                window.selectedColor = color || window.hslToHex((angle + 340) % 360, 95, 50);
+            };
+        };
+
+
         // Habits Library State & Logic
         window.selectedIcon = '';
         window.selectedColor = '';
@@ -584,12 +747,22 @@ class App {
             if (createBtn) createBtn.textContent = 'Create Routine';
             const targetEl = document.getElementById('habit-target');
             if (targetEl) targetEl.value = 1;
+            
             // Attach the input listener now that the page is in the DOM (SPA load).
             window._attachHabitTargetListener();
             if (window.renderSessionFields) window.renderSessionFields();
+            
+            // Initialize Interactive Color Wheel & Default Emoji (🔥, #00e5ff)
+            if (window.initColorWheel) {
+                window.initColorWheel();
+                window.syncWheelToColorAndEmoji('#00e5ff', '🔥');
+            }
+            
+            window.selectedFrequency = 'Daily';
+            window.updateFrequencyButtons();
+
             const overlay = document.getElementById('habit-modal-overlay');
             if (overlay) overlay.style.display = 'flex';
-            // Lock background scroll while modal is open
             document.body.style.overflow = 'hidden';
         };
 
@@ -623,8 +796,20 @@ class App {
         window.updateFrequencyButtons = () => {
             const everyday = document.getElementById('freq-everyday');
             const weekdays = document.getElementById('freq-weekdays');
-            if(everyday) everyday.style.borderColor = window.selectedFrequency === 'Daily' ? '#00D9FF' : '#555';
-            if(weekdays) weekdays.style.borderColor = window.selectedFrequency === 'Weekdays' ? '#00D9FF' : '#555';
+            if (everyday) {
+                const isEveryday = window.selectedFrequency === 'Daily';
+                everyday.style.borderColor = isEveryday ? '#059669' : 'rgba(16, 185, 129, 0.25)';
+                everyday.style.background = isEveryday ? 'rgba(16, 185, 129, 0.12)' : '#ffffff';
+                everyday.style.color = isEveryday ? '#065f46' : '#142a1d';
+                everyday.style.fontWeight = isEveryday ? '700' : '600';
+            }
+            if (weekdays) {
+                const isWeekdays = window.selectedFrequency === 'Weekdays';
+                weekdays.style.borderColor = isWeekdays ? '#059669' : 'rgba(16, 185, 129, 0.25)';
+                weekdays.style.background = isWeekdays ? 'rgba(16, 185, 129, 0.12)' : '#ffffff';
+                weekdays.style.color = isWeekdays ? '#065f46' : '#142a1d';
+                weekdays.style.fontWeight = isWeekdays ? '700' : '600';
+            }
         };
 
         // Delegated events for habit modal
@@ -728,19 +913,19 @@ class App {
             for (let i = 1; i <= target; i++) {
                 const data = sourceData[i - 1] || { startTime: '', endTime: '' };
                 const html = `
-                    <div class="session-row" style="display:flex; align-items:flex-start; gap:12px; background:rgba(255,255,255,0.05); padding:10px 12px; border-radius:8px; border:1px solid #374151;">
-                        <div style="font-size:13px; font-weight:600; min-width:70px; color:#a0aec0; padding-top:20px;">Session ${i}</div>
+                    <div class="session-row" style="display:flex; align-items:flex-start; gap:12px; background:rgba(255,255,255,0.92); padding:12px 14px; border-radius:10px; border:1.5px solid rgba(16, 185, 129, 0.22); box-shadow: 0 2px 8px rgba(6,78,59,0.04);">
+                        <div style="font-size:13px; font-weight:700; min-width:70px; color:#142a1d; padding-top:20px;">Session ${i}</div>
                         <div style="flex:1;">
-                            <label style="display:block; font-size:11px; margin-bottom:3px; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em;">Start Time</label>
+                            <label style="display:block; font-size:11px; margin-bottom:4px; color:#4b6d5b; text-transform:uppercase; letter-spacing:0.05em; font-weight:600;">Start Time</label>
                             <input type="time" class="start-time" value="${data.startTime}"
-                                style="width:100%; padding:6px 8px; border-radius:6px; border:1px solid #374151; background:#0d1117; color:#fff; font-size:13px; box-sizing:border-box;" />
-                            <span class="time-display" style="display:block; margin-top:4px; font-size:12px; font-weight:700; color:#00D9FF; letter-spacing:0.04em;">${window.to12h(data.startTime)}</span>
+                                style="width:100%; padding:8px 10px; border-radius:8px; border:1.5px solid rgba(16, 185, 129, 0.3); background:#ffffff; color:#142a1d; font-size:13px; box-sizing:border-box; outline:none;" />
+                            <span class="time-display" style="display:block; margin-top:4px; font-size:12px; font-weight:700; color:#059669; letter-spacing:0.04em;">${window.to12h(data.startTime)}</span>
                         </div>
                         <div style="flex:1;">
-                            <label style="display:block; font-size:11px; margin-bottom:3px; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em;">End Time</label>
+                            <label style="display:block; font-size:11px; margin-bottom:4px; color:#4b6d5b; text-transform:uppercase; letter-spacing:0.05em; font-weight:600;">End Time</label>
                             <input type="time" class="end-time" value="${data.endTime}"
-                                style="width:100%; padding:6px 8px; border-radius:6px; border:1px solid #374151; background:#0d1117; color:#fff; font-size:13px; box-sizing:border-box;" />
-                            <span class="time-display" style="display:block; margin-top:4px; font-size:12px; font-weight:700; color:#00D9FF; letter-spacing:0.04em;">${window.to12h(data.endTime)}</span>
+                                style="width:100%; padding:8px 10px; border-radius:8px; border:1.5px solid rgba(16, 185, 129, 0.3); background:#ffffff; color:#142a1d; font-size:13px; box-sizing:border-box; outline:none;" />
+                            <span class="time-display" style="display:block; margin-top:4px; font-size:12px; font-weight:700; color:#059669; letter-spacing:0.04em;">${window.to12h(data.endTime)}</span>
                         </div>
                     </div>
                 `;
@@ -1014,14 +1199,11 @@ class App {
 
             window.updateFrequencyButtons();
             
-            // Re-render visual selections
-            window.clearSelections();
-            document.querySelectorAll('.icon-btn').forEach(btn => {
-                if (btn.getAttribute('data-icon') === window.selectedIcon) btn.style.background = 'rgba(0,217,255,0.2)';
-            });
-            document.querySelectorAll('.color-swatch').forEach(swatch => {
-                if (swatch.getAttribute('data-color') === window.selectedColor) swatch.style.outline = '2px solid #00D9FF';
-            });
+            // Initialize interactive color wheel with habit's accent color & icon
+            if (window.initColorWheel) {
+                window.initColorWheel();
+                window.syncWheelToColorAndEmoji(habit.accentColor || '#00e5ff', habit.icon || '🔥');
+            }
             
             const weekdayContainer = document.getElementById('weekday-container');
             if (weekdayContainer) {
