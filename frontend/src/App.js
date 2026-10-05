@@ -334,11 +334,11 @@ class App {
                 html = `<div style="display: flex; flex-direction: column; gap: 10px;">`;
                 window.prioritiesData.forEach((p, index) => {
                     html += `
-                        <div style="display: flex; justify-content: space-between; align-items: center; background: #0c0d11; padding: 13px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); transition: all 0.2s;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255, 255, 255, 0.95); padding: 13px 16px; border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.2); box-shadow: 0 2px 8px rgba(6, 78, 59, 0.04); transition: all 0.2s;">
                             <div style="display: flex; align-items: center; gap: 14px;">
                                 <span style="color: #64748b; font-weight: 700; font-size: 13.5px; min-width: 16px;">${index + 1}</span>
                                 <input type="checkbox" onchange="window.togglePriority(${index}, event)" ${p.completed ? 'checked' : ''} style="width: 18px; height: 18px; accent-color: #6366f1; cursor: pointer; border-radius: 4px;">
-                                <span style="font-size: 14px; font-weight: 500; color: ${p.completed ? '#64748b' : '#ffffff'}; text-decoration: ${p.completed ? 'line-through' : 'none'}; transition: all 0.2s;">${p.text}</span>
+                                <span style="font-size: 14px; font-weight: 500; color: ${p.completed ? '#64748b' : '#142a1d'}; text-decoration: ${p.completed ? 'line-through' : 'none'}; transition: all 0.2s;">${p.text}</span>
                             </div>
                             <button onclick="window.deletePriority(${index})" style="background: transparent; border: none; color: #64748b; cursor: pointer; font-size: 14px; padding: 4px; display: flex; align-items: center; justify-content: center; transition: color 0.2s;" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#64748b'">
                                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
@@ -350,12 +350,12 @@ class App {
                 if (window.isAddingPriority && canAdd) {
                     const nextIndex = window.prioritiesData.length + 1;
                     html += `
-                        <div style="display: flex; align-items: center; gap: 12px; background: rgba(99, 102, 241, 0.08); padding: 12px 16px; border-radius: 10px; border: 1px solid rgba(99, 102, 241, 0.3);">
-                            <span style="color: #818cf8; font-weight: 700; font-size: 13.5px; min-width: 16px;">${nextIndex}</span>
-                            <input type="text" id="new-priority-input" placeholder="Type your priority..." style="flex: 1; background: transparent; border: none; outline: none; color: #fff; font-size: 14px;" autocomplete="off">
+                        <div style="display: flex; align-items: center; gap: 12px; background: rgba(16, 185, 129, 0.1); padding: 12px 16px; border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.3);">
+                            <span style="color: #059669; font-weight: 700; font-size: 13.5px; min-width: 16px;">${nextIndex}</span>
+                            <input type="text" id="new-priority-input" placeholder="Type your priority..." style="flex: 1; background: transparent; border: none; outline: none; color: #142a1d; font-size: 14px;" autocomplete="off">
                             <div style="display: flex; gap: 8px;">
-                                <button onclick="window.cancelPriority()" style="background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #94a3b8; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500;">Cancel</button>
-                                <button onclick="window.savePriority()" style="background: #4f46e5; border: none; color: #ffffff; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;">Add</button>
+                                <button onclick="window.cancelPriority()" style="background: transparent; border: 1px solid rgba(16, 185, 129, 0.25); color: #4b6d5b; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500;">Cancel</button>
+                                <button onclick="window.savePriority()" style="background: linear-gradient(90deg, #059669, #10b981); border: none; color: #ffffff; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; box-shadow: 0 2px 8px rgba(16,185,129,0.3);">Add</button>
                             </div>
                         </div>
                     `;
@@ -875,9 +875,9 @@ class App {
 
                 if (habits.length === 0) {
                     grid.innerHTML = `
-                        <div style="grid-column: 1 / -1; text-align: center; padding: 48px 20px; background: #0c0d12; border-radius: 14px; border: 1px dashed rgba(255,255,255,0.1);">
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 48px 20px; background: rgba(255, 255, 255, 0.85); border-radius: 16px; border: 1.5px dashed rgba(16, 185, 129, 0.3); box-shadow: 0 4px 16px rgba(6, 78, 59, 0.04);">
                             <p style="color: #64748b; font-size: 15px; margin-bottom: 12px;">No routines found for category "${filter}".</p>
-                            <button onclick="window.openCreateHabitModal()" style="background: #4f46e5; color: #fff; border: none; padding: 8px 18px; border-radius: 8px; font-weight: 600; cursor: pointer;">+ Create Routine</button>
+                            <button onclick="window.openCreateHabitModal()" style="background: linear-gradient(90deg, #059669, #10b981); color: #fff; border: none; padding: 9px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);">+ Create Routine</button>
                         </div>
                     `;
                 } else {
@@ -891,16 +891,19 @@ class App {
             card.className = 'habit-card';
             card.setAttribute('data-habit-id', habit.id);
             card.style.cssText = `
-                background: #0d0e14;
-                border: 1px solid rgba(255, 255, 255, 0.07);
-                border-radius: 14px;
+                background: rgba(255, 255, 255, 0.9);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                border: 1px solid rgba(16, 185, 129, 0.24);
+                border-radius: 16px;
                 padding: 20px;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
                 position: relative;
+                box-shadow: 0 4px 18px rgba(6, 78, 59, 0.06), 0 1px 3px rgba(0, 0, 0, 0.03);
                 transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-                opacity: ${habit.paused ? '0.6' : '1'};
+                opacity: ${habit.paused ? '0.65' : '1'};
             `;
 
             const accentColor = habit.accentColor || '#6366f1';
@@ -914,14 +917,14 @@ class App {
                             ${icon}
                         </div>
                         <div style="display: flex; align-items: center; gap: 4px;">
-                            <button onclick="window.pauseHabit('${habit.id}')" title="${habit.paused ? 'Resume Habit' : 'Pause Habit'}" style="width: 32px; height: 32px; border-radius: 8px; background: transparent; border: none; color: #64748b; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.06)'; this.style.color='#ffffff';" onmouseout="this.style.background='transparent'; this.style.color='#64748b';">
+                            <button onclick="window.pauseHabit('${habit.id}')" title="${habit.paused ? 'Resume Habit' : 'Pause Habit'}" style="width: 32px; height: 32px; border-radius: 8px; background: transparent; border: none; color: #64748b; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.background='rgba(16,185,129,0.12)'; this.style.color='#047857';" onmouseout="this.style.background='transparent'; this.style.color='#537562';">
                                 ${habit.paused ? `
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                                 ` : `
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
                                 `}
                             </button>
-                            <button onclick="window.editHabit('${habit.id}')" title="Edit Habit" style="width: 32px; height: 32px; border-radius: 8px; background: transparent; border: none; color: #64748b; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.06)'; this.style.color='#ffffff';" onmouseout="this.style.background='transparent'; this.style.color='#64748b';">
+                            <button onclick="window.editHabit('${habit.id}')" title="Edit Habit" style="width: 32px; height: 32px; border-radius: 8px; background: transparent; border: none; color: #64748b; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.background='rgba(16,185,129,0.12)'; this.style.color='#047857';" onmouseout="this.style.background='transparent'; this.style.color='#537562';">
                                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
                             </button>
                             <button onclick="window.promptDeleteHabit('${habit.id}')" title="Delete Habit" style="width: 32px; height: 32px; border-radius: 8px; background: transparent; border: none; color: #64748b; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.background='rgba(239,68,68,0.15)'; this.style.color='#ef4444';" onmouseout="this.style.background='transparent'; this.style.color='#64748b';">
@@ -931,28 +934,28 @@ class App {
                     </div>
 
                     <!-- Title & Description -->
-                    <div style="font-size: 16px; font-weight: 700; color: #ffffff; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
+                    <div style="font-size: 16px; font-weight: 700; color: #142a1d; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
                         <span>${habit.name}</span>
                         ${habit.paused ? '<span style="font-size: 11px; font-weight: 700; color: #ef4444; background: rgba(239, 68, 68, 0.12); padding: 2px 8px; border-radius: 4px; text-transform: uppercase;">Paused</span>' : ''}
                     </div>
-                    <div style="font-size: 13.5px; color: #94a3b8; line-height: 1.4; margin-bottom: 20px; min-height: 38px;">
+                    <div style="font-size: 13.5px; color: #4b6d5b; line-height: 1.4; margin-bottom: 20px; min-height: 38px;">
                         ${habit.description || 'No description provided'}
                     </div>
                 </div>
 
                 <!-- Footer / Metrics Bar matching reference screenshot -->
-                <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 14px; font-size: 12px; font-weight: 600; color: #64748b;">
+                <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(16, 185, 129, 0.16); padding-top: 14px; font-size: 12px; font-weight: 600; color: #4b6d5b;">
                     <div>
                         <span style="font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-right: 4px;">STREAK</span>
-                        <span style="color: #ffffff; font-weight: 700;">🔥 ${habit.streak || 0}</span>
+                        <span style="color: #142a1d; font-weight: 700;">🔥 ${habit.streak || 0}</span>
                     </div>
                     <div>
                         <span style="font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-right: 4px;">BEST</span>
-                        <span style="color: #ffffff; font-weight: 700;">${habit.bestStreak || habit.streak || 0}d</span>
+                        <span style="color: #142a1d; font-weight: 700;">${habit.bestStreak || habit.streak || 0}d</span>
                     </div>
                     <div>
                         <span style="font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-right: 4px;">SCHEDULE</span>
-                        <span style="color: #ffffff; font-weight: 700;">${habit.frequencyLabel || habit.frequency || 'Daily'}</span>
+                        <span style="color: #142a1d; font-weight: 700;">${habit.frequencyLabel || habit.frequency || 'Daily'}</span>
                     </div>
                 </div>
             `;
@@ -1144,11 +1147,11 @@ class App {
                 // Exact empty state matching reference screenshot
                 html = `
                     <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 48px 20px;">
-                        <div style="width: 56px; height: 56px; border-radius: 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; color: #475569;">
+                        <div style="width: 56px; height: 56px; border-radius: 14px; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.25); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; color: #059669;">
                             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="m9 14 2 2 4-4"/></svg>
                         </div>
-                        <p style="color: #64748b; font-size: 14px; margin: 0 0 20px 0; font-weight: 500;">Your day is clear. Add your Top 3 priorities.</p>
-                        <button onclick="window.startAddingTask()" style="background: rgba(255,255,255,0.06); color: #ffffff; border: 1px solid rgba(255,255,255,0.15); padding: 9px 22px; border-radius: 8px; font-size: 13.5px; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.06)'">+ Create Task</button>
+                        <p style="color: #4b6d5b; font-size: 14px; margin: 0 0 20px 0; font-weight: 500;">Your day is clear. Add your Top 3 priorities.</p>
+                        <button onclick="window.startAddingTask()" style="background: linear-gradient(90deg, #059669, #10b981); color: #ffffff; border: none; padding: 9px 22px; border-radius: 8px; font-size: 13.5px; font-weight: 600; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='none'">+ Create Task</button>
                     </div>
                 `;
             } else {
@@ -1159,10 +1162,10 @@ class App {
                     const badgeBg = t.priority === 'HIGH' ? 'rgba(239, 68, 68, 0.12)' : t.priority === 'MEDIUM' ? 'rgba(99, 102, 241, 0.12)' : 'rgba(16, 185, 129, 0.12)';
 
                     html += `
-                        <div style="display: flex; justify-content: space-between; align-items: center; background: #07080a; padding: 14px 18px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); transition: all 0.2s;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255, 255, 255, 0.95); padding: 14px 18px; border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.2); box-shadow: 0 2px 8px rgba(6, 78, 59, 0.04); transition: all 0.2s;">
                             <div style="display: flex; align-items: center; gap: 14px; flex: 1;">
                                 <input type="checkbox" onchange="window.togglePlannerTask('${t.id}')" ${t.completed ? 'checked' : ''} style="width: 18px; height: 18px; accent-color: #6366f1; cursor: pointer; border-radius: 4px;">
-                                <span style="font-size: 14.5px; font-weight: 600; color: ${t.completed ? '#64748b' : '#ffffff'}; text-decoration: ${t.completed ? 'line-through' : 'none'}; transition: all 0.2s;">${t.text}</span>
+                                <span style="font-size: 14.5px; font-weight: 600; color: ${t.completed ? '#64748b' : '#142a1d'}; text-decoration: ${t.completed ? 'line-through' : 'none'}; transition: all 0.2s;">${t.text}</span>
                             </div>
                             <div style="display: flex; align-items: center; gap: 12px;">
                                 <span style="font-size: 11px; font-weight: 700; color: ${badgeColor}; background: ${badgeBg}; padding: 3px 10px; border-radius: 6px; letter-spacing: 0.04em;">${t.priority || 'MEDIUM'}</span>
@@ -1177,11 +1180,11 @@ class App {
                 if (window.isAddingPlannerTask) {
                     html += `
                         <div style="display: flex; flex-direction: column; gap: 10px; background: rgba(99, 102, 241, 0.08); padding: 14px 18px; border-radius: 12px; border: 1px solid rgba(99, 102, 241, 0.3);">
-                            <input type="text" id="planner-task-input" placeholder="Enter task title..." style="width: 100%; background: transparent; border: none; outline: none; color: #fff; font-size: 14.5px; font-weight: 500;" autocomplete="off">
+                            <input type="text" id="planner-task-input" placeholder="Enter task title..." style="width: 100%; background: transparent; border: none; outline: none; color: #142a1d; font-size: 14.5px; font-weight: 500;" autocomplete="off">
                             <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 10px;">
                                 <div style="display: flex; align-items: center; gap: 8px;">
                                     <span style="font-size: 12px; color: #94a3b8; font-weight: 600;">Priority:</span>
-                                    <select id="planner-task-priority" style="background: #0c0d12; color: #fff; border: 1px solid rgba(255,255,255,0.15); padding: 4px 10px; border-radius: 6px; font-size: 12px; outline: none;">
+                                    <select id="planner-task-priority" style="background: #ffffff; color: #142a1d; border: 1px solid rgba(16, 185, 129, 0.3); padding: 4px 10px; border-radius: 6px; font-size: 12px; outline: none;">
                                         <option value="HIGH">HIGH</option>
                                         <option value="MEDIUM" selected>MEDIUM</option>
                                         <option value="LOW">LOW</option>
@@ -1189,7 +1192,7 @@ class App {
                                 </div>
                                 <div style="display: flex; gap: 8px;">
                                     <button onclick="window.cancelAddingTask()" style="background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #94a3b8; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12.5px; font-weight: 500;">Cancel</button>
-                                    <button onclick="window.savePlannerTask()" style="background: #4f46e5; border: none; color: #ffffff; padding: 6px 16px; border-radius: 6px; cursor: pointer; font-size: 12.5px; font-weight: 600;">Add Task</button>
+                                    <button onclick="window.savePlannerTask()" style="background: linear-gradient(90deg, #059669, #10b981); border: none; color: #ffffff; padding: 6px 16px; border-radius: 6px; cursor: pointer; font-size: 12.5px; font-weight: 600; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);">Add Task</button>
                                 </div>
                             </div>
                         </div>
@@ -1597,9 +1600,9 @@ class App {
                 habits.forEach(h => {
                     const isComp = Storage.isCompleted(h.id, dateStr);
                     html += `
-                        <div style="display: flex; justify-content: space-between; align-items: center; background: #07080a; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
-                            <span style="font-size: 13.5px; font-weight: 600; color: ${isComp ? '#64748b' : '#ffffff'}; text-decoration: ${isComp ? 'line-through' : 'none'};">${h.name}</span>
-                            <span style="font-size: 11px; font-weight: 700; color: ${isComp ? '#818cf8' : '#64748b'}; letter-spacing: 0.04em;">${isComp ? '✓ COMPLETED' : '⏳ MISSED'}</span>
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255, 255, 255, 0.95); padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.18); box-shadow: 0 2px 6px rgba(6, 78, 59, 0.03);">
+                            <span style="font-size: 13.5px; font-weight: 600; color: ${isComp ? '#64748b' : '#142a1d'}; text-decoration: ${isComp ? 'line-through' : 'none'};">${h.name}</span>
+                            <span style="font-size: 11px; font-weight: 700; color: ${isComp ? '#059669' : '#64748b'}; letter-spacing: 0.04em;">${isComp ? '✓ COMPLETED' : '⏳ MISSED'}</span>
                         </div>
                     `;
                 });
@@ -1611,7 +1614,7 @@ class App {
 
                 <!-- Planner Tasks -->
                 <div>
-                    <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: #64748b; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 12px;">
+                    <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: #4b6d5b; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 12px;">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="m9 14 2 2 4-4"/></svg>
                         PLANNER TASKS
                     </div>
@@ -1619,14 +1622,14 @@ class App {
 
             const tasks = Storage.get('planner_tasks', []);
             if (tasks.length === 0) {
-                html += `<div style="font-size: 13px; color: #64748b;">No tasks planned on this date.</div>`;
+                html += `<div style="font-size: 13px; color: #4b6d5b;">No tasks planned on this date.</div>`;
             } else {
                 html += `<div style="display: flex; flex-direction: column; gap: 8px;">`;
                 tasks.forEach(t => {
                     html += `
-                        <div style="display: flex; align-items: center; justify-content: space-between; background: #07080a; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
-                            <span style="font-size: 13.5px; font-weight: 600; color: ${t.completed ? '#64748b' : '#ffffff'}; text-decoration: ${t.completed ? 'line-through' : 'none'};">${t.text}</span>
-                            <span style="font-size: 11px; font-weight: 700; color: ${t.completed ? '#10b981' : '#6366f1'};">${t.completed ? 'DONE' : t.priority || 'TASK'}</span>
+                        <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255, 255, 255, 0.95); padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.18); box-shadow: 0 2px 6px rgba(6, 78, 59, 0.03);">
+                            <span style="font-size: 13.5px; font-weight: 600; color: ${t.completed ? '#64748b' : '#142a1d'}; text-decoration: ${t.completed ? 'line-through' : 'none'};">${t.text}</span>
+                            <span style="font-size: 11px; font-weight: 700; color: ${t.completed ? '#10b981' : '#059669'};">${t.completed ? 'DONE' : t.priority || 'TASK'}</span>
                         </div>
                     `;
                 });
@@ -1638,7 +1641,7 @@ class App {
 
                 <!-- Journal Reflections -->
                 <div>
-                    <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: #64748b; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 12px;">
+                    <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: #4b6d5b; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 12px;">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
                         JOURNAL REFLECTIONS
                     </div>
@@ -1646,22 +1649,22 @@ class App {
 
             const reflections = Storage.get(`daily_reflections_${dateStr}`, { morning: '', evening: '' });
             if (!reflections.morning && !reflections.evening) {
-                html += `<div style="font-size: 13px; color: #64748b;">No journal logs recorded on this date.</div>`;
+                html += `<div style="font-size: 13px; color: #4b6d5b;">No journal logs recorded on this date.</div>`;
             } else {
                 html += `<div style="display: flex; flex-direction: column; gap: 10px;">`;
                 if (reflections.morning) {
                     html += `
-                        <div style="background: #07080a; padding: 10px 14px; border-radius: 8px; border-left: 3px solid #f59e0b;">
+                        <div style="background: rgba(255, 255, 255, 0.95); padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.18); border-left: 3.5px solid #f59e0b;">
                             <div style="font-size: 11px; font-weight: 700; color: #f59e0b; margin-bottom: 2px;">☀️ MORNING FOCUS</div>
-                            <div style="font-size: 13px; color: #cbd5e1; line-height: 1.4;">${reflections.morning}</div>
+                            <div style="font-size: 13px; color: #142a1d; line-height: 1.4;">${reflections.morning}</div>
                         </div>
                     `;
                 }
                 if (reflections.evening) {
                     html += `
-                        <div style="background: #07080a; padding: 10px 14px; border-radius: 8px; border-left: 3px solid #6366f1;">
-                            <div style="font-size: 11px; font-weight: 700; color: #818cf8; margin-bottom: 2px;">🌙 EVENING REVIEW</div>
-                            <div style="font-size: 13px; color: #cbd5e1; line-height: 1.4;">${reflections.evening}</div>
+                        <div style="background: rgba(255, 255, 255, 0.95); padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.18); border-left: 3.5px solid #059669;">
+                            <div style="font-size: 11px; font-weight: 700; color: #059669; margin-bottom: 2px;">🌙 EVENING REVIEW</div>
+                            <div style="font-size: 13px; color: #142a1d; line-height: 1.4;">${reflections.evening}</div>
                         </div>
                     `;
                 }
