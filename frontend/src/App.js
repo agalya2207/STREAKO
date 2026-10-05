@@ -1359,8 +1359,9 @@ class App {
                 const item = document.createElement('div');
                 item.className = `schedule-item ${isCompleted ? 'completed' : ''}`;
                 item.style.cssText = `
-                    background: #0c0d11;
-                    border: 1px solid rgba(255, 255, 255, 0.05);
+                    background: rgba(255, 255, 255, 0.95);
+                    border: 1px solid rgba(16, 185, 129, 0.2);
+                    box-shadow: 0 2px 8px rgba(6, 78, 59, 0.04);
                     border-left: 3.5px solid ${block.color || '#6366f1'};
                     border-radius: 10px;
                     padding: 12px 16px;
@@ -1375,8 +1376,8 @@ class App {
                     <div style="display: flex; align-items: center; gap: 14px;">
                         <input type="checkbox" class="custom-check" ${isCompleted ? 'checked' : ''} onchange="window.togglePlannerBlockCompletion('${block.id}', event)" title="Mark completed" style="cursor: pointer;">
                         <div style="display: flex; flex-direction: column;">
-                            <span style="font-size: 14px; font-weight: 600; color: ${isCompleted ? '#64748b' : '#ffffff'}; text-decoration: ${isCompleted ? 'line-through' : 'none'}; transition: all 0.2s;">${block.title}</span>
-                            <span style="font-size: 12px; color: #818cf8; font-weight: 500; margin-top: 3px; display: flex; align-items: center; gap: 5px;">
+                            <span style="font-size: 14px; font-weight: 600; color: ${isCompleted ? '#64748b' : '#142a1d'}; text-decoration: ${isCompleted ? 'line-through' : 'none'}; transition: all 0.2s;">${block.title}</span>
+                            <span style="font-size: 12px; color: #059669; font-weight: 500; margin-top: 3px; display: flex; align-items: center; gap: 5px;">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                                 ${window.to12h(block.startTime)} – ${window.to12h(block.endTime)}
                             </span>
@@ -1407,9 +1408,9 @@ class App {
 
             hours.forEach(hour => {
                 gridHtml += `
-                    <div style="display: flex; align-items: flex-start; height: 56px; border-bottom: 1px solid rgba(255,255,255,0.04); position: relative;">
-                        <span style="font-size: 12px; font-weight: 600; color: #64748b; width: 60px; flex-shrink: 0; margin-top: -6px;">${hour}</span>
-                        <div style="flex: 1; height: 100%; border-left: 1px solid rgba(255,255,255,0.06); position: relative;"></div>
+                    <div style="display: flex; align-items: flex-start; height: 56px; border-bottom: 1px solid rgba(16, 185, 129, 0.12); position: relative;">
+                        <span style="font-size: 12px; font-weight: 600; color: #4b6d5b; width: 60px; flex-shrink: 0; margin-top: -6px;">${hour}</span>
+                        <div style="flex: 1; height: 100%; border-left: 1px solid rgba(16, 185, 129, 0.16); position: relative;"></div>
                     </div>
                 `;
             });
@@ -1532,16 +1533,16 @@ class App {
                 const pct = Math.round((completedCount / totalActiveHabits) * 100);
 
                 const borderStyle = isSelected
-                    ? 'border: 2px solid #818cf8; background: rgba(99, 102, 241, 0.08); box-shadow: 0 0 16px rgba(99, 102, 241, 0.2);'
-                    : 'border: 1px solid rgba(255,255,255,0.07); background: #07080a;';
+                    ? 'border: 2px solid #059669; background: rgba(16, 185, 129, 0.14); box-shadow: 0 0 16px rgba(16, 185, 129, 0.25);'
+                    : 'border: 1px solid rgba(16, 185, 129, 0.2); background: rgba(255, 255, 255, 0.92); box-shadow: 0 2px 8px rgba(6, 78, 59, 0.04);';
 
                 html += `
-                    <div onclick="window.selectCalendarDate('${dateStr}')" style="${borderStyle} border-radius: 12px; padding: 12px; min-height: 94px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; transition: all 0.2s;" onmouseover="if('${dateStr}' !== '${window.calendarSelectedDate}') this.style.background='rgba(255,255,255,0.04)';" onmouseout="if('${dateStr}' !== '${window.calendarSelectedDate}') this.style.background='#07080a';">
-                        <div style="font-size: 14px; font-weight: 700; color: #ffffff;">${d}</div>
+                    <div onclick="window.selectCalendarDate('${dateStr}')" style="${borderStyle} border-radius: 12px; padding: 12px; min-height: 94px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; transition: all 0.2s;" onmouseover="if('${dateStr}' !== '${window.calendarSelectedDate}') this.style.background='rgba(255,255,255,0.04)';" onmouseout="if('${dateStr}' !== '${window.calendarSelectedDate}') this.style.background='rgba(255, 255, 255, 0.92)';">
+                        <div style="font-size: 14px; font-weight: 700; color: #142a1d;">${d}</div>
                         <div style="display: flex; flex-direction: column; gap: 2px;">
                             ${completedCount > 0 ? `
-                                <div style="font-size: 13px; font-weight: 800; color: #818cf8;">${pct}%</div>
-                                <div style="font-size: 11px; font-weight: 600; color: #64748b;">✓ ${completedCount}</div>
+                                <div style="font-size: 13px; font-weight: 800; color: #059669;">${pct}%</div>
+                                <div style="font-size: 11px; font-weight: 600; color: #4b6d5b;">✓ ${completedCount}</div>
                             ` : `
                                 <div style="font-size: 11px; color: rgba(255,255,255,0.15);">-</div>
                             `}
@@ -1571,13 +1572,13 @@ class App {
 
             let html = `
                 <!-- Productivity Score Box matching reference screenshot -->
-                <div style="background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.25); border-radius: 12px; padding: 16px 20px; display: flex; align-items: center; gap: 16px;">
-                    <div style="width: 44px; height: 44px; border-radius: 10px; background: rgba(99, 102, 241, 0.2); border: 1px solid rgba(99, 102, 241, 0.3); display: flex; align-items: center; justify-content: center; font-size: 22px; color: #818cf8;">
+                <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.28); border-radius: 12px; padding: 16px 20px; display: flex; align-items: center; gap: 16px;">
+                    <div style="width: 44px; height: 44px; border-radius: 10px; background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.35); display: flex; align-items: center; justify-content: center; font-size: 22px; color: #047857;">
                         🎖️
                     </div>
                     <div>
-                        <div style="font-size: 10.5px; font-weight: 700; color: #818cf8; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 2px;">PRODUCTIVITY SCORE</div>
-                        <div style="font-size: 22px; font-weight: 800; color: #ffffff;">${score} <span style="font-size: 14px; font-weight: 600; color: #64748b;">/ 100</span></div>
+                        <div style="font-size: 10.5px; font-weight: 700; color: #059669; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 2px;">PRODUCTIVITY SCORE</div>
+                        <div style="font-size: 22px; font-weight: 800; color: #142a1d;">${score} <span style="font-size: 14px; font-weight: 600; color: #4b6d5b;">/ 100</span></div>
                     </div>
                 </div>
 
@@ -1695,7 +1696,7 @@ class App {
                             <div style="display: flex; align-items: center; gap: 14px;">
                                 <input type="checkbox" class="custom-check habit-checkbox" data-habit-id="${habit.id}" onchange="window.toggleHabitCompletion('${habit.id}', event)" ${isCompleted ? 'checked' : ''}>
                                 <div style="display: flex; flex-direction: column;">
-                                    <span class="routine-name" style="font-size: 14px; font-weight: 600; color: ${isCompleted ? '#64748b' : '#ffffff'}; transition: all 0.2s ease;">${habit.name}</span>
+                                    <span class="routine-name" style="font-size: 14px; font-weight: 600; color: ${isCompleted ? '#64748b' : '#142a1d'}; transition: all 0.2s ease;">${habit.name}</span>
                                     <span style="font-size: 12px; color: #64748b; margin-top: 3px;">${habit.category}</span>
                                 </div>
                             </div>

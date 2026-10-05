@@ -76,19 +76,19 @@
         </div>
 
         <!-- Main Content Area -->
-        <div class="main-content" style="padding: 32px 36px; background: #07080a; min-height: 100vh;">
+        <div class="main-content" style="padding: 32px 36px; background: linear-gradient(175deg, #eefbf4 0%, #e2f4ec 45%, #c8ead7 100%); min-height: 100vh;">
             <!-- Page Title Header matching reference screenshot -->
             <div style="margin-bottom: 24px;">
-                <h1 style="font-size: 28px; font-weight: 800; color: #ffffff; letter-spacing: -0.02em; margin: 0 0 6px 0;">Productivity Calendar</h1>
-                <p style="font-size: 14px; color: #94a3b8; margin: 0;">Review historical scores, habits completed, and journal reflections by day.</p>
+                <h1 style="font-size: 28px; font-weight: 800; color: #142a1d; letter-spacing: -0.02em; margin: 0 0 6px 0;">Productivity Calendar</h1>
+                <p style="font-size: 14px; color: #4b6d5b; margin: 0;">Review historical scores, habits completed, and journal reflections by day.</p>
             </div>
 
             <div style="display: flex; gap: 24px; align-items: start;">
                 <!-- Main Calendar Grid Container (Left) -->
-                <div style="flex: 1; background: #0d0e14; border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 16px; padding: 24px;">
+                <div style="flex: 1; background: rgba(255, 255, 255, 0.88); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(16, 185, 129, 0.24); box-shadow: 0 4px 20px rgba(6, 78, 59, 0.06); border-radius: 16px; padding: 24px;">
                     <!-- Month & Year Navigation Header -->
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                        <h2 id="calendar-month-year" style="font-size: 20px; font-weight: 700; color: #ffffff; margin: 0;">August 2026</h2>
+                        <h2 id="calendar-month-year" style="font-size: 20px; font-weight: 700; color: #142a1d; margin: 0;">August 2026</h2>
                         <div style="display: flex; gap: 8px;">
                             <button type="button" onclick="window.prevCalendarMonth()" style="width: 34px; height: 34px; border-radius: 8px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.04)'">‹</button>
                             <button type="button" onclick="window.nextCalendarMonth()" style="width: 34px; height: 34px; border-radius: 8px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.04)'">›</button>
@@ -97,13 +97,13 @@
 
                     <!-- Weekdays Header Row -->
                     <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; margin-bottom: 12px; text-align: center;">
-                        <div style="font-size: 12px; font-weight: 700; color: #64748b; letter-spacing: 0.05em;">SUN</div>
-                        <div style="font-size: 12px; font-weight: 700; color: #64748b; letter-spacing: 0.05em;">MON</div>
-                        <div style="font-size: 12px; font-weight: 700; color: #64748b; letter-spacing: 0.05em;">TUE</div>
-                        <div style="font-size: 12px; font-weight: 700; color: #64748b; letter-spacing: 0.05em;">WED</div>
-                        <div style="font-size: 12px; font-weight: 700; color: #64748b; letter-spacing: 0.05em;">THU</div>
-                        <div style="font-size: 12px; font-weight: 700; color: #64748b; letter-spacing: 0.05em;">FRI</div>
-                        <div style="font-size: 12px; font-weight: 700; color: #64748b; letter-spacing: 0.05em;">SAT</div>
+                        <div style="font-size: 12px; font-weight: 700; color: #4b6d5b; letter-spacing: 0.05em;">SUN</div>
+                        <div style="font-size: 12px; font-weight: 700; color: #4b6d5b; letter-spacing: 0.05em;">MON</div>
+                        <div style="font-size: 12px; font-weight: 700; color: #4b6d5b; letter-spacing: 0.05em;">TUE</div>
+                        <div style="font-size: 12px; font-weight: 700; color: #4b6d5b; letter-spacing: 0.05em;">WED</div>
+                        <div style="font-size: 12px; font-weight: 700; color: #4b6d5b; letter-spacing: 0.05em;">THU</div>
+                        <div style="font-size: 12px; font-weight: 700; color: #4b6d5b; letter-spacing: 0.05em;">FRI</div>
+                        <div style="font-size: 12px; font-weight: 700; color: #4b6d5b; letter-spacing: 0.05em;">SAT</div>
                     </div>
 
                     <!-- Days Grid Container -->
@@ -113,11 +113,11 @@
                 </div>
 
                 <!-- Right Sidebar Panel: Daily Summary -->
-                <div style="width: 360px; background: #0d0e14; border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 16px; padding: 24px; min-height: 540px; display: flex; flex-direction: column;">
+                <div style="width: 360px; background: rgba(255, 255, 255, 0.88); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(16, 185, 129, 0.24); box-shadow: 0 4px 20px rgba(6, 78, 59, 0.06); border-radius: 16px; padding: 24px; min-height: 540px; display: flex; flex-direction: column;">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
                         <div>
-                            <h2 style="font-size: 16.5px; font-weight: 700; color: #ffffff; margin: 0 0 3px 0;">Daily Summary</h2>
-                            <p id="summary-date-label" style="font-size: 13px; color: #94a3b8; margin: 0;">Wednesday, 5 Aug</p>
+                            <h2 style="font-size: 16.5px; font-weight: 700; color: #142a1d; margin: 0 0 3px 0;">Daily Summary</h2>
+                            <p id="summary-date-label" style="font-size: 13px; color: #4b6d5b; margin: 0;">Wednesday, 5 Aug</p>
                         </div>
                     </div>
 

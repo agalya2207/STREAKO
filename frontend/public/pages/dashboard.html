@@ -1,26 +1,27 @@
 ﻿<div class="page active" id="dashboard">
-    <style>
-      /* Scoped specifically to #dashboard to never affect any other page, theme, color, or font */
+        <style>
+      /* Scoped specifically to #dashboard to showcase Emerald Navbar + Landing Page Emerald/White combination */
       #dashboard {
-        background-color: #0b0c10 !important;
-        color: #e2e8f0;
+        background: linear-gradient(175deg, #eefbf4 0%, #e2f4ec 45%, #c8ead7 100%) !important;
+        color: #142a1d;
         min-height: 100vh;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       }
 
       #dashboard .sidebar-layout {
-        background: #0b0c10;
+        background: transparent !important;
         min-height: 100vh;
         display: flex;
         overflow: hidden;
       }
 
-      /* Sidebar matching screenshot */
+      /* Emerald Sidebar Navbar */
       #dashboard .sidebar {
         width: 248px;
         min-width: 248px;
-        background: #0d0f14;
-        border-right: 1px solid rgba(255, 255, 255, 0.06);
+        background: linear-gradient(180deg, #064e3b 0%, #065f46 55%, #044332 100%) !important;
+        border-right: 1px solid rgba(52, 211, 153, 0.22) !important;
+        box-shadow: 4px 0 24px rgba(6, 78, 59, 0.15) !important;
         display: flex;
         flex-direction: column;
         height: 100vh;
@@ -38,22 +39,22 @@
         height: 68px;
         min-height: 68px;
         padding: 0 20px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        border-bottom: 1px solid rgba(52, 211, 153, 0.18) !important;
         cursor: pointer;
         box-sizing: border-box;
-        background: #0d0f14;
+        background: rgba(3, 40, 30, 0.4) !important;
       }
 
       #dashboard .sidebar-logo-icon {
         width: 36px;
         height: 36px;
         border-radius: 10px;
-        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
         display: flex;
         align-items: center;
         justify-content: center;
         color: white;
-        box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+        box-shadow: 0 4px 14px rgba(4, 120, 87, 0.4) !important;
         flex-shrink: 0;
       }
 
@@ -65,9 +66,12 @@
 
       #dashboard .sidebar-logo-title {
         font-size: 17px;
-        font-weight: 700;
+        font-weight: 800;
         color: #ffffff;
         letter-spacing: -0.2px;
+        background: linear-gradient(135deg, #ffffff 0%, #a7f3d0 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
       }
 
       #dashboard .sidebar-logo-sub {
@@ -75,7 +79,8 @@
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 1.4px;
-        color: #64748b;
+        color: #a7f3d0 !important;
+        opacity: 0.9;
         margin-top: 2px;
       }
 
@@ -96,7 +101,7 @@
         border-radius: 10px;
         cursor: pointer;
         transition: all 0.2s ease;
-        color: #94a3b8;
+        color: #d1fae5 !important;
         font-size: 13.5px;
         font-weight: 500;
         border: 1px solid transparent;
@@ -107,29 +112,30 @@
         width: 18px;
         height: 18px;
         stroke-width: 2;
-        color: #64748b;
+        color: #a7f3d0 !important;
         transition: color 0.2s;
         flex-shrink: 0;
       }
 
       #dashboard .nav-item:hover {
-        background: rgba(255, 255, 255, 0.04);
-        color: #f1f5f9;
+        background: rgba(255, 255, 255, 0.12) !important;
+        color: #ffffff !important;
       }
 
       #dashboard .nav-item:hover svg {
-        color: #cbd5e1;
+        color: #6ee7b7 !important;
       }
 
       #dashboard .nav-item.active {
-        background: rgba(99, 102, 241, 0.12);
-        color: #a5b4fc;
-        font-weight: 600;
-        border: 1px solid rgba(99, 102, 241, 0.28);
+        background: linear-gradient(90deg, rgba(16, 185, 129, 0.42) 0%, rgba(5, 150, 105, 0.32) 100%) !important;
+        color: #ffffff !important;
+        font-weight: 700;
+        border: 1px solid rgba(167, 243, 208, 0.45) !important;
+        box-shadow: 0 4px 14px rgba(4, 120, 87, 0.35) !important;
       }
 
       #dashboard .nav-item.active svg {
-        color: #818cf8;
+        color: #6ee7b7 !important;
       }
 
       #dashboard .sidebar-profile {
@@ -137,8 +143,8 @@
         align-items: center;
         gap: 12px;
         padding: 14px 16px;
-        background: #090a0e;
-        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        background: rgba(2, 44, 34, 0.7) !important;
+        border-top: 1px solid rgba(52, 211, 153, 0.18) !important;
         margin-top: auto;
         flex-shrink: 0;
       }
@@ -147,7 +153,8 @@
         width: 36px;
         height: 36px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+        box-shadow: 0 2px 10px rgba(4, 120, 87, 0.4) !important;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -165,7 +172,7 @@
       }
 
       #dashboard .profile-info p:first-child {
-        color: #ffffff;
+        color: #ffffff !important;
         font-weight: 600;
         font-size: 13px;
         margin: 0;
@@ -175,7 +182,7 @@
       }
 
       #dashboard .profile-info p:last-child {
-        color: #64748b;
+        color: #a7f3d0 !important;
         font-size: 11px;
         margin: 2px 0 0 0;
         white-space: nowrap;
@@ -187,7 +194,7 @@
         background: none;
         border: none;
         cursor: pointer;
-        color: #64748b;
+        color: #a7f3d0 !important;
         padding: 6px;
         border-radius: 6px;
         display: flex;
@@ -197,15 +204,15 @@
       }
 
       #dashboard .profile-action-btn:hover {
-        color: #e2e8f0;
-        background: rgba(255, 255, 255, 0.05);
+        color: #ffffff !important;
+        background: rgba(255, 255, 255, 0.12) !important;
       }
 
-      /* Main Content Area */
+      /* Main Content Area in Emerald + White Combination */
       #dashboard .main-content {
         flex: 1;
         padding: 28px 36px 48px 36px;
-        background: #0a0b0f !important;
+        background: transparent !important;
         overflow-y: auto;
         height: 100vh;
         box-sizing: border-box;
@@ -218,10 +225,10 @@
 
       #dashboard .today-greeting {
         font-size: 28px;
-        font-weight: 700;
-        color: #ffffff !important;
+        font-weight: 800;
+        color: #142a1d !important;
         background: none !important;
-        -webkit-text-fill-color: #ffffff !important;
+        -webkit-text-fill-color: #142a1d !important;
         text-shadow: none !important;
         margin: 0 0 4px 0;
         letter-spacing: -0.4px;
@@ -232,9 +239,9 @@
 
       #dashboard .today-date {
         font-size: 13.5px;
-        color: #8892b0;
+        color: #4b6d5b !important;
         margin: 0;
-        font-weight: 400;
+        font-weight: 500;
       }
 
       /* Top 4 Summary Cards */
@@ -246,19 +253,24 @@
       }
 
       #dashboard .metric-card {
-        background: #111317;
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.88) !important;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(16, 185, 129, 0.22) !important;
+        box-shadow: 0 4px 20px rgba(6, 78, 59, 0.06), 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+        border-radius: 14px;
         padding: 16px 18px;
         display: flex;
         align-items: center;
         gap: 14px;
         box-sizing: border-box;
-        transition: transform 0.2s ease, border-color 0.2s ease;
+        transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
       }
 
       #dashboard .metric-card:hover {
-        border-color: rgba(255, 255, 255, 0.1);
+        border-color: rgba(16, 185, 129, 0.45) !important;
+        box-shadow: 0 8px 24px rgba(6, 78, 59, 0.12) !important;
+        transform: translateY(-2px);
       }
 
       #dashboard .metric-icon-box {
@@ -269,8 +281,9 @@
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        background: rgba(16, 185, 129, 0.12) !important;
+        border: 1px solid rgba(16, 185, 129, 0.22) !important;
+        color: #059669;
       }
 
       #dashboard .metric-donut-wrap {
@@ -286,8 +299,8 @@
       #dashboard .metric-donut-text {
         position: absolute;
         font-size: 11px;
-        font-weight: 700;
-        color: #ffffff;
+        font-weight: 800;
+        color: #142a1d !important;
       }
 
       #dashboard .metric-info {
@@ -301,29 +314,30 @@
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.6px;
-        color: #64748b;
+        color: #4b6d5b !important;
         margin-bottom: 2px;
       }
 
       #dashboard .metric-val {
         font-size: 18px;
-        font-weight: 700;
-        color: #ffffff;
+        font-weight: 800;
+        color: #142a1d !important;
         line-height: 1.2;
         margin-bottom: 2px;
       }
 
       #dashboard .metric-sub {
         font-size: 11.5px;
-        color: #64748b;
+        color: #537562 !important;
         white-space: nowrap;
       }
 
       /* Daily Insight Banner */
       #dashboard .today-insight-banner {
-        background: #111317;
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.92) !important;
+        border: 1px solid rgba(16, 185, 129, 0.28) !important;
+        box-shadow: 0 4px 16px rgba(6, 78, 59, 0.05) !important;
+        border-radius: 14px;
         padding: 14px 20px;
         display: flex;
         align-items: center;
@@ -333,7 +347,7 @@
 
       #dashboard .insight-icon {
         font-size: 20px;
-        color: #818cf8;
+        color: #059669 !important;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -347,16 +361,16 @@
       }
 
       #dashboard .insight-title {
-        font-size: 10.5px;
+        font-size: 11px;
         font-weight: 800;
         letter-spacing: 0.8px;
-        color: #818cf8;
+        color: #059669 !important;
         text-transform: uppercase;
       }
 
       #dashboard .insight-text {
         font-size: 13.5px;
-        color: #cbd5e1;
+        color: #142a1d !important;
         line-height: 1.4;
       }
 
@@ -374,9 +388,12 @@
       }
 
       #dashboard .today-panel {
-        background: #111317;
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.88) !important;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(16, 185, 129, 0.24) !important;
+        box-shadow: 0 4px 20px rgba(6, 78, 59, 0.06), 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+        border-radius: 16px;
         padding: 22px 24px;
         box-sizing: border-box;
       }
@@ -391,7 +408,7 @@
       #dashboard .today-panel-title {
         font-size: 16px;
         font-weight: 700;
-        color: #ffffff;
+        color: #142a1d !important;
         margin: 0;
         display: flex;
         align-items: center;
@@ -401,7 +418,7 @@
       #dashboard .today-action-btn {
         background: none;
         border: none;
-        color: #818cf8;
+        color: #059669 !important;
         font-size: 13px;
         font-weight: 600;
         cursor: pointer;
@@ -421,15 +438,15 @@
       }
 
       #dashboard .empty-state-text {
-        color: #64748b;
+        color: #4b6d5b !important;
         font-size: 13.5px;
         margin: 0 0 16px 0;
       }
 
       #dashboard .btn-subtle-create {
-        background: #16181f;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        color: #f1f5f9;
+        background: rgba(255, 255, 255, 0.9) !important;
+        border: 1.5px solid rgba(16, 185, 129, 0.35) !important;
+        color: #059669 !important;
         padding: 8px 18px;
         border-radius: 8px;
         font-size: 13px;
@@ -442,8 +459,9 @@
       }
 
       #dashboard .btn-subtle-create:hover {
-        background: #1f232e;
-        border-color: rgba(255, 255, 255, 0.22);
+        background: rgba(16, 185, 129, 0.12) !important;
+        border-color: #059669 !important;
+        color: #047857 !important;
       }
 
       /* Routine checklist cards */
@@ -454,9 +472,10 @@
       }
 
       #dashboard .routine-item {
-        background: #0c0d11;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.95) !important;
+        border: 1px solid rgba(16, 185, 129, 0.2) !important;
+        box-shadow: 0 2px 8px rgba(6, 78, 59, 0.04) !important;
+        border-radius: 12px;
         padding: 13px 16px;
         display: flex;
         justify-content: space-between;
@@ -465,13 +484,14 @@
       }
 
       #dashboard .routine-item:hover {
-        border-color: rgba(255, 255, 255, 0.1);
-        background: #0e1016;
+        border-color: rgba(16, 185, 129, 0.45) !important;
+        background: #ffffff !important;
+        box-shadow: 0 4px 12px rgba(6, 78, 59, 0.08) !important;
       }
 
       #dashboard .routine-item.completed {
-        opacity: 0.5;
-        background: rgba(255, 255, 255, 0.02);
+        opacity: 0.65;
+        background: rgba(255, 255, 255, 0.65) !important;
       }
 
       #dashboard .routine-item.completed .routine-name {
@@ -483,30 +503,31 @@
         width: 20px;
         height: 20px;
         border-radius: 6px;
-        border: 1.5px solid rgba(255, 255, 255, 0.25);
-        background: rgba(255, 255, 255, 0.03);
+        border: 1.5px solid rgba(16, 185, 129, 0.4) !important;
+        background: rgba(255, 255, 255, 0.8) !important;
         cursor: pointer;
-        accent-color: #6366f1;
+        accent-color: #059669 !important;
         margin: 0;
         flex-shrink: 0;
       }
 
       #dashboard .routine-target-badge {
         font-size: 11.5px;
-        color: #94a3b8;
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: #047857 !important;
+        background: rgba(16, 185, 129, 0.12) !important;
+        border: 1px solid rgba(16, 185, 129, 0.28) !important;
         padding: 4px 10px;
         border-radius: 6px;
-        font-weight: 500;
+        font-weight: 600;
         white-space: nowrap;
       }
 
       /* Schedule items */
       #dashboard .schedule-item {
-        background: #0c0d11;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.95) !important;
+        border: 1px solid rgba(16, 185, 129, 0.2) !important;
+        box-shadow: 0 2px 8px rgba(6, 78, 59, 0.04) !important;
+        border-radius: 12px;
         padding: 12px 16px;
         display: flex;
         justify-content: space-between;
@@ -515,20 +536,22 @@
       }
 
       #dashboard .schedule-item:hover {
-        border-color: rgba(255, 255, 255, 0.12);
-        background: #0e1016;
+        border-color: rgba(16, 185, 129, 0.45) !important;
+        background: #ffffff !important;
+        box-shadow: 0 4px 12px rgba(6, 78, 59, 0.08) !important;
       }
 
       #dashboard .schedule-item.completed {
-        opacity: 0.5;
-        background: rgba(255, 255, 255, 0.02);
+        opacity: 0.65;
+        background: rgba(255, 255, 255, 0.65) !important;
       }
 
       /* Reflection blocks */
       #dashboard .reflection-block {
-        background: #0c0d11;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.95) !important;
+        border: 1px solid rgba(16, 185, 129, 0.2) !important;
+        box-shadow: 0 2px 8px rgba(6, 78, 59, 0.04) !important;
+        border-radius: 12px;
         padding: 16px;
         display: flex;
         justify-content: space-between;
@@ -542,8 +565,8 @@
       }
 
       #dashboard .reflection-btn {
-        background: #4f46e5;
-        color: #ffffff;
+        background: linear-gradient(90deg, #059669, #10b981) !important;
+        color: #ffffff !important;
         border: none;
         padding: 8px 16px;
         border-radius: 8px;
@@ -551,17 +574,20 @@
         font-weight: 600;
         cursor: pointer;
         white-space: nowrap;
-        transition: background 0.2s;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35) !important;
+        transition: all 0.2s;
       }
 
       #dashboard .reflection-btn:hover {
-        background: #4338ca;
+        background: linear-gradient(90deg, #047857, #059669) !important;
+        transform: translateY(-1px);
       }
 
       #dashboard .reflection-btn.done {
-        background: rgba(255, 255, 255, 0.08);
-        color: #94a3b8;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(16, 185, 129, 0.12) !important;
+        color: #047857 !important;
+        border: 1px solid rgba(16, 185, 129, 0.3) !important;
+        box-shadow: none !important;
       }
 
       /* Modal styles for reflection */
@@ -572,7 +598,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.7);
+        background: rgba(6, 78, 59, 0.6);
         -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
         z-index: 9999;
         align-items: center;
@@ -580,13 +606,14 @@
       }
 
       #dashboard-reflection-modal .modal-card {
-        background: #111317;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 14px;
+        background: #ffffff;
+        border: 1px solid rgba(16, 185, 129, 0.25);
+        border-radius: 16px;
         width: 90%;
         max-width: 500px;
         padding: 24px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 20px 40px rgba(6, 78, 59, 0.2);
+        color: #142a1d;
       }
 
       /* Mobile responsiveness */
@@ -611,8 +638,9 @@
           left: 0;
           width: 100%;
           height: 60px;
-          background: #0d0f14;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+          background: #064e3b !important;
+          border-bottom: 1px solid rgba(52, 211, 153, 0.2) !important;
+          box-shadow: 0 2px 10px rgba(6, 78, 59, 0.15) !important;
           z-index: 1000;
           padding: 10px 20px;
           box-sizing: border-box;
@@ -632,7 +660,7 @@
           height: calc(100vh - 60px);
           z-index: 999;
           transition: left 0.3s ease;
-          box-shadow: 4px 0 20px rgba(0, 0, 0, 0.6);
+          box-shadow: 4px 0 20px rgba(6, 78, 59, 0.35);
         }
 
         #dashboard .sidebar.open {
