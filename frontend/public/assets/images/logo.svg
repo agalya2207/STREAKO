@@ -1,0 +1,22 @@
+<svg viewBox="12 12 396 396" xmlns="http://www.w3.org/2000/svg">
+  <!-- S-curve thick stroke (outline) -->
+  <path d="M285 117.5 H170 A46.25 46.25 0 0 0 170 210 H250 A46.25 46.25 0 0 1 250 302.5 H135"
+        fill="none" stroke="#0E9F6E" stroke-width="46"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- S-curve white fill -->
+  <path d="M285 117.5 H170 A46.25 46.25 0 0 0 170 210 H250 A46.25 46.25 0 0 1 250 302.5 H135"
+        fill="none" stroke="#FFFFFF" stroke-width="34"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Diamond decorators -->
+  <g fill="none" stroke="#0E9F6E" stroke-width="6"
+     stroke-linejoin="miter" stroke-miterlimit="10">
+    <!-- Top triangle -->
+    <path d="M135 95 L210 20 L285 95 Z"/>
+    <!-- Bottom triangle -->
+    <path d="M135 325 L210 400 L285 325 Z"/>
+    <!-- Left arrow line -->
+    <path d="M255 280 H90 L20 210 L90 140"/>
+    <!-- Right arrow line -->
+    <path d="M165 140 H330 L400 210 L330 280"/>
+  </g>
+</svg>
