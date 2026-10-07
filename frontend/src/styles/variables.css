@@ -128,7 +128,7 @@
     --sidebar-width: 250px;
     --sidebar-width-collapsed: 80px;
     --navbar-height: 68px;
-    --container-max: 1240px;
+    --container-max: 100%;
     
     /* ========== BORDER RADIUS ========== */
     

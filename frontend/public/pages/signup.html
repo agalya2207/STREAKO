@@ -9,16 +9,17 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
+  .auth-page-root {
     font-family: 'Inter', sans-serif;
     min-height: 100vh;
+    width: 100%;
     background: linear-gradient(180deg, #c8edd9 0%, #e4f7ed 40%, #f0faf4 100%);
     display: flex;
     align-items: flex-start;
     justify-content: center;
     padding: 0;
     margin: 0;
+    box-sizing: border-box;
   }
   .auth-shell {
     width: calc(100% - 2 * clamp(20px, 6vw, 32px));
@@ -31,7 +32,7 @@
     background: transparent;
   }
   @media (min-width: 480px) {
-    body {
+    .auth-page-root {
       padding: 24px 16px;
       align-items: center;
     }
@@ -244,6 +245,7 @@
 </style>
 </head>
 <body>
+<div class="auth-page-root">
 <div class="auth-shell" id="signup-shell">
 
   <div class="auth-header">
@@ -405,5 +407,6 @@
   });
 })();
 </script>
+</div>
 </body>
 </html>

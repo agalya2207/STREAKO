@@ -11,6 +11,8 @@ html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    width: 100%;
+    min-height: 100vh;
 }
 
 body {
@@ -21,7 +23,18 @@ body {
     font-weight: var(--fw-normal);
     line-height: var(--lh-normal);
     overflow-x: hidden;
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
     transition: background-color var(--duration-base) var(--ease-in-out);
+}
+
+#app {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 /* ========== TYPOGRAPHY ========== */

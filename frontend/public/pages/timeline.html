@@ -1,4 +1,4 @@
-﻿<div class="page active" id="timeline">
+<div class="page active" id="timeline">
     <!-- Mobile Header (screens < 768px) -->
     <header class="mobile-header">
       <button type="button" class="hamburger-btn" id="hamburger-toggle" aria-label="Toggle navigation" style="background: none; border: none; color: white; font-size: 28px; cursor: pointer; line-height:1;">
@@ -76,10 +76,10 @@
         </div>
 
         <!-- Main Content Area -->
-        <div class="main-content" style="padding: 32px 36px; background: linear-gradient(175deg, #eefbf4 0%, #e2f4ec 45%, #c8ead7 100%); min-height: 100vh;">
+        <div class="main-content" style="width: 100%; box-sizing: border-box; padding: 32px 36px; background: linear-gradient(175deg, #eefbf4 0%, #e2f4ec 45%, #c8ead7 100%); min-height: 100vh;">
             
             <!-- Time Blocking Planner -->
-            <div style="background: rgba(255, 255, 255, 0.88); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(16, 185, 129, 0.24); box-shadow: 0 4px 20px rgba(6, 78, 59, 0.06); border-radius: 16px; padding: 24px; min-height: 540px; display: flex; flex-direction: column;">
+            <div style="width: 100%; box-sizing: border-box; background: rgba(255, 255, 255, 0.88); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(16, 185, 129, 0.24); box-shadow: 0 4px 20px rgba(6, 78, 59, 0.06); border-radius: 16px; padding: 24px; min-height: 540px; display: flex; flex-direction: column;">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
                     <div>
                         <h2 style="font-size: 18px; font-weight: 700; color: #142a1d; margin: 0 0 4px 0;">Time Blocking Planner</h2>
@@ -92,7 +92,7 @@
                 </div>
 
                 <!-- Timeline Scrollable View -->
-                <div id="timeline-grid-container" style="flex: 1; overflow-y: auto; max-height: 580px; padding-right: 6px; scrollbar-width: thin;">
+                <div id="timeline-grid-container" style="width: 100%; flex: 1; overflow-y: auto; max-height: calc(100vh - 200px); padding-right: 6px; scrollbar-width: thin;">
                     <!-- Dynamically populated by window.renderTimelineGrid() -->
                 </div>
             </div>

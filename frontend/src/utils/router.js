@@ -45,12 +45,18 @@ export class Router {
             const html = await response.text();
             console.log(`[Router] Successfully fetched ${pageFile} (${html.length} bytes)`);
 
+            // Clean up any previously injected route styles
+            document.querySelectorAll('[data-dynamic-route="true"]').forEach(el => el.remove());
+            document.body.removeAttribute('style');
+
             let contentToInject = html;
             if (html.includes('<!DOCTYPE html>') || html.includes('<html')) {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(html, 'text/html');
                 doc.head.querySelectorAll('link[rel="stylesheet"], style').forEach(el => {
-                    document.head.appendChild(el.cloneNode(true));
+                    const cloned = el.cloneNode(true);
+                    cloned.setAttribute('data-dynamic-route', 'true');
+                    document.head.appendChild(cloned);
                 });
                 contentToInject = doc.body.innerHTML;
             }
