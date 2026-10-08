@@ -1,45 +1,45 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "backend/index.js",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": ["backend/**"]
-      }
-    },
-    {
-      "src": "frontend/public/**/*",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "frontend/src/**/*",
-      "use": "@vercel/static"
+  "functions": {
+    "api/index.js": {
+      "includeFiles": "backend/**"
     }
-  ],
-  "routes": [
+  },
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "backend/index.js"
+      "source": "/api",
+      "destination": "/api/index.js"
     },
     {
-      "src": "/(styles|css)/(.*)",
-      "dest": "frontend/src/styles/$2"
+      "source": "/api/:path*",
+      "destination": "/api/index.js"
     },
     {
-      "src": "/src/(.*)",
-      "dest": "frontend/src/$1"
+      "source": "/styles/:path*",
+      "destination": "/frontend/src/styles/:path*"
     },
     {
-      "src": "/(assets|pages)/(.*)",
-      "dest": "frontend/public/$1/$2"
+      "source": "/css/:path*",
+      "destination": "/frontend/src/styles/:path*"
     },
     {
-      "handle": "filesystem"
+      "source": "/src/:path*",
+      "destination": "/frontend/src/:path*"
     },
     {
-      "src": "/(.*)",
-      "dest": "frontend/public/index.html"
+      "source": "/assets/:path*",
+      "destination": "/frontend/public/assets/:path*"
+    },
+    {
+      "source": "/pages/:path*",
+      "destination": "/frontend/public/pages/:path*"
+    },
+    {
+      "source": "/sw.js",
+      "destination": "/frontend/public/sw.js"
+    },
+    {
+      "source": "/:path*",
+      "destination": "/frontend/public/index.html"
     }
   ]
 }
