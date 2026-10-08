@@ -1,0 +1,1478 @@
+<div class="page active" id="purchase-list">
+  <style>
+    /* ============================================================
+       PURCHASE LIST PAGE — Scoped to #purchase-list
+       Matches existing emerald sidebar theme exactly.
+       No global styles are changed here.
+    ============================================================ */
+
+    /* Mobile header hidden by default */
+    .mobile-header { display: none; }
+
+    #purchase-list {
+      background: linear-gradient(175deg, #eefbf4 0%, #e2f4ec 45%, #c8ead7 100%) !important;
+      color: #142a1d;
+      flex: 1;
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    #purchase-list .sidebar-layout {
+      background: transparent !important;
+      flex: 1;
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* ---- Sidebar (identical tokens to dashboard) ---- */
+    #purchase-list .sidebar {
+      width: 248px;
+      min-width: 248px;
+      background: linear-gradient(180deg, #064e3b 0%, #065f46 55%, #044332 100%) !important;
+      border-right: 1px solid rgba(52,211,153,0.22) !important;
+      box-shadow: 4px 0 24px rgba(6,78,59,0.15) !important;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      max-height: 100vh;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-sizing: border-box;
+    }
+    #purchase-list .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      height: 68px;
+      min-height: 68px;
+      padding: 0 20px;
+      border-bottom: 1px solid rgba(52,211,153,0.18) !important;
+      cursor: pointer;
+      box-sizing: border-box;
+      background: rgba(3,40,30,0.4) !important;
+    }
+    #purchase-list .sidebar-logo-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg,#10b981 0%,#059669 100%) !important;
+      display: flex; align-items: center; justify-content: center;
+      color: white;
+      box-shadow: 0 4px 14px rgba(4,120,87,0.4) !important;
+      flex-shrink: 0;
+    }
+    #purchase-list .sidebar-logo-text { display: flex; flex-direction: column; line-height: 1.2; }
+    #purchase-list .sidebar-logo-title {
+      font-size: 17px; font-weight: 800; color: #fff; letter-spacing: -0.2px;
+      background: linear-gradient(135deg,#fff 0%,#a7f3d0 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    #purchase-list .sidebar-logo-sub {
+      font-size: 8px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1.4px; color: #a7f3d0 !important; opacity: .9; margin-top: 2px;
+    }
+    #purchase-list .sidebar-nav {
+      flex: 1; display: flex; flex-direction: column;
+      gap: 4px; padding: 16px 12px; overflow-y: auto;
+    }
+    #purchase-list .nav-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 14px; border-radius: 10px; cursor: pointer;
+      transition: all .2s ease; color: #d1fae5 !important;
+      font-size: 13.5px; font-weight: 500;
+      border: 1px solid transparent; text-decoration: none;
+    }
+    #purchase-list .nav-item svg {
+      width: 18px; height: 18px; stroke-width: 2;
+      color: #a7f3d0 !important; transition: color .2s; flex-shrink: 0;
+    }
+    #purchase-list .nav-item:hover {
+      background: rgba(255,255,255,0.12) !important; color: #fff !important;
+    }
+    #purchase-list .nav-item:hover svg { color: #6ee7b7 !important; }
+    #purchase-list .nav-item.active {
+      background: linear-gradient(90deg,rgba(16,185,129,.42) 0%,rgba(5,150,105,.32) 100%) !important;
+      color: #fff !important; font-weight: 700;
+      border: 1px solid rgba(167,243,208,.45) !important;
+      box-shadow: 0 4px 14px rgba(4,120,87,.35) !important;
+    }
+    #purchase-list .nav-item.active svg { color: #6ee7b7 !important; }
+    #purchase-list .sidebar-profile {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 16px;
+      background: rgba(2,44,34,.7) !important;
+      border-top: 1px solid rgba(52,211,153,.18) !important;
+      margin-top: auto; flex-shrink: 0;
+    }
+    #purchase-list .profile-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg,#10b981 0%,#059669 100%) !important;
+      box-shadow: 0 2px 10px rgba(4,120,87,.4) !important;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-weight: 600; font-size: 13px; flex-shrink: 0; overflow: hidden;
+    }
+    #purchase-list .profile-info { flex: 1; min-width: 0; cursor: pointer; }
+    #purchase-list .profile-info p:first-child {
+      color: #fff !important; font-weight: 600; font-size: 13px;
+      margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    #purchase-list .profile-info p:last-child {
+      color: #a7f3d0 !important; font-size: 11px;
+      margin: 2px 0 0 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    #purchase-list .profile-action-btn {
+      background: none; border: none; color: #a7f3d0;
+      cursor: pointer; padding: 4px; border-radius: 6px; display: flex;
+      align-items: center; justify-content: center; transition: all .2s;
+    }
+    #purchase-list .profile-action-btn:hover { background: rgba(255,255,255,.12); color: #fff; }
+
+    /* ---- Main content area ---- */
+    #purchase-list .main-content {
+      flex: 1; padding: 28px 32px; overflow-y: auto;
+      min-width: 0; box-sizing: border-box;
+    }
+
+    /* ---- Page header ---- */
+    #purchase-list .pl-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 24px; flex-wrap: wrap; gap: 12px;
+    }
+    #purchase-list .pl-title {
+      font-size: 26px; font-weight: 800; color: #064e3b;
+      letter-spacing: -0.5px; margin: 0;
+    }
+    #purchase-list .pl-subtitle {
+      font-size: 13px; color: #4b6d5b; margin: 4px 0 0; font-weight: 500;
+    }
+    #purchase-list .pl-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+    /* ---- Permission banner ---- */
+    #purchase-list .pl-permission-banner {
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.35);
+      border-radius: 12px; padding: 12px 16px; margin-bottom: 20px;
+      font-size: 13px; color: #92400e;
+    }
+    #purchase-list .pl-permission-banner.hidden { display: none; }
+    #purchase-list .pl-permission-banner svg { flex-shrink: 0; }
+
+    /* ---- Item count badge ---- */
+    #purchase-list .pl-count-badge {
+      background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3);
+      color: #047857; padding: 3px 10px; border-radius: 20px;
+      font-size: 12px; font-weight: 600;
+    }
+
+    /* ---- Filter/sort row ---- */
+    #purchase-list .pl-filters {
+      display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; align-items: center;
+    }
+    #purchase-list .pl-filter-btn {
+      padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;
+      border: 1.5px solid rgba(16,185,129,0.3); cursor: pointer;
+      background: rgba(255,255,255,0.75); color: #4b6d5b;
+      transition: all .2s ease;
+    }
+    #purchase-list .pl-filter-btn.active {
+      background: #059669 !important; color: #fff !important;
+      border-color: #059669 !important;
+    }
+    #purchase-list .pl-filter-btn:hover:not(.active) {
+      background: rgba(16,185,129,0.12); border-color: #059669; color: #059669;
+    }
+
+    /* ---- Cards grid ---- */
+    #purchase-list .pl-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 16px;
+    }
+
+    /* ---- Item card ---- */
+    #purchase-list .pl-card {
+      background: rgba(255,255,255,0.9) !important;
+      border: 1px solid rgba(16,185,129,0.22) !important;
+      box-shadow: 0 4px 20px rgba(6,78,59,0.06), 0 1px 3px rgba(0,0,0,0.03) !important;
+      border-radius: 16px; padding: 18px 20px;
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+      position: relative; cursor: default;
+    }
+    #purchase-list .pl-card:hover {
+      border-color: rgba(16,185,129,0.45) !important;
+      box-shadow: 0 8px 28px rgba(6,78,59,0.12) !important;
+      transform: translateY(-2px);
+    }
+    #purchase-list .pl-card.done {
+      opacity: 0.6; background: rgba(255,255,255,0.65) !important;
+    }
+    #purchase-list .pl-card.highlighted {
+      border-color: #10b981 !important;
+      box-shadow: 0 0 0 3px rgba(16,185,129,0.25), 0 8px 28px rgba(6,78,59,0.12) !important;
+      animation: pl-highlight-pulse 2s ease-in-out 3;
+    }
+    @keyframes pl-highlight-pulse {
+      0%, 100% { box-shadow: 0 0 0 3px rgba(16,185,129,0.2), 0 8px 28px rgba(6,78,59,0.12); }
+      50%       { box-shadow: 0 0 0 6px rgba(16,185,129,0.35), 0 8px 28px rgba(6,78,59,0.18); }
+    }
+
+    #purchase-list .pl-card-header {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 12px; gap: 10px;
+    }
+    #purchase-list .pl-card-name {
+      font-size: 15px; font-weight: 700; color: #064e3b; margin: 0; flex: 1;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    #purchase-list .pl-card-actions { display: flex; gap: 6px; flex-shrink: 0; }
+    #purchase-list .pl-card-btn {
+      width: 30px; height: 30px; border-radius: 8px; border: none;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: all .2s ease; font-size: 13px;
+    }
+    #purchase-list .pl-card-btn.edit-btn {
+      background: rgba(16,185,129,0.12); color: #059669;
+    }
+    #purchase-list .pl-card-btn.edit-btn:hover { background: rgba(16,185,129,0.25); }
+    #purchase-list .pl-card-btn.done-btn {
+      background: rgba(5,150,105,0.12); color: #047857;
+    }
+    #purchase-list .pl-card-btn.done-btn:hover { background: rgba(5,150,105,0.25); }
+    #purchase-list .pl-card-btn.delete-btn {
+      background: rgba(239,68,68,0.1); color: #dc2626;
+    }
+    #purchase-list .pl-card-btn.delete-btn:hover { background: rgba(239,68,68,0.2); }
+
+    /* status badge */
+    #purchase-list .pl-status-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.4px;
+    }
+    #purchase-list .pl-status-badge.pending {
+      background: rgba(245,158,11,0.12); color: #92400e;
+      border: 1px solid rgba(245,158,11,0.3);
+    }
+    #purchase-list .pl-status-badge.active {
+      background: rgba(16,185,129,0.15); color: #047857;
+      border: 1px solid rgba(16,185,129,0.35);
+    }
+    #purchase-list .pl-status-badge.done {
+      background: rgba(107,114,128,0.1); color: #6b7280;
+      border: 1px solid rgba(107,114,128,0.25);
+    }
+
+    /* card detail rows */
+    #purchase-list .pl-card-detail {
+      display: flex; align-items: flex-start; gap: 8px;
+      font-size: 12.5px; color: #4b6d5b; margin-bottom: 6px;
+    }
+    #purchase-list .pl-card-detail:last-child { margin-bottom: 0; }
+    #purchase-list .pl-card-detail svg {
+      width: 14px; height: 14px; flex-shrink: 0;
+      color: #10b981; margin-top: 1px;
+    }
+    #purchase-list .pl-card-detail span { line-height: 1.4; }
+
+    #purchase-list .pl-card-footer {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 14px; padding-top: 12px;
+      border-top: 1px solid rgba(16,185,129,0.15);
+    }
+    #purchase-list .pl-reminder-info {
+      font-size: 11px; color: #7d9c8c;
+    }
+
+    /* ---- Empty state ---- */
+    #purchase-list .pl-empty {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 60px 20px; text-align: center;
+    }
+    #purchase-list .pl-empty-icon {
+      width: 72px; height: 72px; border-radius: 20px;
+      background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2);
+      display: flex; align-items: center; justify-content: center; margin-bottom: 20px;
+    }
+    #purchase-list .pl-empty-icon svg { width: 36px; height: 36px; color: #10b981; }
+    #purchase-list .pl-empty-title {
+      font-size: 18px; font-weight: 700; color: #064e3b; margin: 0 0 8px;
+    }
+    #purchase-list .pl-empty-sub {
+      font-size: 13.5px; color: #4b6d5b; margin: 0 0 24px;
+    }
+
+    /* ---- Buttons ---- */
+    #purchase-list .pl-btn-primary {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: linear-gradient(135deg,#059669,#10b981) !important;
+      color: #fff !important; border: none; border-radius: 10px;
+      padding: 10px 20px; font-size: 13px; font-weight: 700;
+      cursor: pointer; transition: all .2s ease;
+      box-shadow: 0 4px 14px rgba(5,150,105,.3);
+    }
+    #purchase-list .pl-btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(5,150,105,.4) !important;
+    }
+    #purchase-list .pl-btn-secondary {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(255,255,255,0.85) !important;
+      border: 1.5px solid rgba(16,185,129,0.35) !important;
+      color: #059669 !important; border-radius: 10px;
+      padding: 9px 18px; font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: all .2s ease;
+    }
+    #purchase-list .pl-btn-secondary:hover {
+      background: rgba(16,185,129,0.1) !important;
+      border-color: #059669 !important;
+    }
+    #purchase-list .pl-btn-ghost {
+      background: none; border: 1.5px solid rgba(16,185,129,0.25);
+      color: #4b6d5b; border-radius: 8px; padding: 7px 14px;
+      font-size: 12px; font-weight: 600; cursor: pointer;
+      transition: all .2s;
+    }
+    #purchase-list .pl-btn-ghost:hover {
+      background: rgba(16,185,129,0.1); border-color: #059669; color: #059669;
+    }
+
+    /* ---- Loading spinner ---- */
+    #purchase-list .pl-loading {
+      display: flex; align-items: center; justify-content: center;
+      padding: 60px 20px; flex-direction: column; gap: 16px;
+    }
+    #purchase-list .pl-spinner {
+      width: 40px; height: 40px;
+      border: 3px solid rgba(16,185,129,0.2);
+      border-top-color: #10b981;
+      border-radius: 50%; animation: pl-spin 0.8s linear infinite;
+    }
+    @keyframes pl-spin { to { transform: rotate(360deg); } }
+    #purchase-list .pl-loading-text { font-size: 13px; color: #4b6d5b; }
+
+    /* ---- Error state ---- */
+    #purchase-list .pl-error {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25);
+      border-radius: 12px; padding: 14px 18px;
+      font-size: 13px; color: #b91c1c; margin-bottom: 18px;
+    }
+    #purchase-list .pl-error.hidden { display: none; }
+
+    /* ======================================================
+       ADD / EDIT ITEM MODAL
+    ====================================================== */
+    #purchase-list .pl-modal-backdrop {
+      display: none; position: fixed; inset: 0;
+      background: rgba(6,78,59,0.55);
+      backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+      z-index: 9998; align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    #purchase-list .pl-modal-backdrop.open { display: flex; }
+
+    #purchase-list .pl-modal {
+      background: #fff; border-radius: 20px;
+      width: 100%; max-width: 540px; max-height: 90vh; overflow-y: auto;
+      box-shadow: 0 24px 60px rgba(6,78,59,0.22);
+      animation: pl-modal-in 0.25s cubic-bezier(0.22,0.9,0.25,1) both;
+    }
+    @keyframes pl-modal-in {
+      from { opacity: 0; transform: scale(0.93) translateY(12px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    #purchase-list .pl-modal-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 22px 24px 16px; border-bottom: 1px solid rgba(16,185,129,0.15);
+    }
+    #purchase-list .pl-modal-title {
+      font-size: 18px; font-weight: 800; color: #064e3b;
+    }
+    #purchase-list .pl-modal-close {
+      width: 32px; height: 32px; border-radius: 8px; border: none;
+      background: rgba(107,114,128,0.1); color: #6b7280;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      font-size: 18px; transition: all .2s; line-height: 1;
+    }
+    #purchase-list .pl-modal-close:hover { background: rgba(239,68,68,0.12); color: #dc2626; }
+    #purchase-list .pl-modal-body { padding: 20px 24px; }
+    #purchase-list .pl-modal-footer {
+      display: flex; justify-content: flex-end; gap: 10px;
+      padding: 16px 24px 22px; border-top: 1px solid rgba(16,185,129,0.1);
+    }
+
+    /* Form elements */
+    #purchase-list .pl-form-group { margin-bottom: 18px; }
+    #purchase-list .pl-form-label {
+      display: block; font-size: 12px; font-weight: 700; color: #047857;
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;
+    }
+    #purchase-list .pl-form-input,
+    #purchase-list .pl-form-select {
+      width: 100%; padding: 10px 14px; border-radius: 10px;
+      border: 1.5px solid rgba(16,185,129,0.28); background: #fff;
+      font-size: 13.5px; color: #142a1d; box-sizing: border-box;
+      transition: border-color .2s;
+      font-family: 'Inter', sans-serif;
+    }
+    #purchase-list .pl-form-input:focus,
+    #purchase-list .pl-form-select:focus {
+      outline: none; border-color: #10b981;
+      box-shadow: 0 0 0 3px rgba(16,185,129,0.15);
+    }
+    #purchase-list .pl-form-input::placeholder { color: #7d9c8c; }
+    #purchase-list .pl-form-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    }
+    #purchase-list .pl-form-hint {
+      font-size: 11px; color: #7d9c8c; margin-top: 5px;
+    }
+    #purchase-list .pl-section-divider {
+      font-size: 11px; font-weight: 700; color: #047857;
+      text-transform: uppercase; letter-spacing: 0.6px;
+      padding: 10px 0 6px; border-bottom: 1px solid rgba(16,185,129,0.15);
+      margin-bottom: 14px;
+    }
+
+    /* Toggle pills for location type / date type */
+    #purchase-list .pl-toggle-row {
+      display: flex; gap: 8px; margin-bottom: 14px;
+    }
+    #purchase-list .pl-toggle-pill {
+      flex: 1; padding: 8px 10px; border-radius: 8px; border: 1.5px solid rgba(16,185,129,0.25);
+      background: rgba(255,255,255,0.8); color: #4b6d5b;
+      font-size: 12.5px; font-weight: 600; cursor: pointer;
+      transition: all .2s; text-align: center;
+    }
+    #purchase-list .pl-toggle-pill.selected {
+      background: #059669 !important; color: #fff !important;
+      border-color: #059669 !important;
+    }
+    #purchase-list .pl-toggle-pill:hover:not(.selected) {
+      background: rgba(16,185,129,0.1); border-color: #059669; color: #059669;
+    }
+
+    /* Map container */
+    #purchase-list .pl-map-container {
+      height: 220px; border-radius: 12px;
+      border: 1.5px solid rgba(16,185,129,0.28);
+      overflow: hidden; position: relative; margin-bottom: 6px;
+    }
+    #purchase-list .pl-map-container iframe {
+      width: 100%; height: 100%; border: none;
+    }
+    #purchase-list .pl-map-overlay {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 10px;
+      background: rgba(238,251,244,0.92);
+    }
+    #purchase-list .pl-map-overlay.hidden { display: none; }
+    #purchase-list .pl-map-search-row {
+      display: flex; gap: 8px; margin-bottom: 8px;
+    }
+    #purchase-list .pl-map-search-row .pl-form-input { flex: 1; }
+    #purchase-list .pl-map-coords-display {
+      font-size: 11.5px; color: #4b6d5b;
+      background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2);
+      border-radius: 8px; padding: 6px 10px; display: none;
+    }
+    #purchase-list .pl-map-coords-display.visible { display: block; }
+
+    /* Permission explain modal */
+    #pl-permission-modal {
+      display: none; position: fixed; inset: 0;
+      background: rgba(6,78,59,0.55); backdrop-filter: blur(5px);
+      z-index: 99999; align-items: center; justify-content: center; padding: 20px;
+    }
+    #pl-permission-modal.open { display: flex; }
+    #pl-permission-modal .pl-perm-card {
+      background: #fff; border-radius: 20px; max-width: 440px; width: 100%;
+      padding: 30px 28px; box-shadow: 0 24px 60px rgba(6,78,59,0.22);
+      animation: pl-modal-in 0.25s ease both;
+    }
+    #pl-permission-modal .pl-perm-icon {
+      width: 56px; height: 56px; border-radius: 16px;
+      background: rgba(16,185,129,0.12); display: flex;
+      align-items: center; justify-content: center; margin-bottom: 18px;
+    }
+    #pl-permission-modal .pl-perm-icon svg { width: 28px; height: 28px; color: #059669; }
+    #pl-permission-modal h2 { font-size: 20px; font-weight: 800; color: #064e3b; margin: 0 0 10px; }
+    #pl-permission-modal p { font-size: 13.5px; color: #4b6d5b; line-height: 1.6; margin: 0 0 8px; }
+    #pl-permission-modal .pl-perm-note {
+      font-size: 12px; color: #7d9c8c; margin: 8px 0 22px;
+      background: rgba(16,185,129,0.06); border-radius: 8px; padding: 8px 12px;
+    }
+    #pl-permission-modal .pl-perm-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    /* Mobile responsive */
+    @media (max-width: 767px) {
+      .mobile-header {
+        display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 60px;
+        background: #064e3b !important; border-bottom: 1px solid rgba(52,211,153,0.2) !important;
+        box-shadow: 0 2px 10px rgba(6,78,59,0.15) !important;
+        z-index: 1000; padding: 10px 20px; box-sizing: border-box;
+        align-items: center; justify-content: flex-start; gap: 0;
+      }
+      #purchase-list .sidebar-layout { flex-direction: column; }
+      #purchase-list .sidebar {
+        position: fixed; left: -248px; top: 60px;
+        height: calc(100vh - 60px); transition: left .3s ease; z-index: 999;
+      }
+      #purchase-list .sidebar.open { left: 0 !important; }
+      #purchase-list .main-content { padding: 80px 16px 24px; }
+      #purchase-list .pl-form-row { grid-template-columns: 1fr; }
+      #purchase-list .pl-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+
+  <!-- Permission Explain Modal (shown ONCE before requesting) -->
+  <div id="pl-permission-modal" role="dialog" aria-modal="true" aria-labelledby="pl-perm-title">
+    <div class="pl-perm-card">
+      <div class="pl-perm-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+        </svg>
+      </div>
+      <h2 id="pl-perm-title">Enable Purchase Reminders</h2>
+      <p>STREAKO uses your location to automatically remind you when you're near a shop where you planned to buy something.</p>
+      <p>We also need notification permission to alert you on time.</p>
+      <div class="pl-perm-note">
+        🔒 <strong>Privacy:</strong> Your live location <em>never</em> leaves your device. Only your saved item data is stored in your account database.
+      </div>
+      <div class="pl-perm-btns">
+        <button class="pl-btn-primary" id="pl-grant-all-btn" type="button">Allow Location &amp; Notifications</button>
+        <button class="pl-btn-ghost" id="pl-skip-perms-btn" type="button">Skip – date reminders only</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Header -->
+  <header class="mobile-header" id="pl-mobile-header">
+    <button type="button" id="pl-hamburger-btn" aria-label="Toggle navigation"
+      style="background:none;border:none;color:white;font-size:28px;cursor:pointer;line-height:1;">&#9776;</button>
+    <span style="display:inline-block;width:36px;height:36px;flex-shrink:0;">
+      <svg viewBox="12 12 396 396" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;">
+        <path d="M285 117.5 H170 A46.25 46.25 0 0 0 170 210 H250 A46.25 46.25 0 0 1 250 302.5 H135" fill="none" stroke="#0E9F6E" stroke-width="46" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M285 117.5 H170 A46.25 46.25 0 0 0 170 210 H250 A46.25 46.25 0 0 1 250 302.5 H135" fill="none" stroke="#FFFFFF" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+        <g fill="none" stroke="#0E9F6E" stroke-width="6" stroke-linejoin="miter" stroke-miterlimit="10">
+          <path d="M135 95 L210 20 L285 95 Z"/><path d="M135 325 L210 400 L285 325 Z"/>
+          <path d="M255 280 H90 L20 210 L90 140"/><path d="M165 140 H330 L400 210 L330 280"/>
+        </g>
+      </svg>
+    </span>
+    <div class="mobile-header-brand" style="display:flex;flex-direction:column;margin-left:10px;">
+      <span style="font-family:'Unbounded',sans-serif;font-weight:800;font-size:14px;color:#fff;letter-spacing:.04em;">STREAKO</span>
+      <span style="font-size:9px;color:#a7f3d0;font-weight:600;letter-spacing:1px;">PREMIUM PRODUCTIVITY</span>
+    </div>
+  </header>
+
+  <div class="overlay" id="pl-sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:998;"></div>
+
+  <div class="sidebar-layout">
+    <!-- Sidebar -->
+    <div class="sidebar" id="pl-sidebar">
+      <div class="sidebar-logo" onclick="app.router.navigate('/dashboard')">
+        <div class="sidebar-logo-icon">
+          <svg viewBox="12 12 396 396" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;">
+            <path d="M285 117.5 H170 A46.25 46.25 0 0 0 170 210 H250 A46.25 46.25 0 0 1 250 302.5 H135" fill="none" stroke="#0E9F6E" stroke-width="46" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M285 117.5 H170 A46.25 46.25 0 0 0 170 210 H250 A46.25 46.25 0 0 1 250 302.5 H135" fill="none" stroke="#FFFFFF" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+            <g fill="none" stroke="#0E9F6E" stroke-width="6" stroke-linejoin="miter" stroke-miterlimit="10">
+              <path d="M135 95 L210 20 L285 95 Z"/><path d="M135 325 L210 400 L285 325 Z"/>
+              <path d="M255 280 H90 L20 210 L90 140"/><path d="M165 140 H330 L400 210 L330 280"/>
+            </g>
+          </svg>
+        </div>
+        <div class="sidebar-logo-text">
+          <span class="sidebar-logo-title">STREAKO</span>
+          <span class="sidebar-logo-sub">PREMIUM PRODUCTIVITY</span>
+        </div>
+      </div>
+      <div class="sidebar-nav">
+        <div class="nav-item" onclick="app.router.navigate('/dashboard')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
+          <span>Today</span>
+        </div>
+        <div class="nav-item" onclick="app.router.navigate('/habits-library')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span>Habits</span>
+        </div>
+        <div class="nav-item" onclick="app.router.navigate('/timeline')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>Planner</span>
+        </div>
+        <div class="nav-item" onclick="app.router.navigate('/calendar')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+          <span>Calendar</span>
+        </div>
+        <div class="nav-item" onclick="app.router.navigate('/goals')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          <span>Goals</span>
+        </div>
+        <div class="nav-item" onclick="app.router.navigate('/analytics')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
+          <span>Analytics</span>
+        </div>
+        <div class="nav-item" onclick="app.router.navigate('/journal')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          <span>Journal</span>
+        </div>
+        <div class="nav-item active" onclick="app.router.navigate('/purchase-list')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" x2="21" y1="6" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span>Purchase List</span>
+        </div>
+        <div class="nav-item" onclick="app.router.navigate('/settings')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>Settings</span>
+        </div>
+      </div>
+      <div class="sidebar-profile">
+        <div class="profile-avatar" id="pl-sidebar-avatar">AG</div>
+        <div class="profile-info" onclick="app.router.navigate('/settings')">
+          <p id="pl-sidebar-name">User</p>
+          <p id="pl-sidebar-email">user@email.com</p>
+        </div>
+        <button type="button" class="profile-action-btn" onclick="window.logout && window.logout()" title="Log Out">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Permission banner (shown when location denied) -->
+      <div class="pl-permission-banner hidden" id="pl-loc-banner">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span>Location reminders are off. Date &amp; time reminders are still active. <button type="button" onclick="window.PurchaseListPage && window.PurchaseListPage.showPermissionModal()" style="background:none;border:none;color:#b45309;text-decoration:underline;cursor:pointer;font-weight:600;padding:0;">Enable location</button></span>
+      </div>
+      <!-- Error display -->
+      <div class="pl-error hidden" id="pl-error-box">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        <span id="pl-error-text"></span>
+      </div>
+
+      <!-- Page header -->
+      <div class="pl-header">
+        <div>
+          <h1 class="pl-title">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:8px;color:#059669;">
+              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" x2="21" y1="6" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
+            </svg>Purchase List
+          </h1>
+          <p class="pl-subtitle">Smart shopping reminders with location &amp; schedule triggers.</p>
+        </div>
+        <div class="pl-actions">
+          <span class="pl-count-badge" id="pl-count-badge">0 items</span>
+          <button type="button" class="pl-btn-primary" id="pl-add-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Item
+          </button>
+        </div>
+      </div>
+
+      <!-- Filter row -->
+      <div class="pl-filters">
+        <button type="button" class="pl-filter-btn active" id="pl-filter-all" onclick="window.PurchaseListPage && window.PurchaseListPage.setFilter('all')">All</button>
+        <button type="button" class="pl-filter-btn" id="pl-filter-pending" onclick="window.PurchaseListPage && window.PurchaseListPage.setFilter('Pending')">Pending</button>
+        <button type="button" class="pl-filter-btn" id="pl-filter-active" onclick="window.PurchaseListPage && window.PurchaseListPage.setFilter('Reminder active')">Active</button>
+        <button type="button" class="pl-filter-btn" id="pl-filter-done" onclick="window.PurchaseListPage && window.PurchaseListPage.setFilter('Done')">Done</button>
+      </div>
+
+      <!-- Item list -->
+      <div id="pl-items-container">
+        <div class="pl-loading" id="pl-loading">
+          <div class="pl-spinner"></div>
+          <span class="pl-loading-text">Loading your purchase list…</span>
+        </div>
+        <div class="pl-grid" id="pl-items-grid" style="display:none;"></div>
+        <div class="pl-empty" id="pl-empty" style="display:none;">
+          <div class="pl-empty-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" x2="21" y1="6" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          </div>
+          <h2 class="pl-empty-title">Your list is empty</h2>
+          <p class="pl-empty-sub">Add your first item — pick a place and schedule and STREAKO will remind you automatically.</p>
+          <button type="button" class="pl-btn-primary" onclick="window.PurchaseListPage && window.PurchaseListPage.openAddModal()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Your First Item
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add / Edit Modal -->
+  <div class="pl-modal-backdrop" id="pl-modal" role="dialog" aria-modal="true" aria-labelledby="pl-modal-title-text">
+    <div class="pl-modal">
+      <div class="pl-modal-header">
+        <span class="pl-modal-title" id="pl-modal-title-text">Add Purchase Item</span>
+        <button type="button" class="pl-modal-close" id="pl-modal-close-btn" aria-label="Close">&times;</button>
+      </div>
+      <form class="pl-modal-body" id="pl-item-form" autocomplete="off">
+        <input type="hidden" id="pl-edit-id">
+
+        <!-- Item Name -->
+        <div class="pl-form-group">
+          <label class="pl-form-label" for="pl-item-name">Item Name *</label>
+          <input type="text" id="pl-item-name" class="pl-form-input" placeholder="e.g. Vitamin C, Milk, Charger…" required maxlength="120">
+        </div>
+
+        <!-- Location -->
+        <div class="pl-section-divider">📍 Location</div>
+        <div class="pl-toggle-row">
+          <button type="button" class="pl-toggle-pill selected" id="pl-loc-specific-btn" onclick="window.PurchaseListPage && window.PurchaseListPage.setLocationType('specific')">Specific Place</button>
+          <button type="button" class="pl-toggle-pill" id="pl-loc-type-btn" onclick="window.PurchaseListPage && window.PurchaseListPage.setLocationType('type')">Place Type</button>
+        </div>
+
+        <!-- Specific place fields -->
+        <div id="pl-specific-loc-fields">
+          <div class="pl-map-search-row">
+            <input type="text" id="pl-place-search" class="pl-form-input" placeholder="Search for a shop or address…">
+            <button type="button" class="pl-btn-secondary" id="pl-place-search-btn">Search</button>
+          </div>
+          <div class="pl-map-container" id="pl-map-container">
+            <div class="pl-map-overlay" id="pl-map-overlay">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span style="font-size:13px;color:#4b6d5b;text-align:center;">Search for a place or click<br><strong>"Use My Location"</strong></span>
+              <button type="button" class="pl-btn-secondary" id="pl-use-my-loc-btn" style="font-size:12px;padding:7px 14px;">📍 Use My Location</button>
+            </div>
+          </div>
+          <div class="pl-map-coords-display" id="pl-coords-display"></div>
+          <input type="hidden" id="pl-latitude">
+          <input type="hidden" id="pl-longitude">
+          <div class="pl-form-group" style="margin-top:10px;">
+            <label class="pl-form-label" for="pl-place-name">Shop Name</label>
+            <input type="text" id="pl-place-name" class="pl-form-input" placeholder="e.g. Apollo Pharmacy, Big Bazaar…" maxlength="120">
+          </div>
+          <div class="pl-form-group">
+            <label class="pl-form-label" for="pl-address">Address (optional)</label>
+            <input type="text" id="pl-address" class="pl-form-input" placeholder="Street or area" maxlength="200">
+          </div>
+        </div>
+
+        <!-- Place type fields -->
+        <div id="pl-type-loc-fields" style="display:none;">
+          <div class="pl-form-group">
+            <label class="pl-form-label" for="pl-place-type">Place Type *</label>
+            <select id="pl-place-type" class="pl-form-select">
+              <option value="">Choose a place type…</option>
+              <option value="Medical shop">Medical shop / Pharmacy</option>
+              <option value="Supermarket">Supermarket</option>
+              <option value="Grocery">Grocery store</option>
+              <option value="Bakery">Bakery</option>
+              <option value="Electronics">Electronics shop</option>
+              <option value="Hardware">Hardware store</option>
+              <option value="Bookstore">Bookstore</option>
+              <option value="Clothing">Clothing store</option>
+              <option value="Petrol station">Petrol station</option>
+              <option value="ATM">ATM / Bank</option>
+            </select>
+            <span class="pl-form-hint">STREAKO will detect when you're near one of these and notify you.</span>
+          </div>
+        </div>
+
+        <!-- Date / Schedule -->
+        <div class="pl-section-divider" style="margin-top:8px;">📅 When</div>
+        <div class="pl-toggle-row">
+          <button type="button" class="pl-toggle-pill selected" id="pl-date-specific-btn" onclick="window.PurchaseListPage && window.PurchaseListPage.setDateType('specific')">Specific Date</button>
+          <button type="button" class="pl-toggle-pill" id="pl-date-day-btn" onclick="window.PurchaseListPage && window.PurchaseListPage.setDateType('day_of_week')">Day of Week</button>
+        </div>
+
+        <div id="pl-specific-date-fields">
+          <div class="pl-form-group">
+            <label class="pl-form-label" for="pl-specific-date">Date *</label>
+            <input type="date" id="pl-specific-date" class="pl-form-input">
+          </div>
+        </div>
+
+        <div id="pl-dow-fields" style="display:none;">
+          <div class="pl-form-group">
+            <label class="pl-form-label" for="pl-day-of-week">Day of Week *</label>
+            <select id="pl-day-of-week" class="pl-form-select">
+              <option value="">Choose day…</option>
+              <option value="monday">Monday</option>
+              <option value="tuesday">Tuesday</option>
+              <option value="wednesday">Wednesday</option>
+              <option value="thursday">Thursday</option>
+              <option value="friday">Friday</option>
+              <option value="saturday">Saturday</option>
+              <option value="sunday">Sunday</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Time -->
+        <div class="pl-form-row">
+          <div class="pl-form-group">
+            <label class="pl-form-label" for="pl-time-type">Time</label>
+            <select id="pl-time-type" class="pl-form-select" onchange="window.PurchaseListPage && window.PurchaseListPage.onTimeTypeChange()">
+              <option value="anytime">Any time that day</option>
+              <option value="specific">Specific time</option>
+            </select>
+          </div>
+          <div class="pl-form-group" id="pl-specific-time-group" style="display:none;">
+            <label class="pl-form-label" for="pl-specific-time">Time *</label>
+            <input type="time" id="pl-specific-time" class="pl-form-input">
+          </div>
+        </div>
+
+        <!-- Repeat -->
+        <div class="pl-form-group">
+          <label class="pl-form-label" for="pl-repeat-type">Repeat</label>
+          <select id="pl-repeat-type" class="pl-form-select">
+            <option value="once">Once</option>
+            <option value="weekly">Weekly</option>
+          </select>
+        </div>
+
+        <div class="pl-form-hint" style="margin-top:0;">
+          Max 3 reminders per item · 30-minute cooldown between alerts
+        </div>
+      </form>
+      <div class="pl-modal-footer">
+        <button type="button" class="pl-btn-ghost" id="pl-modal-cancel-btn">Cancel</button>
+        <button type="button" class="pl-btn-primary" id="pl-modal-save-btn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Save Item
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import purchaseService from '/src/services/purchaseService.js';
+    import purchaseReminderService from '/src/services/purchaseReminderService.js';
+
+    // Service-worker registration
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(err => {
+        console.warn('[PurchaseList] SW registration failed:', err);
+      });
+
+      // Handle notification tap → highlight item
+      navigator.serviceWorker.addEventListener('message', (event) => {
+        const { type, itemId } = event.data || {};
+        if (type === 'PURCHASE_REMINDER_TAP' && itemId) {
+          highlightItem(itemId);
+        }
+        if (type === 'PURCHASE_CHECK_REMINDERS') {
+          page.checkDateTimeReminders();
+        }
+      });
+    }
+
+    // ─── State ───────────────────────────────────────────────────
+    let items = [];
+    let currentFilter = 'all';
+    let editId = null;
+    let locationType = 'specific';
+    let dateType = 'specific';
+    let mapLoaded = false;
+    let leafletMap = null;
+    let leafletMarker = null;
+
+    // ─── Initialise on page load ─────────────────────────────────
+    async function init() {
+      populateProfileUI();
+      setupMobileNav();
+      setupModalListeners();
+      await checkPermissionsAndShowBanner();
+      await loadItems();
+      startReminderMonitoring();
+
+      // Handle URL ?highlight=xxx
+      const urlParams = new URLSearchParams(window.location.search);
+      const highlightId = urlParams.get('highlight');
+      if (highlightId) {
+        setTimeout(() => highlightItem(highlightId), 400);
+      }
+    }
+
+    function populateProfileUI() {
+      const email = localStorage.getItem('user_email') || '';
+      let name = '';
+      try {
+        const userJson = localStorage.getItem('user') || localStorage.getItem('streako_user') || '{}';
+        const u = JSON.parse(userJson);
+        name = u.fullName || u.full_name || u.name || '';
+      } catch (e) {}
+      if (!name && email) {
+        const p = email.split('@')[0];
+        name = p.charAt(0).toUpperCase() + p.slice(1);
+      }
+      const nameEl = document.getElementById('pl-sidebar-name');
+      const emailEl = document.getElementById('pl-sidebar-email');
+      const avatarEl = document.getElementById('pl-sidebar-avatar');
+      if (nameEl && name) nameEl.textContent = name;
+      if (emailEl && email) emailEl.textContent = email;
+      if (avatarEl && name) avatarEl.textContent = name.charAt(0).toUpperCase();
+    }
+
+    function setupMobileNav() {
+      const hamburger = document.getElementById('pl-hamburger-btn');
+      const sidebar = document.getElementById('pl-sidebar');
+      const overlay = document.getElementById('pl-sidebar-overlay');
+      if (hamburger && sidebar && overlay) {
+        hamburger.onclick = () => {
+          sidebar.classList.toggle('open');
+          overlay.style.display = sidebar.classList.contains('open') ? 'block' : 'none';
+        };
+        overlay.onclick = () => {
+          sidebar.classList.remove('open');
+          overlay.style.display = 'none';
+        };
+      }
+    }
+
+    // ─── Permission checks ────────────────────────────────────────
+    async function checkPermissionsAndShowBanner() {
+      const permKey = 'streako_purchase_perms_explained';
+      if (!localStorage.getItem(permKey)) {
+        // First time: show explain modal
+        showPermissionModal();
+        return;
+      }
+      const { location } = await purchaseReminderService.checkPermissions();
+      const banner = document.getElementById('pl-loc-banner');
+      if (banner) {
+        if (location === 'denied') {
+          banner.classList.remove('hidden');
+        } else {
+          banner.classList.add('hidden');
+        }
+      }
+    }
+
+    function showPermissionModal() {
+      document.getElementById('pl-permission-modal').classList.add('open');
+    }
+
+    document.getElementById('pl-grant-all-btn').onclick = async () => {
+      document.getElementById('pl-permission-modal').classList.remove('open');
+      localStorage.setItem('streako_purchase_perms_explained', '1');
+      await purchaseReminderService.requestNotificationPermission();
+      await purchaseReminderService.requestLocationPermission();
+      await checkPermissionsAndShowBanner();
+    };
+    document.getElementById('pl-skip-perms-btn').onclick = () => {
+      document.getElementById('pl-permission-modal').classList.remove('open');
+      localStorage.setItem('streako_purchase_perms_explained', '1');
+      const banner = document.getElementById('pl-loc-banner');
+      if (banner) banner.classList.remove('hidden');
+    };
+
+    // ─── Load items ───────────────────────────────────────────────
+    async function loadItems() {
+      showLoading(true);
+      hideError();
+      try {
+        items = await purchaseService.getItems();
+        renderItems();
+      } catch (err) {
+        showError('Failed to load items: ' + (err.message || 'Network error'));
+        items = purchaseService.getLocalItems();
+        renderItems();
+      }
+      showLoading(false);
+    }
+
+    // ─── Render ───────────────────────────────────────────────────
+    function renderItems() {
+      const grid = document.getElementById('pl-items-grid');
+      const empty = document.getElementById('pl-empty');
+      const badge = document.getElementById('pl-count-badge');
+      if (!grid) return;
+
+      let filtered = currentFilter === 'all'
+        ? items
+        : items.filter(i => i.status === currentFilter);
+
+      if (badge) {
+        badge.textContent = `${items.length} item${items.length !== 1 ? 's' : ''}`;
+      }
+
+      if (filtered.length === 0) {
+        grid.style.display = 'none';
+        if (empty) empty.style.display = 'flex';
+        return;
+      }
+
+      if (empty) empty.style.display = 'none';
+      grid.style.display = 'grid';
+      grid.innerHTML = filtered.map(item => itemCardHTML(item)).join('');
+    }
+
+    function itemCardHTML(item) {
+      const statusClass = item.status === 'Pending' ? 'pending' : item.status === 'Reminder active' ? 'active' : 'done';
+      const statusLabel = item.status;
+      const isDone = item.status === 'Done';
+
+      // Location line
+      let locLine = '';
+      if (item.locationType === 'specific') {
+        locLine = item.placeName || (item.latitude != null ? `${Number(item.latitude).toFixed(4)}, ${Number(item.longitude).toFixed(4)}` : '');
+      } else {
+        locLine = item.placeType || '';
+      }
+
+      // Date line
+      let dateLine = '';
+      if (item.dateType === 'specific' && item.specificDate) {
+        dateLine = new Date(item.specificDate + 'T00:00:00').toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+      } else if (item.dateType === 'day_of_week' && item.dayOfWeek) {
+        dateLine = capitalize(item.dayOfWeek) + 's';
+        if (item.repeatType === 'weekly') dateLine += ' (weekly)';
+      }
+
+      // Time line
+      let timeLine = item.timeType === 'specific' && item.specificTime
+        ? formatTime(item.specificTime)
+        : 'Any time';
+
+      const reminderText = item.reminderCount > 0
+        ? `${item.reminderCount}/3 reminder${item.reminderCount !== 1 ? 's' : ''} sent`
+        : 'No reminders sent yet';
+
+      return `<div class="pl-card${isDone ? ' done' : ''}" id="pl-card-${escHtml(String(item.id))}">
+        <div class="pl-card-header">
+          <span class="pl-card-name" title="${escHtml(item.itemName)}">${escHtml(item.itemName)}</span>
+          <div class="pl-card-actions">
+            ${!isDone ? `<button type="button" class="pl-card-btn edit-btn" title="Edit" onclick="window.PurchaseListPage.openEditModal('${escHtml(String(item.id))}')" aria-label="Edit ${escHtml(item.itemName)}">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>` : ''}
+            ${!isDone ? `<button type="button" class="pl-card-btn done-btn" title="Mark Done" onclick="window.PurchaseListPage.markDone('${escHtml(String(item.id))}')" aria-label="Mark ${escHtml(item.itemName)} as done">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>` : ''}
+            <button type="button" class="pl-card-btn delete-btn" title="Delete" onclick="window.PurchaseListPage.deleteItem('${escHtml(String(item.id))}')" aria-label="Delete ${escHtml(item.itemName)}">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            </button>
+          </div>
+        </div>
+        <span class="pl-status-badge ${statusClass}">${statusLabel}</span>
+        <div style="margin-top:12px;display:flex;flex-direction:column;gap:5px;">
+          ${locLine ? `<div class="pl-card-detail">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>${escHtml(locLine)}</span>
+          </div>` : ''}
+          ${dateLine ? `<div class="pl-card-detail">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+            <span>${escHtml(dateLine)}</span>
+          </div>` : ''}
+          <div class="pl-card-detail">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>${escHtml(timeLine)}</span>
+          </div>
+        </div>
+        <div class="pl-card-footer">
+          <span class="pl-reminder-info">${reminderText}</span>
+          <span style="font-size:11px;color:#7d9c8c;">${item.createdAt ? new Date(item.createdAt).toLocaleDateString('en-IN', {day:'numeric',month:'short'}) : ''}</span>
+        </div>
+      </div>`;
+    }
+
+    function highlightItem(id) {
+      const card = document.getElementById('pl-card-' + id);
+      if (card) {
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        card.classList.add('highlighted');
+        setTimeout(() => card.classList.remove('highlighted'), 7000);
+      }
+    }
+
+    // ─── Modal ────────────────────────────────────────────────────
+    function setupModalListeners() {
+      document.getElementById('pl-add-btn').onclick = () => openAddModal();
+      document.getElementById('pl-modal-close-btn').onclick = closeModal;
+      document.getElementById('pl-modal-cancel-btn').onclick = closeModal;
+      document.getElementById('pl-modal-save-btn').onclick = saveItem;
+      document.getElementById('pl-modal').onclick = (e) => {
+        if (e.target === e.currentTarget) closeModal();
+      };
+      document.getElementById('pl-use-my-loc-btn').onclick = useMyLocation;
+      document.getElementById('pl-place-search-btn').onclick = searchPlace;
+      document.getElementById('pl-place-search').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); searchPlace(); }
+      });
+    }
+
+    function openAddModal() {
+      editId = null;
+      locationType = 'specific';
+      dateType = 'specific';
+      document.getElementById('pl-modal-title-text').textContent = 'Add Purchase Item';
+      document.getElementById('pl-item-form').reset();
+      document.getElementById('pl-edit-id').value = '';
+      document.getElementById('pl-latitude').value = '';
+      document.getElementById('pl-longitude').value = '';
+      document.getElementById('pl-coords-display').classList.remove('visible');
+      const mapOverlay = document.getElementById('pl-map-overlay');
+      if (mapOverlay) mapOverlay.classList.remove('hidden');
+      resetTogglePills();
+
+      // Default date to today
+      const today = new Date();
+      const todayStr = today.toISOString().split('T')[0];
+      document.getElementById('pl-specific-date').value = todayStr;
+
+      document.getElementById('pl-modal').classList.add('open');
+      setTimeout(() => document.getElementById('pl-item-name').focus(), 200);
+    }
+
+    function openEditModal(id) {
+      const item = items.find(i => String(i.id) === String(id));
+      if (!item) return;
+      editId = id;
+      locationType = item.locationType || 'specific';
+      dateType = item.dateType || 'specific';
+      document.getElementById('pl-modal-title-text').textContent = 'Edit Purchase Item';
+      document.getElementById('pl-edit-id').value = id;
+      document.getElementById('pl-item-name').value = item.itemName || '';
+      document.getElementById('pl-place-name').value = item.placeName || '';
+      document.getElementById('pl-address').value = item.address || '';
+      document.getElementById('pl-latitude').value = item.latitude != null ? item.latitude : '';
+      document.getElementById('pl-longitude').value = item.longitude != null ? item.longitude : '';
+      document.getElementById('pl-place-type').value = item.placeType || '';
+      document.getElementById('pl-specific-date').value = item.specificDate || '';
+      document.getElementById('pl-day-of-week').value = item.dayOfWeek || '';
+      document.getElementById('pl-time-type').value = item.timeType || 'anytime';
+      document.getElementById('pl-specific-time').value = item.specificTime || '';
+      document.getElementById('pl-repeat-type').value = item.repeatType || 'once';
+
+      const coordsEl = document.getElementById('pl-coords-display');
+      if (item.latitude != null && item.longitude != null) {
+        coordsEl.textContent = `📍 Selected: ${Number(item.latitude).toFixed(5)}, ${Number(item.longitude).toFixed(5)}`;
+        coordsEl.classList.add('visible');
+        const mapOverlay = document.getElementById('pl-map-overlay');
+        if (mapOverlay) mapOverlay.classList.add('hidden');
+      }
+
+      setLocationType(locationType);
+      setDateType(dateType);
+      onTimeTypeChange();
+
+      document.getElementById('pl-modal').classList.add('open');
+      setTimeout(() => document.getElementById('pl-item-name').focus(), 200);
+    }
+
+    function closeModal() {
+      document.getElementById('pl-modal').classList.remove('open');
+      if (leafletMap) {
+        try { leafletMap.remove(); } catch (e) {}
+        leafletMap = null;
+        leafletMarker = null;
+        mapLoaded = false;
+      }
+      const mc = document.getElementById('pl-map-container');
+      if (mc) mc.innerHTML = '<div class="pl-map-overlay" id="pl-map-overlay"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span style="font-size:13px;color:#4b6d5b;text-align:center;">Search for a place or click<br><strong>"Use My Location"</strong></span><button type="button" class="pl-btn-secondary" id="pl-use-my-loc-btn" style="font-size:12px;padding:7px 14px;">📍 Use My Location</button></div>';
+      const newLocBtn = document.getElementById('pl-use-my-loc-btn');
+      if (newLocBtn) newLocBtn.onclick = useMyLocation;
+    }
+
+    // ─── Location type toggle ────────────────────────────────────
+    function setLocationType(type) {
+      locationType = type;
+      document.getElementById('pl-loc-specific-btn').classList.toggle('selected', type === 'specific');
+      document.getElementById('pl-loc-type-btn').classList.toggle('selected', type === 'type');
+      document.getElementById('pl-specific-loc-fields').style.display = type === 'specific' ? '' : 'none';
+      document.getElementById('pl-type-loc-fields').style.display = type === 'type' ? '' : 'none';
+    }
+
+    function setDateType(type) {
+      dateType = type;
+      document.getElementById('pl-date-specific-btn').classList.toggle('selected', type === 'specific');
+      document.getElementById('pl-date-day-btn').classList.toggle('selected', type === 'day_of_week');
+      document.getElementById('pl-specific-date-fields').style.display = type === 'specific' ? '' : 'none';
+      document.getElementById('pl-dow-fields').style.display = type === 'day_of_week' ? '' : 'none';
+    }
+
+    function onTimeTypeChange() {
+      const timeType = document.getElementById('pl-time-type').value;
+      document.getElementById('pl-specific-time-group').style.display = timeType === 'specific' ? '' : 'none';
+    }
+
+    function resetTogglePills() {
+      setLocationType('specific');
+      setDateType('specific');
+      document.getElementById('pl-time-type').value = 'anytime';
+      document.getElementById('pl-specific-time-group').style.display = 'none';
+    }
+
+    // ─── Map / geocoding (OpenStreetMap / Leaflet) ───────────────
+    async function searchPlace() {
+      const query = document.getElementById('pl-place-search').value.trim();
+      if (!query) return;
+
+      const btn = document.getElementById('pl-place-search-btn');
+      btn.textContent = '…'; btn.disabled = true;
+
+      try {
+        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`;
+        const res = await fetch(url, { headers: { 'Accept-Language': 'en' } });
+        if (!res.ok) throw new Error('Search failed: ' + res.status);
+        const results = await res.json();
+        if (!results.length) {
+          showError('No place found for "' + query + '". Try a different name or address.');
+          return;
+        }
+        const place = results[0];
+        const lat = parseFloat(place.lat);
+        const lng = parseFloat(place.lon);
+        const displayName = place.display_name || query;
+
+        setMapCoords(lat, lng);
+
+        // Pre-fill place name if empty
+        const placeNameInput = document.getElementById('pl-place-name');
+        if (placeNameInput && !placeNameInput.value) {
+          placeNameInput.value = query;
+        }
+        const addrInput = document.getElementById('pl-address');
+        if (addrInput && !addrInput.value) {
+          addrInput.value = displayName.substring(0, 200);
+        }
+      } catch (err) {
+        showError('Search error: ' + (err.message || 'Unknown error. Check your connection.'));
+      } finally {
+        btn.textContent = 'Search'; btn.disabled = false;
+      }
+    }
+
+    function useMyLocation() {
+      if (!navigator.geolocation) {
+        showError('Geolocation is not supported by your browser.');
+        return;
+      }
+      const btn = document.getElementById('pl-use-my-loc-btn');
+      if (btn) { btn.textContent = 'Getting location…'; btn.disabled = true; }
+
+      navigator.geolocation.getCurrentPosition(
+        async (pos) => {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+          setMapCoords(lat, lng);
+
+          // Reverse geocode
+          try {
+            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
+            if (res.ok) {
+              const data = await res.json();
+              const addrInput = document.getElementById('pl-address');
+              if (addrInput && !addrInput.value && data.display_name) {
+                addrInput.value = data.display_name.substring(0, 200);
+              }
+            }
+          } catch (e) { /* non-critical */ }
+
+          if (btn) { btn.textContent = '📍 Use My Location'; btn.disabled = false; }
+        },
+        (err) => {
+          showError('Location error: ' + err.message);
+          if (btn) { btn.textContent = '📍 Use My Location'; btn.disabled = false; }
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+      );
+    }
+
+    function setMapCoords(lat, lng) {
+      document.getElementById('pl-latitude').value = lat;
+      document.getElementById('pl-longitude').value = lng;
+
+      const coordsEl = document.getElementById('pl-coords-display');
+      if (coordsEl) {
+        coordsEl.textContent = `📍 Selected: ${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+        coordsEl.classList.add('visible');
+      }
+
+      // Show map in iframe (OpenStreetMap embed)
+      const mapOverlay = document.getElementById('pl-map-overlay');
+      if (mapOverlay) mapOverlay.classList.add('hidden');
+
+      const mc = document.getElementById('pl-map-container');
+      if (mc) {
+        mc.innerHTML = `<iframe
+          src="https://www.openstreetmap.org/export/embed.html?bbox=${lng-0.005},${lat-0.005},${lng+0.005},${lat+0.005}&layer=mapnik&marker=${lat},${lng}"
+          loading="lazy"
+          title="Selected location map"
+          style="width:100%;height:100%;border:none;">
+        </iframe>`;
+      }
+    }
+
+    // ─── Save / Delete / Mark Done ────────────────────────────────
+    async function saveItem() {
+      hideError();
+      const name = document.getElementById('pl-item-name').value.trim();
+      if (!name) { showError('Please enter an item name.'); return; }
+
+      const timeType = document.getElementById('pl-time-type').value;
+      const itemData = {
+        itemName: name,
+        locationType,
+        placeName: document.getElementById('pl-place-name').value.trim(),
+        placeType: document.getElementById('pl-place-type').value,
+        latitude: document.getElementById('pl-latitude').value ? parseFloat(document.getElementById('pl-latitude').value) : null,
+        longitude: document.getElementById('pl-longitude').value ? parseFloat(document.getElementById('pl-longitude').value) : null,
+        address: document.getElementById('pl-address').value.trim(),
+        dateType,
+        specificDate: dateType === 'specific' ? document.getElementById('pl-specific-date').value : null,
+        dayOfWeek: dateType === 'day_of_week' ? document.getElementById('pl-day-of-week').value : null,
+        timeType,
+        specificTime: timeType === 'specific' ? document.getElementById('pl-specific-time').value : null,
+        repeatType: document.getElementById('pl-repeat-type').value,
+        status: 'Pending'
+      };
+
+      // Validate
+      if (locationType === 'type' && !itemData.placeType) {
+        showError('Please select a place type.'); return;
+      }
+      if (dateType === 'specific' && !itemData.specificDate) {
+        showError('Please select a date.'); return;
+      }
+      if (dateType === 'day_of_week' && !itemData.dayOfWeek) {
+        showError('Please select a day of the week.'); return;
+      }
+      if (timeType === 'specific' && !itemData.specificTime) {
+        showError('Please enter a specific time.'); return;
+      }
+
+      const saveBtn = document.getElementById('pl-modal-save-btn');
+      saveBtn.textContent = 'Saving…'; saveBtn.disabled = true;
+
+      try {
+        if (editId) {
+          const updated = await purchaseService.updateItem(editId, itemData);
+          const idx = items.findIndex(i => String(i.id) === String(editId));
+          if (idx !== -1) items[idx] = { ...items[idx], ...updated };
+        } else {
+          const created = await purchaseService.createItem(itemData);
+          items.unshift(created);
+        }
+        closeModal();
+        renderItems();
+        window.showNotification && window.showNotification(editId ? 'Item updated!' : 'Item added!', 'success');
+      } catch (err) {
+        showError('Failed to save: ' + (err.message || 'Unknown error.'));
+      } finally {
+        saveBtn.textContent = 'Save Item'; saveBtn.disabled = false;
+      }
+    }
+
+    async function markDone(id) {
+      try {
+        await purchaseService.updateStatus(id, 'Done');
+        const item = items.find(i => String(i.id) === String(id));
+        if (item) item.status = 'Done';
+        renderItems();
+        window.showNotification && window.showNotification('Marked as done! 🎉', 'success');
+      } catch (err) {
+        showError('Could not update status: ' + err.message);
+      }
+    }
+
+    async function deleteItem(id) {
+      const item = items.find(i => String(i.id) === String(id));
+      if (!item) return;
+      if (!confirm(`Delete "${item.itemName}"? This cannot be undone.`)) return;
+
+      try {
+        await purchaseService.deleteItem(id);
+        items = items.filter(i => String(i.id) !== String(id));
+        renderItems();
+        window.showNotification && window.showNotification('Item deleted.', 'info');
+      } catch (err) {
+        showError('Failed to delete: ' + err.message);
+      }
+    }
+
+    // ─── Filter ───────────────────────────────────────────────────
+    function setFilter(filter) {
+      currentFilter = filter;
+      document.querySelectorAll('.pl-filter-btn').forEach(b => b.classList.remove('active'));
+      const map = { all: 'pl-filter-all', 'Pending': 'pl-filter-pending', 'Reminder active': 'pl-filter-active', 'Done': 'pl-filter-done' };
+      const el = document.getElementById(map[filter]);
+      if (el) el.classList.add('active');
+      renderItems();
+    }
+
+    // ─── Reminders ────────────────────────────────────────────────
+    function startReminderMonitoring() {
+      purchaseReminderService.subscribe((event, data) => {
+        if (event === 'reminder_fired') {
+          const idx = items.findIndex(i => String(i.id) === String(data.item.id));
+          if (idx !== -1) {
+            items[idx].reminderCount = (items[idx].reminderCount || 0) + 1;
+            items[idx].status = 'Reminder active';
+            renderItems();
+          }
+        }
+      });
+      purchaseReminderService.startMonitoring();
+    }
+
+    function checkDateTimeReminders() {
+      purchaseReminderService.checkDateTimeReminders();
+    }
+
+    // ─── UI helpers ───────────────────────────────────────────────
+    function showLoading(val) {
+      const l = document.getElementById('pl-loading');
+      const g = document.getElementById('pl-items-grid');
+      if (!l || !g) return;
+      l.style.display = val ? 'flex' : 'none';
+      if (val) { g.style.display = 'none'; }
+    }
+
+    function showError(msg) {
+      const box = document.getElementById('pl-error-box');
+      const txt = document.getElementById('pl-error-text');
+      if (box && txt) {
+        txt.textContent = msg;
+        box.classList.remove('hidden');
+        setTimeout(() => box.classList.add('hidden'), 6000);
+      }
+    }
+    function hideError() {
+      const box = document.getElementById('pl-error-box');
+      if (box) box.classList.add('hidden');
+    }
+
+    function escHtml(str) {
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
+    function capitalize(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
+    function formatTime(t) {
+      if (!t) return '';
+      const [h, m] = t.split(':').map(Number);
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      const hh = h % 12 || 12;
+      return `${hh}:${String(m).padStart(2,'0')} ${ampm}`;
+    }
+
+    // ─── Expose public API for onclick attrs ──────────────────────
+    window.PurchaseListPage = {
+      openAddModal,
+      openEditModal,
+      markDone,
+      deleteItem,
+      setFilter,
+      setLocationType,
+      setDateType,
+      onTimeTypeChange,
+      showPermissionModal,
+      checkDateTimeReminders
+    };
+
+    // Boot
+    init().catch(err => {
+      console.error('[PurchaseList] Init error:', err);
+      document.getElementById('pl-loading') && (document.getElementById('pl-loading').style.display = 'none');
+    });
+  </script>
+</div>

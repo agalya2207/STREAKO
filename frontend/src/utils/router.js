@@ -33,7 +33,8 @@ export class Router {
             '/analytics': 'analytics.html',
             '/journal': 'journal.html',
             '/mentor-dashboard': 'mentor-dashboard.html',
-            '/settings': 'settings.html'
+            '/settings': 'settings.html',
+            '/purchase-list': 'purchase-list.html'
         };
 
         const pageFile = routeMap[path] || 'landing.html';

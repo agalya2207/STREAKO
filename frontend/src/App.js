@@ -63,7 +63,8 @@ class App {
                 'analytics': '/analytics',
                 'journal': '/journal',
                 'mentor-dashboard': '/mentor-dashboard',
-                'settings': '/settings'
+                'settings': '/settings',
+                'purchase-list': '/purchase-list'
             };
             this.router.navigate(routeMap[pageId] || '/');
         };
