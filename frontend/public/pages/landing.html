@@ -422,7 +422,7 @@ html,body{
             <rect x="120" y="46" width="62" height="7" rx="3.5" fill="#cbd5e1"/>
 
             <!-- Row 2 - checked -->
-            <rect x="98" y="66" width="15" height="15" rx="4" fill="#34d399"/>
+            <rect x="98" y="66" width="15" height="15" rx="4" fill="#3b82f6"/>
             <path d="M101.5 74l3.5 3.5 5.5-6.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <rect x="120" y="70" width="50" height="7" rx="3.5" fill="#cbd5e1"/>
 
@@ -430,10 +430,11 @@ html,body{
             <rect x="98" y="90" width="15" height="15" rx="4" fill="none" stroke="#10b981" stroke-width="2"/>
             <rect x="120" y="94" width="56" height="7" rx="3.5" fill="#cbd5e1"/>
 
-            <!-- Flame in phone -->
+            <!-- Flame in phone (orange like page 2 Streaks) -->
+            <circle cx="148" cy="133" r="16" fill="rgba(245,158,11,0.18)"/>
             <path d="M148 122c2 8 10 11 10 21a10 10 0 0 1-20 0c0-4.5 2-7 4.5-8.5 0 4 2.5 6 4 6-1-7.5-2.5-12 1.5-18.5z"
-                  fill="#10b981"/>
-            <path d="M148 137c2 3 5 5 5 8.5a5 5 0 0 1-10 0c0-3 3-5 5-8.5z" fill="#a7f3d0"/>
+                  fill="#f59e0b"/>
+            <path d="M148 137c2 3 5 5 5 8.5a5 5 0 0 1-10 0c0-3 3-5 5-8.5z" fill="#fde68a"/>
 
             <!-- Phone bottom bar -->
             <rect x="90" y="168" width="100" height="20" rx="10" fill="#2d4a38"/>
@@ -452,12 +453,12 @@ html,body{
 
         <!-- Chips -->
         <div class="lp-chips">
-          <div class="lp-chip">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>
+          <div class="lp-chip" style="color:#059669; border-color:rgba(16,185,129,0.3); background:rgba(16,185,129,0.08);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>
             One-tap check-in
           </div>
-          <div class="lp-chip">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 8-3 8h18s-3-1-3-8M10 21h4"/></svg>
+          <div class="lp-chip" style="color:#2563eb; border-color:rgba(59,130,246,0.3); background:rgba(59,130,246,0.08);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.2" stroke-linecap="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 8-3 8h18s-3-1-3-8M10 21h4"/></svg>
             Reminders
           </div>
         </div>
@@ -521,6 +522,25 @@ html,body{
         <!-- Illustration -->
         <div class="lp-art">
           <svg viewBox="0 0 280 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="barGreen" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#34d399"/>
+                <stop offset="100%" stop-color="#10b981"/>
+              </linearGradient>
+              <linearGradient id="barOrange" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#fbbf24"/>
+                <stop offset="100%" stop-color="#f59e0b"/>
+              </linearGradient>
+              <linearGradient id="barBlue" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#60a5fa"/>
+                <stop offset="100%" stop-color="#3b82f6"/>
+              </linearGradient>
+              <linearGradient id="barPurple" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#c084fc"/>
+                <stop offset="100%" stop-color="#8b5cf6"/>
+              </linearGradient>
+            </defs>
+
             <!-- Background blob -->
             <circle cx="140" cy="110" r="88" fill="rgba(255,255,255,0.4)"/>
 
@@ -530,18 +550,18 @@ html,body{
             <!-- Bottom baseline -->
             <line x1="46" y1="168" x2="214" y2="168" stroke="#e2e8f0" stroke-width="2"/>
 
-            <!-- Bar chart bars (light → dark green, increasing height) -->
-            <rect x="54"  y="138" width="26" height="30" rx="5" fill="#a7f3d0"/>
-            <rect x="90"  y="120" width="26" height="48" rx="5" fill="#6ee7b7"/>
-            <rect x="126" y="102" width="26" height="66" rx="5" fill="#34d399"/>
-            <rect x="162" y="80"  width="26" height="88" rx="5" fill="#10b981"/>
+            <!-- Bar chart bars (Colorful: Green, Orange, Blue, Purple) -->
+            <rect x="54"  y="138" width="26" height="30" rx="6" fill="url(#barGreen)"/>
+            <rect x="90"  y="120" width="26" height="48" rx="6" fill="url(#barOrange)"/>
+            <rect x="126" y="102" width="26" height="66" rx="6" fill="url(#barBlue)"/>
+            <rect x="162" y="80"  width="26" height="88" rx="6" fill="url(#barPurple)"/>
 
             <!-- Dotted trend line -->
-            <path d="M67 132 L103 114 L139 96 L175 74" stroke="#475569" stroke-width="2.5"
+            <path d="M67 132 L103 114 L139 96 L175 74" stroke="#8b5cf6" stroke-width="2.5"
                   stroke-dasharray="4 6" stroke-linecap="round" fill="none"/>
 
-            <!-- Checkmark badge top-right -->
-            <circle cx="224" cy="56" r="22" fill="#10b981"/>
+            <!-- Coral red Goals checkmark badge top-right -->
+            <circle cx="224" cy="56" r="22" fill="#ef4444"/>
             <path d="M213 56l7 7 13-14" stroke="white" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
 
             <!-- Shadow under card -->
@@ -557,12 +577,12 @@ html,body{
 
         <!-- Chips -->
         <div class="lp-chips">
-          <div class="lp-chip">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18M6 16V10M12 16V5M18 16v-8"/></svg>
+          <div class="lp-chip" style="color:#7c3aed; border-color:rgba(139,92,246,0.3); background:rgba(139,92,246,0.08);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18M6 16V10M12 16V5M18 16v-8"/></svg>
             Insights
           </div>
-          <div class="lp-chip">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>
+          <div class="lp-chip" style="color:#dc2626; border-color:rgba(239,68,68,0.3); background:rgba(239,68,68,0.08);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>
             Goals
           </div>
         </div>
