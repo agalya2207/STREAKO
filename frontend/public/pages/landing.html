@@ -181,15 +181,27 @@ html,body{
 .lp-chip svg{width:15px;height:15px;flex-shrink:0}
 
 /* ═══ NAVIGATION BAR ════════════════════════════════════════════════════════ */
-.lp-nav{
+.lp-bottom-bar{
   width:100%;
   display:flex;
+  flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap:14px;
+  gap:16px;
   padding:10px 0 max(20px, env(safe-area-inset-bottom, 16px));
   flex-shrink:0;
   z-index:2;
+}
+.lp-btn-slot{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+}
+.lp-nav{
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 .lp-next-btn{
   display:inline-flex;
@@ -214,7 +226,7 @@ html,body{
 }
 .lp-next-btn:active{transform:scale(.97)}
 .lp-next-btn svg{width:16px;height:16px;flex-shrink:0}
-.lp-dots{display:flex;gap:7px;align-items:center}
+.lp-dots{display:flex;gap:7px;align-items:center;justify-content:center}
 .lp-dot{
   width:9px;height:9px;
   border-radius:99px;
@@ -250,11 +262,7 @@ html,body{
   width:100%;
   align-items:center;
   justify-content:center;
-  padding-bottom:max(22px, env(safe-area-inset-bottom, 16px));
-  flex-shrink:0;
 }
-.last-slide .lp-cta-wrap{display:flex}
-.last-slide .lp-nav{display:none}
 
 /* ═══ DESKTOP OVERRIDES (≥ 769px) ═══════════════════════════════════════════ */
 @media (min-width:769px){
@@ -275,10 +283,72 @@ html,body{
   .lp-h1{font-size:26px}
   .lp-desc{font-size:14px}
 }
+
+/* ═══ 5 TOOLS GRID (Slide 2) ══════════════════════════════════════════════ */
+.lp-tools-grid{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:10px;
+  width:100%;
+  max-width:330px;
+  margin:10px 0;
+  flex-shrink:0;
+}
+.lp-tool-card{
+  width:calc((100% - 20px)/3);
+  aspect-ratio:1/.86;
+  border-radius:18px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  background:color-mix(in srgb,var(--c) 12%,#ffffff);
+  border:1.5px solid color-mix(in srgb,var(--c) 25%,transparent);
+  font:600 13px Inter;
+  color:var(--ink);
+  box-shadow:0 6px 16px rgba(0,0,0,0.04);
+  transition:all .2s;
+}
+.lp-tool-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 10px 22px rgba(0,0,0,0.08);
+}
+.lp-tool-ic{
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  background:var(--c);
+  display:grid;
+  place-items:center;
+  box-shadow:0 6px 14px color-mix(in srgb,var(--c) 35%,transparent);
+}
+.lp-tool-ic svg{
+  width:22px;
+  height:22px;
+}
+
+/* Top Skip Button */
+.lp-skip{
+  position:absolute;
+  top:max(20px, env(safe-area-inset-top, 16px));
+  right:20px;
+  border:0;
+  background:none;
+  color:var(--muted);
+  font:600 15px Inter;
+  cursor:pointer;
+  z-index:10;
+  padding:6px 10px;
+  transition:color .2s;
+}
+.lp-skip:hover{color:var(--ink)}
 </style>
 </head>
 <body>
 <div class="lp-root" id="lp-root">
+  <button class="lp-skip" type="button" onclick="lpFinish()">Skip</button>
 
   <!-- ── LOGO ──────────────────────────────────────────────────────────── -->
   <div class="lp-logo">
@@ -375,70 +445,54 @@ html,body{
         </div>
       </div>
 
-      <!-- ══ SLIDE 2 ════════════════════════════════════════════════════ -->
-      <div class="lp-slide" aria-label="Keep your streak alive">
-
-        <!-- Illustration -->
-        <div class="lp-art">
-          <svg viewBox="0 0 280 240" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Background blob -->
-            <circle cx="140" cy="115" r="90" fill="rgba(255,255,255,0.4)"/>
-
-            <!-- Calendar body -->
-            <rect x="38" y="48" width="204" height="158" rx="16" fill="white" stroke="#2d4a38" stroke-width="4"/>
-            <!-- Calendar header green band -->
-            <rect x="38" y="48" width="204" height="44" rx="16" fill="#34d399"/>
-            <rect x="38" y="72" width="204" height="20" fill="#34d399"/>
-
-            <!-- Flame icon on calendar header -->
-            <path d="M140 36c1.5 6 7 9 7 16a7 7 0 0 1-14 0c0-3.5 1.5-5.5 3-6.5 0 3 2 4.5 3 4.5-.5-5.5-2-9 1-14z"
-                  fill="white"/>
-
-            <!-- Calendar dot grid: 3 rows × 7 cols  -->
-            <!-- Row 1 (all filled = 7) -->
-            <circle cx="68"  cy="115" r="10" fill="#10b981"/>
-            <circle cx="97"  cy="115" r="10" fill="#10b981"/>
-            <circle cx="126" cy="115" r="10" fill="#10b981"/>
-            <circle cx="155" cy="115" r="10" fill="#10b981"/>
-            <circle cx="184" cy="115" r="10" fill="#10b981"/>
-            <circle cx="213" cy="115" r="10" fill="#10b981"/>
-            <circle cx="242" cy="115" r="10" fill="#e5e7eb"/>
-
-            <!-- Row 2 (5 filled, 2 empty) -->
-            <circle cx="68"  cy="144" r="10" fill="#10b981"/>
-            <circle cx="97"  cy="144" r="10" fill="#10b981"/>
-            <circle cx="126" cy="144" r="10" fill="#10b981"/>
-            <circle cx="155" cy="144" r="10" fill="#10b981"/>
-            <circle cx="184" cy="144" r="10" fill="#10b981"/>
-            <circle cx="213" cy="144" r="10" fill="#e5e7eb"/>
-            <circle cx="242" cy="144" r="10" fill="#e5e7eb"/>
-
-            <!-- Row 3 (all empty) -->
-            <circle cx="68"  cy="173" r="10" fill="#e5e7eb"/>
-            <circle cx="97"  cy="173" r="10" fill="#e5e7eb"/>
-            <circle cx="126" cy="173" r="10" fill="#e5e7eb"/>
-            <circle cx="155" cy="173" r="10" fill="#e5e7eb"/>
-            <circle cx="184" cy="173" r="10" fill="#e5e7eb"/>
-            <circle cx="213" cy="173" r="10" fill="#e5e7eb"/>
-            <circle cx="242" cy="173" r="10" fill="#e5e7eb"/>
-          </svg>
-        </div>
+      <!-- ══ SLIDE 2 (5 Powerful Tools) ═════════════════════════════════ -->
+      <div class="lp-slide" aria-label="Your Daily Habit Tracker">
 
         <!-- Text -->
         <div class="lp-text">
-          <h1 class="lp-h1">Keep your <em>streak</em> alive</h1>
-          <p class="lp-desc">Watch your chain grow day after day. Miss a day and you'll know exactly where to restart.</p>
+          <h1 class="lp-h1">Your Daily Habit <em>Tracker</em></h1>
+          <p class="lp-desc">5 powerful tools in one app</p>
+        </div>
+
+        <!-- 5 Tools Grid -->
+        <div class="lp-tools-grid">
+          <div class="lp-tool-card" style="--c:#10b981">
+            <span class="lp-tool-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>
+            </span>
+            Habits
+          </div>
+          <div class="lp-tool-card" style="--c:#f59e0b">
+            <span class="lp-tool-ic">
+              <svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2c1 4 5 6 5 11a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-4-1-6 1-10z"/></svg>
+            </span>
+            Streaks
+          </div>
+          <div class="lp-tool-card" style="--c:#3b82f6">
+            <span class="lp-tool-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 8-3 8h18s-3-1-3-8M10 21h4"/></svg>
+            </span>
+            Reminders
+          </div>
+          <div class="lp-tool-card" style="--c:#8b5cf6">
+            <span class="lp-tool-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18M6 16V10M12 16V5M18 16v-8"/></svg>
+            </span>
+            Insights
+          </div>
+          <div class="lp-tool-card" style="--c:#ef4444">
+            <span class="lp-tool-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>
+            </span>
+            Goals
+          </div>
         </div>
 
         <!-- Chips -->
         <div class="lp-chips">
           <div class="lp-chip">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c1 4 5 6 5 11a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-4-1-6 1-10z"/></svg>
-            Streak counter
-          </div>
-          <div class="lp-chip">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
-            Calendar view
+            All-in-one suite
           </div>
         </div>
       </div>
@@ -499,17 +553,27 @@ html,body{
     </div><!-- /lp-track -->
   </div><!-- /lp-stage -->
 
-  <!-- ── NAV (next only) -->
-  <div class="lp-nav" id="lp-nav">
-    <button class="lp-next-btn" id="lp-next" aria-label="Next" type="button">
-      Next
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-    </button>
-  </div>
+  <!-- ── BOTTOM BAR (Button + Dots Underneath) ── -->
+  <div class="lp-bottom-bar">
+    <div class="lp-btn-slot">
+      <div class="lp-nav" id="lp-nav">
+        <button class="lp-next-btn" id="lp-next" aria-label="Next" type="button">
+          Next
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
 
-  <!-- ── GET STARTED BUTTON (last slide only) ───────────────────────────── -->
-  <div class="lp-cta-wrap" id="lp-cta-wrap">
-    <button class="lp-cta" type="button" onclick="lpFinish()">Get started</button>
+      <div class="lp-cta-wrap" id="lp-cta-wrap">
+        <button class="lp-cta" type="button" onclick="lpFinish()">Get started</button>
+      </div>
+    </div>
+
+    <!-- Dots directly under button -->
+    <div class="lp-dots" id="lp-dots" aria-hidden="true">
+      <button class="lp-dot on" type="button" onclick="go(0)" aria-label="Slide 1"></button>
+      <button class="lp-dot" type="button" onclick="go(1)" aria-label="Slide 2"></button>
+      <button class="lp-dot" type="button" onclick="go(2)" aria-label="Slide 3"></button>
+    </div>
   </div>
 
 </div><!-- /lp-root -->
@@ -557,6 +621,12 @@ html,body{
         navEl.style.display="flex";
         ctaWrap.style.display="none";
       }
+
+      var dots = document.querySelectorAll('.lp-dot');
+      dots.forEach(function(d, idx){
+        if(idx === i) d.classList.add('on');
+        else d.classList.remove('on');
+      });
     }
     window.go=go;
 
