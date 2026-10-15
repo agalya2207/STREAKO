@@ -418,9 +418,24 @@
     }
   });
 
-  document.getElementById('login-google-btn')?.addEventListener('click', function() {
-    if (window.app && window.app.signInWithGoogle) window.app.signInWithGoogle();
-    else window.location.href = '/api/auth/google';
+  document.getElementById('login-google-btn')?.addEventListener('click', async function(e) {
+    e.preventDefault();
+    if (typeof window.signInWithGoogle === 'function') {
+      window.signInWithGoogle();
+    } else if (window.app && typeof window.app.signInWithGoogle === 'function') {
+      window.app.signInWithGoogle();
+    } else {
+      try {
+        const mod = await import('/src/utils/googleAuth.js');
+        if (mod && mod.signInWithGoogle) {
+          mod.signInWithGoogle();
+          return;
+        }
+      } catch (err) {
+        console.warn('Dynamic import of googleAuth failed:', err);
+      }
+      window.location.href = '/api/auth/google';
+    }
   });
 })();
 </script>

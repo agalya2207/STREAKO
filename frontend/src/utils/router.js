@@ -15,6 +15,26 @@ export class Router {
     }
 
     async handleRoute(path) {
+        // Handle OAuth token in URL hash if returned by OAuth provider (e.g. Supabase / Google)
+        if (typeof window !== 'undefined' && window.location.hash && window.location.hash.includes('access_token=')) {
+            try {
+                const hashParams = new URLSearchParams(window.location.hash.substring(1));
+                const accessToken = hashParams.get('access_token');
+                const refreshToken = hashParams.get('refresh_token');
+                const expiresAt = hashParams.get('expires_at');
+                if (accessToken) {
+                    localStorage.setItem('access_token', accessToken);
+                    localStorage.setItem('streako_auth_token', accessToken);
+                    if (refreshToken) localStorage.setItem('refresh_token', refreshToken);
+                    if (expiresAt) localStorage.setItem('expires_at', expiresAt);
+                    window.history.replaceState({}, document.title, '/dashboard');
+                    return this.handleRoute('/dashboard');
+                }
+            } catch (hashErr) {
+                console.warn('OAuth hash parsing error:', hashErr);
+            }
+        }
+
         // Map paths to HTML files
         const routeMap = {
             '/': 'landing.html',
@@ -23,6 +43,7 @@ export class Router {
             '/login': 'login.html',
             '/forgot-password': 'forgot-password.html',
             '/reset-password': 'forgot-password.html',
+            '/auth/callback': 'auth-callback.html',
             '/role-selection': 'role-selection.html',
             '/onboarding': 'onboarding.html',
             '/dashboard': 'dashboard.html',
@@ -37,7 +58,7 @@ export class Router {
             '/purchase-list': 'purchase-list.html'
         };
 
-        const pageFile = routeMap[path] || 'landing.html';
+        const pageFile = routeMap[path] || (path.startsWith('/auth/callback') ? 'auth-callback.html' : 'landing.html');
         console.log(`[Router] Navigating to "${path}" -> fetching /pages/${pageFile}`);
 
         try {

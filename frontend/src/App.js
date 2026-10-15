@@ -1,6 +1,7 @@
 import { Router } from './utils/router.js';
 import { state } from './utils/state.js';
 import { Storage } from './utils/storage.js';
+import { signInWithGoogle } from './utils/googleAuth.js';
 
 // Smart API helper that handles both proxied /api and fallback to localhost:5000 in dev
 async function authApiRequest(endpoint, options = {}) {
@@ -28,11 +29,19 @@ class App {
         this.router = new Router();
         this.storage = Storage;
         this.state = state;
+        this.signInWithGoogle = signInWithGoogle;
     }
 
     init() {
-        // Expose global app instance for legacy inline handlers (onclick)
+        // Expose global app instance and Google sign in for legacy inline handlers (onclick)
         window.app = this;
+        window.signInWithGoogle = signInWithGoogle;
+        this.signInWithGoogle = signInWithGoogle;
+
+        // Auto-open Google modal if redirected back with ?google_modal=1
+        if (window.location.search && window.location.search.includes('google_modal=1')) {
+            setTimeout(() => signInWithGoogle(), 350);
+        }
 
         window.handleForgotPasswordClick = () => {
             const emailInput = document.getElementById('login-email');
@@ -2088,6 +2097,14 @@ class App {
             }
             
             if (path === '/login') {
+                const googleLoginBtn = document.getElementById('login-google-btn');
+                if (googleLoginBtn) {
+                    googleLoginBtn.onclick = (e) => {
+                        e.preventDefault();
+                        signInWithGoogle();
+                    };
+                }
+
                 const forgotLink = document.getElementById('forgot-password-link');
                 if (forgotLink) {
                     forgotLink.onclick = (e) => {
@@ -2372,6 +2389,14 @@ class App {
             }
 
             if (path === '/signup') {
+                const googleSignupBtn = document.getElementById('signup-google-btn');
+                if (googleSignupBtn) {
+                    googleSignupBtn.onclick = (e) => {
+                        e.preventDefault();
+                        signInWithGoogle();
+                    };
+                }
+
                 const signupForm = document.getElementById('signup-form');
                 if (signupForm) {
                     signupForm.onsubmit = async (e) => {

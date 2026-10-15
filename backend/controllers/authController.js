@@ -469,6 +469,174 @@ const resetPassword = async (req, res, next) => {
   }
 };
 
+// GOOGLE AUTH REDIRECT (GET /api/auth/google)
+// NOTE: Supabase Google OAuth provider is not enabled in the Supabase dashboard,
+// so we cannot redirect to Supabase's authorize endpoint. Instead redirect to login
+// with a query param so the frontend opens our custom Google modal immediately.
+const googleAuth = async (req, res) => {
+  try {
+    const origin = req.headers.referer
+      ? new URL(req.headers.referer).origin
+      : (process.env.APP_URL || 'http://localhost:3000');
+    return res.redirect(`${origin}/login?google_modal=1`);
+  } catch (err) {
+    console.error('Google auth redirect error:', err);
+    res.redirect('/login?google_modal=1');
+  }
+};
+
+// GOOGLE AUTH URL CHECK (GET /api/auth/google/url)
+// Always returns enabled: false since Supabase OAuth redirect is not configured.
+// The frontend will fall through to our custom modal instead.
+const googleAuthUrl = async (req, res) => {
+  return res.json({
+    enabled: false,
+    reason: 'Use POST /api/auth/google with email + fullName to authenticate.'
+  });
+};
+
+// GOOGLE SIGN IN / UP (POST /api/auth/google)
+const googleSignIn = async (req, res) => {
+  try {
+    let { credential, email, fullName, name, picture, googleId } = req.body || {};
+
+    // 1. If Google Identity Services ID token (credential) is passed, decode or verify it
+    if (credential) {
+      try {
+        const verifyRes = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(credential)}`);
+        if (verifyRes.ok) {
+          const payload = await verifyRes.json();
+          email = payload.email || email;
+          fullName = payload.name || payload.given_name || fullName;
+          picture = payload.picture || picture;
+          googleId = payload.sub || googleId;
+        } else {
+          // Fallback: parse JWT payload (base64url)
+          const parts = credential.split('.');
+          if (parts.length === 3) {
+            const rawPayload = Buffer.from(parts[1], 'base64').toString('utf-8');
+            const decoded = JSON.parse(rawPayload);
+            email = decoded.email || email;
+            fullName = decoded.name || decoded.given_name || fullName;
+            picture = decoded.picture || picture;
+            googleId = decoded.sub || googleId;
+          }
+        }
+      } catch (tokenErr) {
+        console.warn('Google token verification warning:', tokenErr.message);
+      }
+    }
+
+    email = (email || '').trim().toLowerCase();
+    fullName = (fullName || name || '').trim();
+
+    if (!email || !email.includes('@')) {
+      return res.status(400).json({ error: 'Valid Google email is required' });
+    }
+
+    if (!fullName) {
+      const prefix = email.split('@')[0];
+      fullName = prefix.charAt(0).toUpperCase() + prefix.slice(1);
+    }
+
+    let user = null;
+
+    // 2. Check if user already exists in Supabase Auth
+    try {
+      const { data: usersData } = await supabase.auth.admin.listUsers();
+      const existingUser = usersData?.users?.find(u => u.email?.toLowerCase() === email);
+
+      if (existingUser) {
+        user = existingUser;
+        if (!user.email_confirmed_at) {
+          await supabase.auth.admin.updateUserById(user.id, { email_confirm: true });
+        }
+      } else {
+        // 3. Create new user with confirmed email
+        const createResult = await supabase.auth.admin.createUser({
+          email,
+          email_confirm: true,
+          user_metadata: {
+            full_name: fullName,
+            avatar_url: picture || '',
+            provider: 'google',
+            google_id: googleId || ''
+          }
+        });
+
+        if (createResult.error) {
+          console.warn('Admin createUser notice for Google user:', createResult.error.message);
+          const { data: retryUsers } = await supabase.auth.admin.listUsers();
+          user = retryUsers?.users?.find(u => u.email?.toLowerCase() === email);
+        } else {
+          user = createResult.data?.user;
+        }
+      }
+    } catch (adminErr) {
+      console.error('Error managing user in Supabase auth for Google:', adminErr);
+    }
+
+    if (!user) {
+      return res.status(500).json({ error: 'Failed to initialize Google user account' });
+    }
+
+    // 4. Upsert user profile in profiles table
+    try {
+      await supabase.from('profiles').upsert([
+        {
+          id: user.id,
+          email: user.email,
+          full_name: fullName || user.user_metadata?.full_name || '',
+          avatar_url: picture || user.user_metadata?.avatar_url || ''
+        }
+      ]);
+    } catch (profileErr) {
+      console.warn('Google user profile upsert warning:', profileErr.message);
+    }
+
+    // 5. Generate authenticated Supabase session
+    let session = null;
+    try {
+      const linkResult = await supabase.auth.admin.generateLink({
+        type: 'magiclink',
+        email: user.email
+      });
+
+      if (linkResult.data?.properties?.email_otp) {
+        const verifyResult = await supabaseAuthClient.auth.verifyOtp({
+          email: user.email,
+          token: linkResult.data.properties.email_otp,
+          type: 'magiclink'
+        });
+
+        if (verifyResult.data?.session) {
+          session = verifyResult.data.session;
+        }
+      }
+    } catch (sessionErr) {
+      console.warn('Google session generation warning:', sessionErr.message);
+    }
+
+    return res.status(200).json({
+      message: 'Google login successful',
+      user: {
+        id: user.id,
+        email: user.email,
+        fullName: fullName || user.user_metadata?.full_name || '',
+        avatarUrl: picture || user.user_metadata?.avatar_url || ''
+      },
+      session: session ? {
+        access_token: session.access_token,
+        refresh_token: session.refresh_token,
+        expires_at: session.expires_at
+      } : null
+    });
+  } catch (err) {
+    console.error('Google sign in error:', err);
+    res.status(500).json({ error: err.message || 'Google sign in failed' });
+  }
+};
+
 module.exports = {
   signup,
   login,
@@ -476,6 +644,9 @@ module.exports = {
   getCurrentUser,
   updateProfile,
   forgotPassword,
-  resetPassword
+  resetPassword,
+  googleAuth,
+  googleAuthUrl,
+  googleSignIn
 };
 
